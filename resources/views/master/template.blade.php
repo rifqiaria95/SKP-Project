@@ -1,0 +1,5 @@
+@include('master.head')
+@include('master.header')
+@yield('master.intro-header')
+@yield('main')
+@include('master.footer')
