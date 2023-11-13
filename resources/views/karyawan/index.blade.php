@@ -1,5 +1,5 @@
 @extends('master.template')
-@section('master.intro-header')
+@section('content')
 
     <!-- BEGIN: Content-->
     <div class="app-content content ">
@@ -125,11 +125,11 @@
         </div>
     </div>
     <!-- END: Content-->
-    
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+@endsection
+@section ('script')
+    <script src="{{ asset('Template/app-assets/DataTables/datatables.min.js') }}"></script>
+    <script src="{{ asset('Template/app-assets/vendors/js/forms/select/select2.full.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js" integrity="sha256-sPB0F50YUDK0otDnsfNHawYmA5M0pjjUf4TvRJkGFrI=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         $(document).ready(function() {
             $.ajaxSetup({
@@ -142,7 +142,7 @@
         //MULAI DATATABLE
         //script untuk memanggil data json dari server dan menampilkannya berupa datatable
         $(document).ready(function() {
-            $.noConflict();
+            // $.noConflict();
             $('#table-karyawan').DataTable({
                 processing: true,
                 serverSide: true, //aktifkan server-side 
@@ -183,35 +183,19 @@
         });
 
         $(document).ready(function () {
-            $(window).load(function() {
-                $('#btn_tambah').click(function() {
+            // $.noConflict();
+            $('#btn_tambah').click(function() {
                 // console.log($('#btn_tambah'));
                 $('#btn-simpan').val("tambah-karyawan");
                 $('#karyawan_id').val('');
+                $('#tambahModal').modal('show');
                 $('#formKaryawan').trigger("reset");
                 $('#modal-judul').html("Tambah Karyawan");
-                $('#tambahModal').modal('show');
                 $('#select2-basicJk').select2({
                     dropdownParent: $('#tambahModal')
                 });
             });
-            });
         });
-
-        // $(document).ready(function () {
-        //     $.noConflict();
-        //     $('#btn_tambah').click(function() {
-        //         // console.log($('#btn_tambah'));
-        //         $('#btn-simpan').val("tambah-karyawan");
-        //         $('#karyawan_id').val('');
-        //         $('#formKaryawan').trigger("reset");
-        //         $('#modal-judul').html("Tambah Karyawan");
-        //         $('#tambahModal').modal('show');
-        //         $('#select2-basicJk').select2({
-        //             dropdownParent: $('#tambahModal')
-        //         });
-        //     });
-        // });
 
         //SIMPAN & UPDATE DATA DAN VALIDASI (SISI CLIENT)
         //jika id = formKaryawan panjangnya lebih dari 0 atau bisa dibilang terdapat data dalam form tersebut maka
