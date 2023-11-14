@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('absensi', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_karyawan')->length(30);
             $table->string('status')->length(30);
             $table->unsignedBigInteger('karyawan_id')->length(30);
             $table->timestamps();

@@ -13,9 +13,12 @@ class AbsensiController extends Controller
 		// Menampilkan Data absensi
         $absensi      = Absensi::all();
         $karyawan     = Karyawan::all();
-        // dd($kelas);
+        // dd($absensi);
         if ($request->ajax()) {
             return datatables()->of($absensi)
+				->addColumn('karyawan', function (Absensi $absensi) {
+					return $absensi->karyawan->nama_depan;
+				})
                 ->addColumn('aksi', function ($data) {
                     $button = '<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                    <div class="btn-group me-2" role="group" aria-label="First group">
@@ -26,9 +29,6 @@ class AbsensiController extends Controller
                </div>';
                     return $button;
                 })
-				->addColumn('karyawan', function (Karyawan $karyawan) {
-                    return $karyawan->absensi->nama_karyawan;
-                })
                 ->rawColumns(['aksi'])
                 ->addIndexColumn()
                 ->toJson();
@@ -38,18 +38,20 @@ class AbsensiController extends Controller
 	}
 
 	public function create() {
-		return view('absensi.create');
+		$absensi      = Absensi::all();
+        $karyawan     = Karyawan::all();
+
+		return view('absensi.create', compact(['absensi', 'karyawan']));
 	}
 
     public function store(Request $request)
     {
-		// dd($request->all());
+		dd($request->all());
     	$this->validate($request, [
-			'nama_karyawan' => 'required',
 			'status' => 'required'
 		]);
 	
-		$existingdata = Absensi::where('nama_karyawan', $request->nama_karyawan)->whereDay('created_at', now()->day)->first();
+		$existingdata = Absensi::where('karyawan_id', $request->karyawan_id)->whereDay('created_at', now()->day)->first();
 		// dd($existingdata);
 		if ($existingdata) {
 			
@@ -61,10 +63,17 @@ class AbsensiController extends Controller
 		// dd($clientIP);
 
 		// DB::enableQueryLog();
-		Absensi::create([
-			'nama_karyawan' => $request->nama_karyawan,
-			'status' => $request->status_manual ?? $request->status
-		]);
+		$status        		  	  = $request->status_manual ?? $request->status;
+		$karyawan_id         	  = $request->karyawan_id;
+
+		$absensi 				  = new Absensi;
+		$absensi->status  		  = $status;
+		$absensi->karyawan_id  	  = $karyawan_id;
+		$absensi->save();
+		// Absensi::create([
+		// 	'status' => $request->status_manual ?? $request->status,
+		// 	'karyawan_id' => $request->karyawan->id
+		// ]);
 		// dd(DB::getQueryLog());
 		
 

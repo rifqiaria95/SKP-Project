@@ -71,7 +71,7 @@
                             @csrf
                             <div class="modal-body">
                                 <input type="hidden" name="id" id="id">
-                                <input type="hidden" name="user_id" id="user_id">
+                                <input type="hidden" name="karyawan_id" id="karyawan_id">
                                 <ul id="save_errorList"></ul>
                                 <div class="row g-3">
                                     <div class="form-floating col-md-6">
@@ -208,8 +208,8 @@
                 type: 'GET'
             },
             columns: [{
-                    data: 'nama',
-                    name: 'nama'
+                    data: 'karyawan',
+                    name: 'karyawan'
                 },
                 {
                     data: 'status',

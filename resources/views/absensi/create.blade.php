@@ -7,7 +7,7 @@
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-<!--===============================================================================================-->	
+<!--===============================================================================================-->	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('FrontEnd/vendor/bootstrap/css/bootstrap.min.css') }}">
@@ -60,31 +60,21 @@
 					<p class="tanggal">Tanggal: <span id="datetime"></span></p>
 						Meal Attendance SKP
 					</span>
-					<input type="hidden" name="ip" value="">
+					<input type="hidden" name="id" id="id">
+					{{-- <input type="hidden" name="karyawan_id" id="karyawan_id"> --}}
 					<span class="login100-form-title p-b-48">
                         <img src="{{ asset('FrontEnd/images/Logo Luwansa 2.png') }}" alt="">
 					</span>
                     <div class="wrap-input101 validate-input">
-						<select class="input101 form-select" aria-label="Default select example" name="nama_karyawan" required>
+						<select class="input101 form-select" aria-label="Default select example" name="karyawan_id" required>
 							<option selected disabled>Nama</option>
                             @foreach ($karyawan as $kr)
-                                <option value="{{ $kr->id }}">{{ $kr->nama_karyawan }}</option>
+                                <option value="{{ $kr->id }}">{{ $kr->nama_depan ?? '' }}</option>
                             @endforeach
-							{{-- <option value="Budi Utomo Al Sunardi">Budi</option>
-							<option value="Hanes Saragih">Hanes</option>
-							<option value="Julian Parananda">Julian</option>
-							<option value="Jefry Lucky">Jefry</option>
-							<option value="Nila Anggraeni">Nila</option>
-							<option value="Ramson Ambarita">Ramson</option>
-							<option value="Rifqi Aria">Rifqi</option>
-							<option value="Ris Erdima P">Ris</option>
-							<option value="Ronal">Ronal</option>
-							<option value="Robert Siboro">Robert</option>
-							<option value="Supri Budi Handoyo">Supri</option> --}}
 						</select>
-						@if($errors->has('nama_karyawan'))
+						@if($errors->has('karyawan_id'))
 							<div class="text-danger">
-								{{ $errors->first('nama_karyawan')}}
+								{{ $errors->first('karyawan_id')}}
 							</div>
 						@endif
 					</div>
@@ -141,6 +131,8 @@
 	<div id="dropDownSelect1"></div>
 	
 <!--===============================================================================================-->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
