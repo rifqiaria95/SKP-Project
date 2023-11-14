@@ -1,5 +1,5 @@
 @extends('master.template')
-@section('master.intro-header')
+@section('content')
 
     <!-- BEGIN: Content-->
     <div class="app-content content ">
@@ -10,6 +10,12 @@
             </div>
             <div class="content-body">
                 <!-- Dashboard Ecommerce Starts -->
+                @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                @endif
+                {{ __('You are logged in!') }}
                 <section id="dashboard-ecommerce">
                     <div class="row match-height">
                         <!-- Medal Card -->

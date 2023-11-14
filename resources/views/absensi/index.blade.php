@@ -10,12 +10,12 @@
             <div class="content-header-left col-md-9 col-12 mb-2">
                 <div class="row breadcrumbs-top">
                     <div class="col-12">
-                        <h2 class="content-header-title float-start mb-0">Data Karyawan PT Santini Kelola Persada</h2>
+                        <h2 class="content-header-title float-start mb-0">Data Absensi PT Santini Kelola Persada</h2>
                         <div class="breadcrumb-wrapper">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a>
                                 </li>
-                                <li class="breadcrumb-item active">Karyawan SKP
+                                <li class="breadcrumb-item active">Absensi SKP
                                 </li>
                             </ol>
                         </div>
@@ -40,17 +40,14 @@
                             <div class="card-body">
                                 <h5 class="card-title"></h5>
                                 <button type="button" id="btn_tambah" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#tambahModal">Tambah Data</button>
-                                <a href="/karyawan/exportexcel" class="btn btn-success mb-5">Export Excel</a>
-                                <a href="/karyawan/exportpdf" class="btn btn-danger mb-5">Export PDF</a>
-                                <button type="button" id="importkaryawan" class="btn btn-success mb-5" data-bs-toggle="modal" data-bs-target="#importModal">Import Data karyawan</button>
-                                <table id="table-karyawan" class="datatables-ajax table table-responsive" style="width:100%">
+                                <a href="/absensi/exportexcel" class="btn btn-success mb-5">Export Excel</a>
+                                <a href="/absensi/exportpdf" class="btn btn-danger mb-5">Export PDF</a>
+                                <button type="button" id="importkaryawan" class="btn btn-success mb-5" data-bs-toggle="modal" data-bs-target="#importModal">Import Data absensi</button>
+                                <table id="table-absensi" class="datatables-ajax table table-responsive" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Nama Depan</th>
-                                            <th>Nama Belakang</th>
-                                            <th>Tempat Lahir</th>
-                                            <th>Tanggal Lahir</th>
-                                            <th>Jenis Kelamin</th>
+                                            <th>Nama</th>
+                                            <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -62,7 +59,7 @@
             </section>
             <!--/ Ajax Sourced Server-side -->
 
-            <!-- Modal Tambah karyawan -->
+            <!-- Modal Tambah absensi -->
             <div class="modal fade text-start" id="tambahModal" tabindex="-1" aria-labelledby="myModalLabel18" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -77,39 +74,20 @@
                                 <input type="hidden" name="user_id" id="user_id">
                                 <ul id="save_errorList"></ul>
                                 <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Nama Depan</label>
-                                        <input type="text" name="nama_depan" class="nama_depan form-control" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Nama Belakang</label>
-                                        <input type="text" name="nama_belakang" class="nama_belakang form-control">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Tempat Lahir</label>
-                                        <input type="text" name="tempat_lahir" class="tempat_lahir form-control" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Tanggal Lahir</label>
-                                        <input type="text" name="tanggal_lahir" class="tanggal_lahir form-control" required>
-                                    </div>
                                     <div class="form-floating col-md-6">
                                         <fieldset class="form-group">
-                                            <label class="form-label">Jenis Kelamin</label>
-                                            <select class="select2 form-select" name="jenis_kelamin" id="jenis_kelamin" required>
-                                                <option>Pilih Jenis Kelamin</option>
-                                                <option value="L">Laki-Laki</option>
-                                                <option value="P">Perempuan</option>
+                                            <label class="form-label">Nama Karyawan</label>
+                                            <select class="select2 form-select" name="karyawan_id" id="optionKaryawan" required>
+                                                <option selected disabled>Pilih Nama Karyawan</option>
+                                                @foreach ($karyawan as $kr)
+                                                    <option value="{{ $kr->id }}">{{ $kr->nama_depan }}</option>
+                                                @endforeach
                                             </select>
                                         </fieldset>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">Email</label>
-                                        <input type="email" name="email" class="email form-control" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="exampleInputPassword1" class="form-label">Avatar</label>
-                                        <input type="file" name="avatar" class="form-control">
+                                        <label class="form-label">Status</label>
+                                        <input type="text" name="nama_belakang" class="nama_belakang form-control">
                                     </div>
                                 </div>
                             </div>
@@ -121,9 +99,9 @@
                     </div>
                 </div>
             </div>
-            {{-- End Modal Tambah Karyawan --}}
+            {{-- End Modal Tambah Absensi --}}
 
-            <!-- Modal Edit karyawan -->
+            <!-- Modal Edit absensi -->
             <div class="modal fade text-start" id="editModal" tabindex="-1" aria-labelledby="myModalLabel18" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -178,7 +156,7 @@
                     </div>
                 </div>
             </div>
-            {{-- End Modal Tambah Karyawan --}}
+            {{-- End Modal Tambah Absensi --}}
 
             <!-- Modal Konfirmasi Delete -->
             <div class="modal fade" tabindex="-1" role="dialog" id="modalHapus" data-backdrop="false">
@@ -188,8 +166,8 @@
                             <h5 class="modal-title">PERHATIAN</h5>
                         </div>
                         <div class="modal-body">
-                            <p><b>Jika menghapus karyawan maka</b></p>
-                            <p>*data karyawan tersebut hilang selamanya, apakah anda yakin?</p>
+                            <p><b>Jika menghapus absensi maka</b></p>
+                            <p>*data absensi tersebut hilang selamanya, apakah anda yakin?</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -222,32 +200,20 @@
     //script untuk memanggil data json dari server dan menampilkannya berupa datatable
     $(document).ready(function() {
         // $.noConflict();
-        $('#table-karyawan').DataTable({
+        $('#table-absensi').DataTable({
             processing: true,
             serverSide: true, //aktifkan server-side 
             ajax: {
-                url: "/karyawan",
+                url: "/absensi",
                 type: 'GET'
             },
             columns: [{
-                    data: 'nama_depan',
-                    name: 'nama_depan'
+                    data: 'nama',
+                    name: 'nama'
                 },
                 {
-                    data: 'nama_belakang',
-                    name: 'nama_belakang'
-                },
-                {
-                    data: 'tempat_lahir',
-                    name: 'tempat_lahir'
-                },
-                {
-                    data: 'tanggal_lahir',
-                    name: 'tanggal_lahir'
-                },
-                {
-                    data: 'jenis_kelamin',
-                    name: 'jenis_kelamin'
+                    data: 'status',
+                    name: 'status'
                 },
                 {
                     data: 'aksi',
@@ -260,17 +226,17 @@
         });
     });
 
-    // Function untuk tombol tambah karyawan dan tampilkan modal
+    // Function untuk tombol tambah absensi dan tampilkan modal
     $(document).ready(function() {
         // $.noConflict();
         $('#btn_tambah').click(function() {
             // console.log($('#btn_tambah'));
-            $('#btn-simpan').val("tambah-karyawan");
+            $('#btn-simpan').val("tambah-absensi");
             $('#karyawan_id').val('');
             $('#tambahModal').modal('show');
             $('#formKaryawan').trigger("reset");
-            $('#modal-judul').html("Tambah Karyawan");
-            $('#select2-basicJk').select2({
+            $('#modal-judul').html("Tambah Absensi");
+            $('#optionKaryawan').select2({
                 dropdownParent: $('#tambahModal')
             });
         });
@@ -287,12 +253,12 @@
                 var formData = new FormData($('#formKaryawan')[0]);
                 $.ajax({
                     data: formData, //function yang dipakai agar value pada form-control seperti input, textarea, select dll dapat digunakan pada URL query string ketika melakukan ajax request
-                    url: "/karyawan/store", //url simpan data
+                    url: "/absensi/store", //url simpan data
                     type: "POST", //data tipe kita kirim berupa JSON
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        var oTable = $('#table-karyawan').dataTable(); //inialisasi datatable
+                        var oTable = $('#table-absensi').dataTable(); //inialisasi datatable
                         oTable.fnDraw(false); //reset datatable
                         if (response.status == 400) {
                             $('#save_errorList').html("");
@@ -321,21 +287,21 @@
         })
     }
 
-    // Function Edit Karyawan
-    $(document).on('click', '.edit-karyawan', function(e) {
+    // Function Edit Absensi
+    $(document).on('click', '.edit-absensi', function(e) {
         e.preventDefault();
 
         var id = $(this).data('id');
 
         $('#editModal').modal('show');
-        $('#titleEdit').html("Edit Data Karyawan");
+        $('#titleEdit').html("Edit Data Absensi");
         $('#jenis_kelamin').select2({
             dropdownParent: $('#editModal')
         });
 
         $.ajax({
             type: "GET",
-            url: "/karyawan/edit/" + id,
+            url: "/absensi/edit/" + id,
             success: function(response) {
                 // console.log(response);
                 // Jika sukses maka munculkan notifikasi
@@ -361,7 +327,7 @@
 
     });
 
-    // Function Update Data Karyawan
+    // Function Update Data Absensi
     $(document).on('submit', '#formEdit', function(e) {
         e.preventDefault();
         var id = $('#id').val();
@@ -371,13 +337,13 @@
 
         $.ajax({
             type: "POST",
-            url: "/karyawan/update/" + id,
+            url: "/absensi/update/" + id,
             data: EditFormData,
             contentType: false,
             processData: false,
             success: function(response) {
                 console.log(response);
-                var oTable = $('#table-karyawan').dataTable(); //inialisasi datatable
+                var oTable = $('#table-absensi').dataTable(); //inialisasi datatable
                 oTable.fnDraw(false); //reset datatable
                 if (response.status == 400) {
                     $('#modalJudulEdit').html("");
@@ -414,7 +380,7 @@
     $('#btn-hapus').click(function(e) {
         e.preventDefault();
         $.ajax({
-            url: "/karyawan/delete/" + id, //eksekusi ajax ke url ini
+            url: "/absensi/delete/" + id, //eksekusi ajax ke url ini
             type: 'delete',
             beforeSend: function() {
                 $('#btn-hapus').text('Hapus Data...'); //set text untuk tombol hapus
@@ -422,7 +388,7 @@
             success: function(response) { //jika sukses
                 setTimeout(function() {
                     $('#modalHapus').modal('hide');
-                    var oTable = $('#table-karyawan').dataTable();
+                    var oTable = $('#table-absensi').dataTable();
                     oTable.fnDraw(false); //reset datatable
                     if (response.status == 404) {
                         toastr.success(response.message);

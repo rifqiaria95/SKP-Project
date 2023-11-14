@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>PT Santini Kelola Persada</title>
+	<title>Meal Attendance - PT Santini Kelola Persada</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -65,9 +65,12 @@
                         <img src="{{ asset('FrontEnd/images/Logo Luwansa 2.png') }}" alt="">
 					</span>
                     <div class="wrap-input101 validate-input">
-						<select class="input101 form-select" aria-label="Default select example" name="nama" required>
+						<select class="input101 form-select" aria-label="Default select example" name="nama_karyawan" required>
 							<option selected disabled>Nama</option>
-							<option value="Budi Utomo Al Sunardi">Budi</option>
+                            @foreach ($karyawan as $kr)
+                                <option value="{{ $kr->id }}">{{ $kr->nama_karyawan }}</option>
+                            @endforeach
+							{{-- <option value="Budi Utomo Al Sunardi">Budi</option>
 							<option value="Hanes Saragih">Hanes</option>
 							<option value="Julian Parananda">Julian</option>
 							<option value="Jefry Lucky">Jefry</option>
@@ -77,11 +80,11 @@
 							<option value="Ris Erdima P">Ris</option>
 							<option value="Ronal">Ronal</option>
 							<option value="Robert Siboro">Robert</option>
-							<option value="Supri Budi Handoyo">Supri</option>
+							<option value="Supri Budi Handoyo">Supri</option> --}}
 						</select>
-						@if($errors->has('nama'))
+						@if($errors->has('nama_karyawan'))
 							<div class="text-danger">
-								{{ $errors->first('nama')}}
+								{{ $errors->first('nama_karyawan')}}
 							</div>
 						@endif
 					</div>
@@ -134,7 +137,6 @@
 			</div>
 		</div>
 	</div>
-	
 
 	<div id="dropDownSelect1"></div>
 	

@@ -11,6 +11,12 @@ class Absensi extends Model
     protected $table    = "absensi";
     protected $fillable = [
         'nama',
-        'status'
+        'status',
+        'karyawan_id'
     ];
+
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class);
+    }
 }

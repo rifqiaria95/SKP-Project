@@ -12,17 +12,32 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Route Home
 Route::get('/', 'SiteController@home');
 
-// Route Data Absensi Karyawan
-Route::get('dataabsensi', 'DataAbsenController@index');
+// Route Dashboard
+Route::get('dashboard', 'DashboardController@index');
 
-// Route Dara Karyawan
+// Route User
+Route::get('user', 'UserController@index');
+Route::get('user/edit/{id}', 'UserController@edit');
+Route::post('user/update/{id}', 'UserController@update');
+Route::delete('user/delete/{id}', 'UserController@destroy');
+
+// Route Data Karyawan
 Route::get('karyawan', 'KaryawanController@index');
 Route::post('karyawan/store', 'KaryawanController@store');
+Route::get('karyawan/edit/{id}', 'KaryawanController@edit');
+Route::post('karyawan/update/{id}', 'KaryawanController@update');
+Route::delete('karyawan/delete/{id}', 'KaryawanController@destroy');
 
-// Route Front End Meal Attendance
+// Route Meal Attendance
 Route::get('absensi', 'AbsensiController@index');
+Route::get('absensi/create', 'AbsensiController@create');
 Route::post('absensi/store', 'App\Http\Controllers\AbsensiController@store');
+
+
