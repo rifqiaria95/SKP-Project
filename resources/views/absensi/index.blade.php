@@ -10,12 +10,12 @@
             <div class="content-header-left col-md-9 col-12 mb-2">
                 <div class="row breadcrumbs-top">
                     <div class="col-12">
-                        <h2 class="content-header-title float-start mb-0">Data Absensi PT Santini Kelola Persada</h2>
+                        <h2 class="content-header-title float-start mb-0">Meal Attendance SKP</h2>
                         <div class="breadcrumb-wrapper">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a>
                                 </li>
-                                <li class="breadcrumb-item active">Absensi SKP
+                                <li class="breadcrumb-item active">Meal Attendance
                                 </li>
                             </ol>
                         </div>
@@ -48,6 +48,7 @@
                                         <tr>
                                             <th>Nama</th>
                                             <th>Status</th>
+                                            <th>Tanggal Dibuat</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -87,7 +88,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Status</label>
-                                        <input type="text" name="nama_belakang" class="nama_belakang form-control">
+                                        <input type="text" name="status" class="status form-control">
                                     </div>
                                 </div>
                             </div>
@@ -216,6 +217,10 @@
                     name: 'status'
                 },
                 {
+                    data: 'created_at',
+                    name: 'created_at'
+                },
+                {
                     data: 'aksi',
                     name: 'aksi'
                 },
@@ -240,6 +245,7 @@
                 dropdownParent: $('#tambahModal')
             });
         });
+
     });
 
     //SIMPAN & UPDATE DATA DAN VALIDASI (SISI CLIENT)
@@ -269,13 +275,19 @@
                             });
 
                             $('#btn-simpan').text('Menyimpan..');
+                        
+                        // console.log(response.status);
+                        } else if (response.status == 409) {
+                            $('#formKaryawan').find('input').val('');
+                            toastr.error(response.errors);
+                            $('#tambahModal').modal('hide');
+
                         } else if (response.status == 200) {
                             $('#modalJudul').html("");
                             $('#formKaryawan').find('input').val('');
-                            toastr.success(response.message);
+                            toastr.success(response.message + response.timestamp);
 
                             $('#tambahModal').modal('hide');
-
                         }
                     },
                     error: function(response) {

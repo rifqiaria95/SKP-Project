@@ -3,6 +3,7 @@
 <head>
 	<title>Meal Attendance - PT Santini Kelola Persada</title>
 	<meta charset="UTF-8">
+	<meta name="csrf-token" content="{{ csrf_token() }}" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -21,6 +22,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('FrontEnd/vendor/css-hamburgers/hamburgers.min.css') }}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('FrontEnd/vendor/animsition/css/animsition.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('FrontEnd/vendor/select2/select2.min.css') }}">
 <!--===============================================================================================-->	
@@ -36,31 +38,18 @@
 		<h2 >Meal Attendance SKP</h2>
 		<p>Santini Kelola Persada</p>
 		<button class="button-click" onclick="closePopup()">Mulai</button>
-		@if (\Session::has('error'))
-			<div class="alert alert-danger alert-block">
-				<ul class="alert-danger">
-					<li>{!! \Session::get('error') !!}</li>
-				</ul>
-			</div>
-		@endif
-		@if (\Session::has('success'))
-			<div class="alert alert-success alert-block-lg">
-				<ul class="alert-sukses">
-					<li class="alert-sukses1">{!! \Session::get('success') !!} {{ date ('d/m/Y H:i')}}</li>
-				</ul>
-			</div>
-		@endif
 	</div>
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form method="POST" action="/absensi/store" class="login100-form validate-form">
+				<form id="formKaryawan" class="login100-form validate-form" enctype="multipart/form-data">
 					{{ csrf_field() }}
 					<span class="login100-form-title p-b-26">
 					<p class="tanggal">Tanggal: <span id="datetime"></span></p>
 						Meal Attendance SKP
 					</span>
 					<input type="hidden" name="id" id="id">
+					<ul id="save_errorList"></ul>
 					{{-- <input type="hidden" name="karyawan_id" id="karyawan_id"> --}}
 					<span class="login100-form-title p-b-48">
                         <img src="{{ asset('FrontEnd/images/Logo Luwansa 2.png') }}" alt="">
@@ -114,7 +103,7 @@
 					<div class="container-login100-form-btn">
 						<div class="wrap-login100-form-btn">
 							<div class="login100-form-bgbtn"></div>
-							<button type="submit" class="login100-form-btn" value="Simpan">Kirim</button>
+							<button type="submit" id="btn-simpan" class="login100-form-btn" value="Simpan">Kirim</button>
 						</div>
 					</div>
 
@@ -132,18 +121,15 @@
 	
 <!--===============================================================================================-->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js" integrity="sha256-sPB0F50YUDK0otDnsfNHawYmA5M0pjjUf4TvRJkGFrI=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<!--===============================================================================================-->
-	<script src="{{ asset('FrontEnd/vendor/jquery/jquery-3.2.1.min.js') }}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!--===============================================================================================-->
 	<script src="{{ asset('FrontEnd/vendor/animsition/js/animsition.min.js') }}"></script>
-<!--===============================================================================================-->
-	<script src="{{ asset('FrontEnd/vendor/bootstrap/js/popper.js') }}"></script>
-	<script src="{{ asset('FrontEnd/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <!--===============================================================================================-->
 	<script src="{{ asset('FrontEnd/vendor/select2/select2.min.js') }}"></script>
 <!--===============================================================================================-->
@@ -155,6 +141,13 @@
 	<script src="{{ asset('FrontEnd/js/main.js') }}"></script>
 
 	<script>
+		$(document).ready(function() {
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				}
+			});
+		});
 		const popup = document.querySelector(".full-screen, .button-click");
 
 		function closePopup(){
@@ -163,9 +156,7 @@
 		var dt = new Date();
 		document.getElementById("datetime").innerHTML = (("0"+dt.getDate()).slice(-2)) +"."+ (("0"+(dt.getMonth()+1)).slice(-2)) +"."+ (dt.getFullYear()) +" "+ (("0"+dt.getHours()).slice(-2)) +":"+ (("0"+dt.getMinutes()).slice(-2));
 		}
-	</script>
 
-	<script>
 		$(document).ready(function(){
 			$("#cb2").click(function(e){
 				$('#form1').show();
@@ -175,6 +166,57 @@
 				$('#form1').hide();
 				$( "#cb2" ).prop( "checked", false );
 			});
+		});
+
+		$(document).ready(function () {
+			//SIMPAN & UPDATE DATA DAN VALIDASI (SISI CLIENT)
+			//jika id = formKaryawan panjangnya lebih dari 0 atau bisa dibilang terdapat data dalam form tersebut maka
+			//jalankan jquery validator terhadap setiap inputan dll dan eksekusi script ajax untuk simpan data
+			if ($("#formKaryawan").length > 0) {
+				$("#formKaryawan").validate({
+					submitHandler: function(form) {
+						var actionType = $('#btn-simpan').val();
+						// Mengubah data menjadi objek agar file image bisa diinput kedalam database
+						var formData = new FormData($('#formKaryawan')[0]);
+						$.ajax({
+							data: formData, //function yang dipakai agar value pada form-control seperti input, textarea, select dll dapat digunakan pada URL query string ketika melakukan ajax request
+							url: "/absensi/store", //url simpan data
+							type: "POST", //data tipe kita kirim berupa JSON
+							contentType: false,
+							processData: false,
+							success: function(response) {
+								location.reload();
+								if (response.status == 400) {
+									$('#save_errorList').html("");
+									$('#save_errorList').removeClass('d-none');
+									$.each(response.errors, function(key, err_value) {
+										$('#save_errorList').append('<li>' + err_value +
+											'</li>');
+									});
+
+									$('#btn-simpan').text('Menyimpan..');
+								
+								// console.log(response.status);
+								} else if (response.status == 409) {
+									$('#formKaryawan').find('input').val('');
+									toastr.error(response.errors);
+
+								} else if (response.status == 200) {
+									$('#modalJudul').html("");
+									$('#formKaryawan').find('input').val('');
+									toastr.success(response.message + response.timestamp);
+
+									$('#tambahModal').modal('hide');
+								}
+							},
+							error: function(response) {
+								console.log('Error:', response);
+								$('#btn-simpan').html('Simpan');
+							}
+						});
+					}
+				})
+			}
 		});
 	</script>
 
