@@ -10,19 +10,18 @@
             </div>
             <div class="content-body">
                 <!-- Dashboard Ecommerce Starts -->
-                @if (session('status'))
+                @if (session('flash'))
                     <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
+                        {{ session('flash') }}
                     </div>
                 @endif
-                {{ __('You are logged in!') }}
                 <section id="dashboard-ecommerce">
                     <div class="row match-height">
                         <!-- Medal Card -->
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="card card-congratulation-medal">
                                 <div class="card-body">
-                                    <h5>Congratulations 🎉 John!</h5>
+                                    <h5>Congratulations 🎉 {{ Auth::user()->name }}!</h5>
                                     <p class="card-text font-small-3">You have won gold medal</p>
                                     <h3 class="mb-75 mt-2 pt-50">
                                         <a href="#">$48.9k</a>

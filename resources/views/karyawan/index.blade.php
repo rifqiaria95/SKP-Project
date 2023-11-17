@@ -39,10 +39,10 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title"></h5>
-                                <button type="button" id="btn_tambah" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#tambahModal">Tambah Data</button>
-                                <a href="/karyawan/exportexcel" class="btn btn-success mb-5">Export Excel</a>
-                                <a href="/karyawan/exportpdf" class="btn btn-danger mb-5">Export PDF</a>
-                                <button type="button" id="importkaryawan" class="btn btn-success mb-5" data-bs-toggle="modal" data-bs-target="#importModal">Import Data karyawan</button>
+                                <button type="button" id="btn_tambah" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#tambahModal"><i data-feather='plus-circle'></i> Tambah Data</button>
+                                <a href="/karyawan/exportexcel" class="btn btn-success mb-5"><i data-feather='file'></i> Export Excel</a>
+                                <a href="/karyawan/exportpdf" class="btn btn-danger mb-5"><i data-feather='file-text'></i> Export PDF</a>
+                                {{-- <button type="button" id="importkaryawan" class="btn btn-success mb-5" data-bs-toggle="modal" data-bs-target="#importModal">Import Data karyawan</button> --}}
                                 <table id="table-karyawan" class="datatables-ajax table table-responsive" style="width:100%">
                                     <thead>
                                         <tr>
@@ -96,7 +96,7 @@
                                     <div class="form-floating col-md-6">
                                         <fieldset class="form-group">
                                             <label class="form-label">Jenis Kelamin</label>
-                                            <select class="select2 form-select" name="jenis_kelamin" id="jenis_kelamin" required>
+                                            <select class="select2 form-select" name="jenis_kelamin" id="selectJK" required>
                                                 <option>Pilih Jenis Kelamin</option>
                                                 <option value="L">Laki-Laki</option>
                                                 <option value="P">Perempuan</option>
@@ -270,7 +270,7 @@
             $('#tambahModal').modal('show');
             $('#formKaryawan').trigger("reset");
             $('#modal-judul').html("Tambah Karyawan");
-            $('#select2-basicJk').select2({
+            $('#selectJK').select2({
                 dropdownParent: $('#tambahModal')
             });
         });

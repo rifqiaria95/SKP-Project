@@ -39,10 +39,10 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title"></h5>
-                                <button type="button" id="btn_tambah" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#tambahModal">Tambah Data</button>
-                                <a href="/absensi/exportexcel" class="btn btn-success mb-5">Export Excel</a>
-                                <a href="/absensi/exportpdf" class="btn btn-danger mb-5">Export PDF</a>
-                                <button type="button" id="importkaryawan" class="btn btn-success mb-5" data-bs-toggle="modal" data-bs-target="#importModal">Import Data absensi</button>
+                                <button type="button" id="btn_tambah" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#tambahModal"><i data-feather='plus-circle'></i> Tambah Data</button>
+                                <a href="/absensi/exportexcel/" class="btn btn-success mb-5"><i data-feather='file'></i> Export Excel</a>
+                                <a href="/absensi/exportpdf" class="btn btn-danger mb-5"><i data-feather='file-text'></i> Export PDF</a>
+                                {{-- <button type="button" id="importkaryawan" class="btn btn-success mb-5" data-bs-toggle="modal" data-bs-target="#importModal">Import Data absensi</button> --}}
                                 <table id="table-absensi" class="datatables-ajax table table-responsive" style="width:100%">
                                     <thead>
                                         <tr>
@@ -72,7 +72,6 @@
                             @csrf
                             <div class="modal-body">
                                 <input type="hidden" name="id" id="id">
-                                <input type="hidden" name="karyawan_id" id="karyawan_id">
                                 <ul id="save_errorList"></ul>
                                 <div class="row g-3">
                                     <div class="form-floating col-md-6">
@@ -117,35 +116,20 @@
                                 <input type="hidden" name="id" id="id">
                                 <ul id="save_errorList"></ul>
                                 <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Nama Depan</label>
-                                        <input type="text" id="nama_depan" name="nama_depan" class="nama_depan form-control" value="" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Nama Belakang</label>
-                                        <input type="text" id="nama_belakang" name="nama_belakang" class="nama_belakang form-control" value="">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Tempat Lahir</label>
-                                        <input type="text" id="tempat_lahir" name="tempat_lahir" class="tempat_lahir form-control" value="" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Tanggal Lahir</label>
-                                        <input type="text" id="tanggal_lahir" name="tanggal_lahir" class="tanggal_lahir form-control" value="" required>
-                                    </div>
                                     <div class="form-floating col-md-6">
                                         <fieldset class="form-group">
-                                            <label class="form-label">Jenis Kelamin</label>
-                                            <select class="select2 form-select" name="jenis_kelamin" id="jenis_kelamin">
-                                                <option disabled>Pilih Jenis Kelamin</option>
-                                                <option value="L">Laki-Laki</option>
-                                                <option value="P">Perempuan</option>
+                                            <label class="form-label">Nama Karyawan</label>
+                                            <select class="select2 form-select" name="karyawan_id" id="karyawan_id">
+                                                <option selected disabled>Pilih Nama Karyawan</option>
+                                                @foreach ($karyawan as $kr)
+                                                    <option value="{{ $kr->id }}">{{ $kr->nama_depan }}</option>
+                                                @endforeach
                                             </select>
                                         </fieldset>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="exampleInputPassword1" class="form-label">Avatar</label>
-                                        <input type="file" name="avatar" class="form-control">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Status</label>
+                                        <input type="text" name="status" id="status" value="" class="status form-control">
                                     </div>
                                 </div>
                             </div>
@@ -237,7 +221,7 @@
         $('#btn_tambah').click(function() {
             // console.log($('#btn_tambah'));
             $('#btn-simpan').val("tambah-absensi");
-            $('#karyawan_id').val('');
+            // $('#karyawan_id').val('');
             $('#tambahModal').modal('show');
             $('#formKaryawan').trigger("reset");
             $('#modal-judul').html("Tambah Absensi");
@@ -307,7 +291,7 @@
 
         $('#editModal').modal('show');
         $('#titleEdit').html("Edit Data Absensi");
-        $('#jenis_kelamin').select2({
+        $('#karyawan_id').select2({
             dropdownParent: $('#editModal')
         });
 
@@ -323,12 +307,8 @@
                     $('#editModal').modal('hide');
                 } else {
                     $('#id').val(id);
-                    $('#nama_depan').val(response.nama_depan);
-                    $('#nama_belakang').val(response.nama_belakang);
-                    $('#tempat_lahir').val(response.tempat_lahir);
-                    $('#tanggal_lahir').val(response.tanggal_lahir);
-                    $('#jenis_kelamin').val(response.jenis_kelamin);
-                    $('#avatar').val();
+                    $('#karyawan_id').val(response.karyawan_id).trigger('change');
+                    $('#status').val(response.status);
                 }
             },
             error: function(response) {

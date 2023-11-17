@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/login', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Route Home
 Route::get('/', 'SiteController@home');
@@ -36,11 +36,17 @@ Route::group(['middleware' => ['auth', 'checkRole:admin']], function () {
     Route::post('karyawan/update/{id}', 'KaryawanController@update');
     Route::delete('karyawan/delete/{id}', 'KaryawanController@destroy');
 
-    // Route Meal Attendance
+    // Route Meal Attendance (Admin)
     Route::get('absensi', 'AbsensiController@index');
-    Route::get('absensi/create', 'AbsensiController@create');
-    Route::post('absensi/store', 'App\Http\Controllers\AbsensiController@store');
+    Route::get('absensi/edit/{id}', 'AbsensiController@edit');
+    Route::post('absensi/update/{id}', 'AbsensiController@update');
+    Route::delete('absensi/delete/{id}', 'AbsensiController@destroy');
+    Route::get('absensi/exportexcel/', 'AbsensiController@exportexcel');
 
 });
+
+ // Route Meal Attendance (User)
+Route::get('absensi/create', 'AbsensiController@create');
+Route::post('absensi/store', 'App\Http\Controllers\AbsensiController@store');
 
 

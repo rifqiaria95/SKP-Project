@@ -39,9 +39,9 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title"></h5>
-                                <a href="/user/exportexcel" class="btn btn-success mb-5">Export Excel</a>
-                                <a href="/user/exportpdf" class="btn btn-danger mb-5">Export PDF</a>
-                                <button type="button" id="importkaryawan" class="btn btn-info mb-5" data-bs-toggle="modal" data-bs-target="#importModal">Import Data user</button>
+                                <a href="/user/exportexcel" class="btn btn-success mb-5"><i data-feather='file'></i> Export Excel</a>
+                                <a href="/user/exportpdf" class="btn btn-danger mb-5"><i data-feather='file-text'></i> Export PDF</a>
+                                {{-- <button type="button" id="importkaryawan" class="btn btn-info mb-5" data-bs-toggle="modal" data-bs-target="#importModal">Import Data user</button> --}}
                                 <table id="table-user" class="datatables-ajax table table-responsive" style="width:100%">
                                     <thead>
                                         <tr>

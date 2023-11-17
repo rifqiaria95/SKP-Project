@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="csrf-token" content="{{ csrf_token() }}" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-
+	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('Template/app-assets/images/ico/favicon.ico') }}">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
 <!--===============================================================================================-->	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -49,37 +49,33 @@
 						Meal Attendance SKP
 					</span>
 					<input type="hidden" name="id" id="id">
-					<ul id="save_errorList"></ul>
 					{{-- <input type="hidden" name="karyawan_id" id="karyawan_id"> --}}
 					<span class="login100-form-title p-b-48">
                         <img src="{{ asset('FrontEnd/images/Logo Luwansa 2.png') }}" alt="">
 					</span>
+					<div id="errorlist">
+					</div>
                     <div class="wrap-input101 validate-input">
-						<select class="input101 form-select" aria-label="Default select example" name="karyawan_id" required>
+						<select class="input101 form-select" aria-label="Default select example" name="karyawan_id">
 							<option selected disabled>Nama</option>
                             @foreach ($karyawan as $kr)
                                 <option value="{{ $kr->id }}">{{ $kr->nama_depan ?? '' }}</option>
                             @endforeach
 						</select>
-						@if($errors->has('karyawan_id'))
-							<div class="text-danger">
-								{{ $errors->first('karyawan_id')}}
-							</div>
-						@endif
 					</div>
-					<div class="container-cb1">
-						<div class="form-check">
-							<input id="cb1" value="karyawan" class="form-check-input" type="radio" name="status">
-							<label class="form-check-label" for="flexRadioDefault1">
-								Karyawan/ti
-							</label>
+					<div class="wrap-input101 validate-input">
+						{{-- <input id="cb1" value="karyawan" class="form-check-input" type="radio" name="status"> --}}
+						<select class="input101 form-select" id="select1" aria-label="Default select example" name="status">
+							<option selected disabled>Status</option>
+							<option value="karyawan">Karyawan</option>
+							<option value="supir">Supir</option>
 							@if($errors->has('status'))
 								<div class="text-danger">
 									{{ $errors->first('status')}}
 								</div>
 							@endif
-						</div>
-						<div class="form-check">
+						</select>
+						<div class="form-check mt-4">
 							<input id="cb2" class="form-check-input" type="radio" name="status" value="lainnya">
 							<label class="form-check-label">
 								Lainnya
@@ -93,7 +89,7 @@
 					<div>
 					<div id="form1" class="wrap-input100" style="display:none">
 						<input class="input100" type="text" name="status_manual">
-						<span class="input100" data-placeholder=""></span>
+						<span class="input100"></span>
 						@if($errors->has('status'))
 							<div class="text-danger">
 								{{ $errors->first('status')}}
@@ -160,11 +156,11 @@
 		$(document).ready(function(){
 			$("#cb2").click(function(e){
 				$('#form1').show();
-				$( "#cb1" ).prop( "checked", false );
+				$( "#select1" ).val('');
 			});
-			$("#cb1").click(function(e){
-				$('#form1').hide();
+			$("#select1").click(function(e){
 				$( "#cb2" ).prop( "checked", false );
+				$('#form1').hide().find('input').val('');
 			});
 		});
 
@@ -185,23 +181,27 @@
 							contentType: false,
 							processData: false,
 							success: function(response) {
-								location.reload();
 								if (response.status == 400) {
-									$('#save_errorList').html("");
-									$('#save_errorList').removeClass('d-none');
+									$('#errorlist').html("");
+									$('#errorlist').addClass('class="alert alert-danger mb-3 alert-validation-msg" role="alert"');
 									$.each(response.errors, function(key, err_value) {
-										$('#save_errorList').append('<li>' + err_value +
-											'</li>');
+										$('#errorlist').append('<div class="alert-body d-flex align-items-center"><i data-feather="info" class="me-50"></i><span>' + err_value +
+											'</span></div>');
 									});
 
-									$('#btn-simpan').text('Menyimpan..');
+									$('#btn-simpan').text('Mengirim..');
 								
 								// console.log(response.status);
 								} else if (response.status == 409) {
+									setTimeout(function(){ // wait for 5 secs(2)
+										location.reload(); // then reload the page.(3)
+									}, 2000); 
 									$('#formKaryawan').find('input').val('');
 									toastr.error(response.errors);
-
 								} else if (response.status == 200) {
+									setTimeout(function(){ // wait for 5 secs(2)
+										location.reload(); // then reload the page.(3)
+									}, 3000); 
 									$('#modalJudul').html("");
 									$('#formKaryawan').find('input').val('');
 									toastr.success(response.message + response.timestamp);
