@@ -193,7 +193,7 @@
 								
 								// console.log(response.status);
 								} else if (response.status == 409) {
-									setTimeout(function(){ // wait for 5 secs(2)
+									setTimeout(function(){ // wait for 2 secs(2)
 										location.reload(); // then reload the page.(3)
 									}, 2000); 
 									$('#formKaryawan').find('input').val('');
@@ -201,7 +201,7 @@
 								} else if (response.status == 200) {
 									setTimeout(function(){ // wait for 5 secs(2)
 										location.reload(); // then reload the page.(3)
-									}, 10000); 
+									}, 5000); 
 									$('#modalJudul').html("");
 									$('#formKaryawan').find('input').val('');
 									toastr.success(response.message + response.timestamp);
@@ -210,7 +210,7 @@
 								}
 							},
 							error: function(response) {
-								console.log('Error:', response);
+								// console.log('Error:', response);
 								$('#btn-simpan').html('Simpan');
 							}
 						});

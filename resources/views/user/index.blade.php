@@ -45,8 +45,8 @@
                                 <table id="table-user" class="datatables-ajax table table-responsive" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Role</th>
                                             <th>Name</th>
+                                            <th>Role</th>
                                             <th>Status</th>
                                             <th>Email</th>
                                             <th>Aksi</th>
@@ -165,16 +165,16 @@
                 type: 'GET'
             },
             columns: [{
-                    data: 'role',
-                    name: 'role'
-                },
-                {
                     data: 'name',
                     name: 'name'
                 },
                 {
-                    data: 'nama_status',
-                    name: 'nama_status'
+                    data: 'role',
+                    name: 'role'
+                },
+                {
+                    data: 'status_user',
+                    name: 'status_user'
                 },
                 {
                     data: 'email',

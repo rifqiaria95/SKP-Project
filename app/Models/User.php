@@ -40,11 +40,6 @@ class User extends Authenticatable
         return $this->hasOne(Karyawan::class);
     }
 
-    public function ket_status()
-    {
-        return $this->hasOne(KetStatus::class);
-    }
-
     /**
      * The attributes that should be cast.
      *

@@ -16,29 +16,32 @@ class UserController extends Controller
     {
         // Menampilkan Data user
         $user       = User::all();
-        $ket_status = KetStatus::all();
         // dd($kelas);
         if ($request->ajax()) {
             return datatables()->of($user)
-                ->addColumn('ket_status', function (User $user) {
-                    return '<span class="badge rounded-pill bg-primary">' . $user->ket_status->nama_status . '</span>';
-                })
-                ->addColumn('aksi', function ($data) {
-                    $button = '<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                   <div class="btn-group me-2" role="group" aria-label="First group">
-                       <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $data->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-user"><i class="fa-solid fa-pen"></i></a>
-                       <button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
-                       <a href="user/' . $data->id . '/profile" name="view" class="view btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
-                   </div>
-               </div>';
-                    return $button;
-                })
-                ->rawColumns(['ket_status','aksi'])
-                ->addIndexColumn()
-                ->toJson();
+            ->addColumn('status_user', function(User $user) {
+                if($user->status_user == 0){
+                    return '<span class="badge rounded-pill bg-danger">Inactive</span>';
+                }  else if ($user->status_user == 1) {
+                    return '<span class="badge rounded-pill bg-success">Active</span>';
+                }
+            })
+            ->addColumn('aksi', function ($data) {
+                $button = '<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group me-2" role="group" aria-label="First group">
+                    <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $data->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-user"><i class="fa-solid fa-pen"></i></a>
+                    <button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
+                    <a href="user/' . $data->id . '/profile" name="view" class="view btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
+                </div>
+            </div>';
+                return $button;
+            })
+            ->rawColumns(['status_user', 'aksi'])
+            ->addIndexColumn()
+            ->toJson();
         }
 
-        return view('user.index', compact(['user', 'ket_status']));
+        return view('user.index', compact(['user']));
     }
 
     public function edit($id)

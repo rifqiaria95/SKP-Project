@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         User::insert([
             [
                 'role'              => 'owner',
-                'status_user'            => 1,
+                'status_user'       => 1,
                 'name'              => 'Rifqi Aria',
                 'email'             => 'rbenity@gmail.com',
                 'email_verified_at' => now(),
