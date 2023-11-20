@@ -36,18 +36,27 @@
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
             <li class="{{ Request::is('dashboard')?'active':'' }}"><a class="d-flex align-items-center" href="/dashboard"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboards</span></a>
-            <li class=" navigation-header"><span data-i18n="Forms &amp; Tables">Forms &amp; Tables</span><i data-feather="more-horizontal"></i>
-            </li>
-            <li class="{{ Request::is('absensi')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="/absensi"><i data-feather="copy"></i><span class="menu-title text-truncate" data-i18n="Form Elements">Meal Attendance</span></a>
-            <li class="{{ Request::is('karyawan')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="/karyawan"><i data-feather="grid"></i><span class="menu-title text-truncate" data-i18n="Datatables">Karyawan SKP</span></a>
-            <li class=" navigation-header"><span data-i18n="Forms &amp; Tables">Apps &amp; Pages</span><i data-feather="more-horizontal"></i>
-            </li>
-            <li class="{{ Request::is('user')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="User">User</span></a>
-                <ul class="menu-content">
-                    <li><a class="d-flex align-items-center" href="/user"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Data User</span></a>
-                    </li>
-                </ul>
-            </li>
+            @if(auth()->user()->role == 'owner')
+                <li class=" navigation-header"><span data-i18n="Forms &amp; Tables">Forms &amp; Tables</span><i data-feather="more-horizontal"></i>
+                </li>
+                <li class="{{ Request::is('absensi')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="/absensi"><i data-feather="copy"></i><span class="menu-title text-truncate" data-i18n="Form Elements">Meal Attendance</span></a>
+                <li class="{{ Request::is('karyawan')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="/karyawan"><i data-feather="grid"></i><span class="menu-title text-truncate" data-i18n="Datatables">Karyawan SKP</span></a>
+                <li class=" navigation-header"><span data-i18n="Forms &amp; Tables">Apps &amp; Pages</span><i data-feather="more-horizontal"></i>
+                </li>
+                <li class="{{ Request::is('user')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="User">User</span></a>
+                    <ul class="menu-content">
+                        <li><a class="d-flex align-items-center" href="/user"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Data User</span></a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+            @if(auth()->user()->role == 'admin')
+                <li class=" navigation-header"><span data-i18n="Forms &amp; Tables">Forms &amp; Tables</span><i data-feather="more-horizontal"></i>
+                </li>
+                <li class="{{ Request::is('absensi')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="/absensi"><i data-feather="copy"></i><span class="menu-title text-truncate" data-i18n="Form Elements">Meal Attendance</span></a>
+                <li class="{{ Request::is('karyawan')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="/karyawan"><i data-feather="grid"></i><span class="menu-title text-truncate" data-i18n="Datatables">Karyawan SKP</span></a>
+                </li>
+            @endif
         </ul>
     </div>
 </div>

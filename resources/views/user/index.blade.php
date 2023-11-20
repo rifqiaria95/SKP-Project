@@ -47,6 +47,7 @@
                                         <tr>
                                             <th>Role</th>
                                             <th>Name</th>
+                                            <th>Status</th>
                                             <th>Email</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -74,6 +75,10 @@
                                 <input type="hidden" name="id" id="id">
                                 <ul id="save_errorList"></ul>
                                 <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nama</label>
+                                        <input type="text" id="name" name="name" class="name form-control" value="" required>
+                                    </div>
                                     <div class="form-floating col-md-6">
                                         <fieldset class="form-group">
                                             <label class="form-label">Role</label>
@@ -84,9 +89,15 @@
                                             </select>
                                         </fieldset>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Nama</label>
-                                        <input type="text" id="name" name="name" class="name form-control" value="" required>
+                                    <div class="form-floating col-md-12">
+                                        <fieldset class="form-group">
+                                            <label class="form-label">Status</label>
+                                            <select class="select2 form-select" name="status_user" id="status_user" required>
+                                                <option>Pilih Role</option>
+                                                <option value="0">Inactive</option>
+                                                <option value="1">Active</option>
+                                            </select>
+                                        </fieldset>
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label">Email</label>
@@ -162,6 +173,10 @@
                     name: 'name'
                 },
                 {
+                    data: 'nama_status',
+                    name: 'nama_status'
+                },
+                {
                     data: 'email',
                     name: 'email'
                 },
@@ -201,6 +216,7 @@
                 } else {
                     $('#id').val(id);
                     $('#role').val(response.role);
+                    $('#status_user').val(response.status_user);
                     $('#name').val(response.name);
                     $('#email').val(response.email);
                 }

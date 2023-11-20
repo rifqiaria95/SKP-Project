@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\KetStatus;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -14,10 +15,14 @@ class UserController extends Controller
     public function index(Request $request)
     {
         // Menampilkan Data user
-        $user      = User::all();
+        $user       = User::all();
+        $ket_status = KetStatus::all();
         // dd($kelas);
         if ($request->ajax()) {
             return datatables()->of($user)
+                ->addColumn('ket_status', function (User $user) {
+                    return '<span class="badge rounded-pill bg-primary">' . $user->ket_status->nama_status . '</span>';
+                })
                 ->addColumn('aksi', function ($data) {
                     $button = '<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                    <div class="btn-group me-2" role="group" aria-label="First group">
@@ -28,12 +33,12 @@ class UserController extends Controller
                </div>';
                     return $button;
                 })
-                ->rawColumns(['aksi'])
+                ->rawColumns(['ket_status','aksi'])
                 ->addIndexColumn()
                 ->toJson();
         }
 
-        return view('user.index', compact(['user']));
+        return view('user.index', compact(['user', 'ket_status']));
     }
 
     public function edit($id)

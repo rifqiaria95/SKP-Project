@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Karyawan;
+use App\Exports\KaryawanExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KaryawanController extends Controller
 {
@@ -50,13 +52,14 @@ class KaryawanController extends Controller
         } else {
 
             // Insert Table User
-            $user                       = new User;
-            $user->role                 = 'karyawan';
-            $user->name                 = $request->nama_depan;
-            $user->email                = $request->email;
-            $user->email_verified_at    = now();
-            $user->password             = bcrypt('rahasia');
-            $user->remember_token       = Str::random(60);
+            $user                    = new User;
+            $user->role              = 'karyawan';
+            $user->status_user       = 1;
+            $user->name              = $request->nama_depan;
+            $user->email             = $request->email;
+            $user->email_verified_at = now();
+            $user->password          = bcrypt('rahasia');
+            $user->remember_token    = Str::random(60);
             $user->save();
 
             // Insert Table karyawan
@@ -148,5 +151,10 @@ class KaryawanController extends Controller
                 'errors' => 'Data Karyawan Tidak Ditemukan'
             ]);
         }
+    }
+
+    public function exportExcelKaryawan() 
+    {
+        return Excel::download(new KaryawanExport, 'karyawan.xlsx');
     }
 }

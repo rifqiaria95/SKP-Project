@@ -2,28 +2,28 @@
 
 namespace App\Exports;
 
-use App\Models\Absensi;
+use App\Models\Karyawan;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class AbsensiExport implements FromCollection, WithMapping, WithHeadings
+class KaryawanExport implements FromCollection, WithMapping, WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        return Absensi::all();
+        return Karyawan::all();
     }
 
-    public function map($absensi): array
+    public function map($karyawan): array
     {
         return [
-            $absensi->karyawan->nama_lengkap(),
-            $absensi->status,
-            $absensi->created_at,
-            $absensi->updated_at,
+            $karyawan->nama_lengkap(),
+            $karyawan->tempat_lahir,
+            $karyawan->tanggal_lahir,
+            $karyawan->jenis_kelamin,
         ];
     }
 
@@ -31,9 +31,9 @@ class AbsensiExport implements FromCollection, WithMapping, WithHeadings
     {
         return [
             'Nama Karyawan',
-            'Status',
-            'Created at',
-            'Updated at',
+            'Tempat Lahir',
+            'Tanggal Lahir',
+            'Jenis Kelamin',
         ];
     }
 }

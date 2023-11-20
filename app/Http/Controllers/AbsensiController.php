@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use App\Exports\AbsensiExport;
 use App\Models\Absensi;
@@ -159,6 +160,13 @@ class AbsensiController extends Controller
     public function exportExcel() 
     {
         return Excel::download(new AbsensiExport, 'absensi.xlsx');
+    }
+
+    public function exportPDF()
+    {
+        $absensi = Absensi::all();
+        $pdf     = PDF::loadview('absensi.exportpdf', ['absensi' => $absensi]);
+        return $pdf->download('Meal Attendance.pdf');
     }
 
 }

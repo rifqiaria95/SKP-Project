@@ -14,14 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes();
 
-// Route::get('/login', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 // Route Home
 Route::get('/', 'SiteController@home');
 
-Route::group(['middleware' => ['auth', 'checkRole:admin']], function () {
-    // Route Dashboard
-    Route::get('dashboard', 'DashboardController@index');
+Route::group(['middleware' => ['auth', 'checkRole:owner']], function () {
 
     // Route User
     Route::get('user', 'UserController@index');
@@ -29,12 +25,19 @@ Route::group(['middleware' => ['auth', 'checkRole:admin']], function () {
     Route::post('user/update/{id}', 'UserController@update');
     Route::delete('user/delete/{id}', 'UserController@destroy');
 
+});
+
+Route::group(['middleware' => ['auth', 'checkRole:owner,admin']], function () {
+    // Route Dashboard
+    Route::get('dashboard', 'DashboardController@index');
+
     // Route Data Karyawan
     Route::get('karyawan', 'KaryawanController@index');
     Route::post('karyawan/store', 'KaryawanController@store');
     Route::get('karyawan/edit/{id}', 'KaryawanController@edit');
     Route::post('karyawan/update/{id}', 'KaryawanController@update');
     Route::delete('karyawan/delete/{id}', 'KaryawanController@destroy');
+    Route::get('karyawan/exportexcelkaryawan/', 'KaryawanController@exportexcelkaryawan');
 
     // Route Meal Attendance (Admin)
     Route::get('absensi', 'AbsensiController@index');
@@ -42,10 +45,17 @@ Route::group(['middleware' => ['auth', 'checkRole:admin']], function () {
     Route::post('absensi/update/{id}', 'AbsensiController@update');
     Route::delete('absensi/delete/{id}', 'AbsensiController@destroy');
     Route::get('absensi/exportexcel/', 'AbsensiController@exportexcel');
+    Route::get('absensi/exportpdf/', 'AbsensiController@exportPDF');
 
 });
 
- // Route Meal Attendance (User)
+Route::group(['middleware' => ['auth', 'checkRole:owner,admin,karyawan']], function () {
+    // Route Dashboard
+    Route::get('dashboard', 'DashboardController@index');
+
+});
+
+// Route Meal Attendance (User)
 Route::get('absensi/create', 'AbsensiController@create');
 Route::post('absensi/store', 'App\Http\Controllers\AbsensiController@store');
 

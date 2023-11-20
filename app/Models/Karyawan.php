@@ -21,6 +21,15 @@ class Karyawan extends Model
         'avatar'
     ];
 
+    public function getAvatar()
+    {
+        if (!$this->avatar) {
+            return asset('images/default.png');
+        }
+
+        return asset('images/'.$this->avatar);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -30,5 +39,11 @@ class Karyawan extends Model
     {
         return $this->hasOne(Absensi::class);
     }
+
+    public function nama_lengkap()
+    {
+        return $this->nama_depan. ' ' .$this->nama_belakang;
+    }
+
 
 }

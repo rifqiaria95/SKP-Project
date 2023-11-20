@@ -19,6 +19,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'role',
+        'status_user',
         'name',
         'email',
         'password',
@@ -34,9 +35,14 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function karyawn()
+    public function karyawan()
     {
         return $this->hasOne(Karyawan::class);
+    }
+
+    public function ket_status()
+    {
+        return $this->hasOne(KetStatus::class);
     }
 
     /**

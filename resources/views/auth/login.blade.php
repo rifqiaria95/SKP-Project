@@ -90,6 +90,11 @@
                         <!-- Login-->
                         <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
                             <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
+                                @if (session('error'))
+                                    <div class="alert alert-danger">
+                                            {{ session('error') }}
+                                    </div>
+                                @endif
                                 <h2 class="card-title fw-bold mb-1">PT Santini Kelola Persada</h2>
                                 <p class="card-text mb-2">{{ __('Login') }}</p>
                                 <form method="POST"  action="{{ route('login') }}" class="auth-login-form mt-2">

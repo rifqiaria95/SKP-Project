@@ -40,9 +40,8 @@
                             <div class="card-body">
                                 <h5 class="card-title"></h5>
                                 <button type="button" id="btn_tambah" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#tambahModal"><i data-feather='plus-circle'></i> Tambah Data</button>
-                                <a href="/karyawan/exportexcel" class="btn btn-success mb-5"><i data-feather='file'></i> Export Excel</a>
+                                <a href="/karyawan/exportexcelkaryawan" class="btn btn-success mb-5"><i data-feather='file'></i> Export Excel</a>
                                 <a href="/karyawan/exportpdf" class="btn btn-danger mb-5"><i data-feather='file-text'></i> Export PDF</a>
-                                {{-- <button type="button" id="importkaryawan" class="btn btn-success mb-5" data-bs-toggle="modal" data-bs-target="#importModal">Import Data karyawan</button> --}}
                                 <table id="table-karyawan" class="datatables-ajax table table-responsive" style="width:100%">
                                     <thead>
                                         <tr>

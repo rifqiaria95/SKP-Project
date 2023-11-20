@@ -201,7 +201,7 @@
 								} else if (response.status == 200) {
 									setTimeout(function(){ // wait for 5 secs(2)
 										location.reload(); // then reload the page.(3)
-									}, 3000); 
+									}, 10000); 
 									$('#modalJudul').html("");
 									$('#formKaryawan').find('input').val('');
 									toastr.success(response.message + response.timestamp);
