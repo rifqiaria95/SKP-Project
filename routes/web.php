@@ -25,6 +25,9 @@ Route::group(['middleware' => ['auth', 'checkRole:owner']], function () {
     Route::post('user/update/{id}', 'UserController@update');
     Route::delete('user/delete/{id}', 'UserController@destroy');
 
+    // Route Survey Hotels (Admin)
+    Route::get('survey', 'SurveyController@index');
+
 });
 
 Route::group(['middleware' => ['auth', 'checkRole:owner,admin']], function () {
@@ -55,8 +58,13 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin,karyawan']], funct
 
 });
 
+// ----------------------------- Route yang bisa diakses oleh semua user tanpa login -------------------------------- //
+
 // Route Meal Attendance (User)
 Route::get('absensi/create', 'AbsensiController@create');
 Route::post('absensi/store', 'App\Http\Controllers\AbsensiController@store');
+
+// Route Survey Hotels
+Route::get('survey/create', 'SurveyController@create');
 
 

@@ -10,12 +10,12 @@
             <div class="content-header-left col-md-9 col-12 mb-2">
                 <div class="row breadcrumbs-top">
                     <div class="col-12">
-                        <h2 class="content-header-title float-start mb-0">Data Karyawan PT Santini Kelola Persada</h2>
+                        <h2 class="content-header-title float-start mb-0">Guess Satisfaction Lumire Hotel</h2>
                         <div class="breadcrumb-wrapper">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a>
                                 </li>
-                                <li class="breadcrumb-item active">Karyawan SKP
+                                <li class="breadcrumb-item active">Guess Satisfaction
                                 </li>
                             </ol>
                         </div>
@@ -42,15 +42,16 @@
                                 <button type="button" id="btn_tambah" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#tambahModal"><i data-feather='plus-circle'></i> Tambah Data</button>
                                 <a href="/karyawan/exportexcelkaryawan" class="btn btn-success mb-5"><i data-feather='file'></i> Export Excel</a>
                                 <a href="/karyawan/exportpdf" class="btn btn-danger mb-5"><i data-feather='file-text'></i> Export PDF</a>
-                                <table id="table-karyawan" class="datatables-ajax table table-responsive" style="width:100%">
+                                <table id="table-karyawan" class="datatables-ajax table table-responsive display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Nama Depan</th>
-                                            <th>Nama Belakang</th>
-                                            <th>Tempat Lahir</th>
-                                            <th>Tanggal Lahir</th>
-                                            <th>Jenis Kelamin</th>
-                                            <th>Aksi</th>
+                                            <th>Username</th>
+                                            <th>E-mail</th>
+                                            <th>Experience Score</th>
+                                            <th>Description</th>
+                                            <th>Suggestion</th>
+                                            <th>Recommend</th>
+                                            <th>Arrival</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -208,7 +209,7 @@
 <script src="{{ asset('Template/app-assets/DataTables/datatables.min.js') }}"></script>
 <script src="{{ asset('Template/app-assets/vendors/js/forms/select/select2.full.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js" integrity="sha256-sPB0F50YUDK0otDnsfNHawYmA5M0pjjUf4TvRJkGFrI=" crossorigin="anonymous"></script>
-<script>
+{{-- <script>
     $(document).ready(function() {
         $.ajaxSetup({
             headers: {
@@ -223,7 +224,7 @@
         // $.noConflict();
         $('#table-karyawan').DataTable({
             processing: true,
-            serverSide: true, //aktifkan server-side 
+            serverSide: true,   //aktifkan server-side 
             ajax: {
                 url: "/karyawan",
                 type: 'GET'
@@ -435,5 +436,5 @@
             }
         })
     });
-</script>
+</script> --}}
 @endsection
