@@ -11,6 +11,8 @@ class Survey extends Model
 
     protected $table    = "survey";
     protected $fillable = [
+        'username',
+        'email',
         'experience_score',
         'description',
         'suggestion',

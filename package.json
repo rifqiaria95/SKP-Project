@@ -14,6 +14,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "feather-icons": "^4.29.1"
+        "feather-icons": "^4.29.1",
+        "jquery-bar-rating": "^1.2.2"
     }
 }

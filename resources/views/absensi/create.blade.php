@@ -42,7 +42,7 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form id="formKaryawan" class="login100-form validate-form" enctype="multipart/form-data">
+				<form id="formAbsensi" class="login100-form validate-form" enctype="multipart/form-data">
 					{{ csrf_field() }}
 					<span class="login100-form-title p-b-26">
 					<p class="tanggal">Tanggal: <span id="datetime"></span></p>
@@ -163,17 +163,17 @@
 				$('#form1').hide().find('input').val('');
 			});
 		});
-
+		
 		$(document).ready(function () {
 			//SIMPAN & UPDATE DATA DAN VALIDASI (SISI CLIENT)
-			//jika id = formKaryawan panjangnya lebih dari 0 atau bisa dibilang terdapat data dalam form tersebut maka
+			//jika id = formAbsensi panjangnya lebih dari 0 atau bisa dibilang terdapat data dalam form tersebut maka
 			//jalankan jquery validator terhadap setiap inputan dll dan eksekusi script ajax untuk simpan data
-			if ($("#formKaryawan").length > 0) {
-				$("#formKaryawan").validate({
+			if ($("#formAbsensi").length > 0) {
+				$("#formAbsensi").validate({
 					submitHandler: function(form) {
 						var actionType = $('#btn-simpan').val();
 						// Mengubah data menjadi objek agar file image bisa diinput kedalam database
-						var formData = new FormData($('#formKaryawan')[0]);
+						var formData = new FormData($('#formAbsensi')[0]);
 						$.ajax({
 							data: formData, //function yang dipakai agar value pada form-control seperti input, textarea, select dll dapat digunakan pada URL query string ketika melakukan ajax request
 							url: "/absensi/store", //url simpan data
@@ -196,14 +196,14 @@
 									setTimeout(function(){ // wait for 2 secs(2)
 										location.reload(); // then reload the page.(3)
 									}, 2000); 
-									$('#formKaryawan').find('input').val('');
+									$('#formAbsensi').find('input').val('');
 									toastr.error(response.errors);
 								} else if (response.status == 200) {
 									setTimeout(function(){ // wait for 5 secs(2)
 										location.reload(); // then reload the page.(3)
 									}, 5000); 
 									$('#modalJudul').html("");
-									$('#formKaryawan').find('input').val('');
+									$('#formAbsensi').find('input').val('');
 									toastr.success(response.message + response.timestamp);
 
 									$('#tambahModal').modal('hide');

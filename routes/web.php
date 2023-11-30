@@ -66,5 +66,6 @@ Route::post('absensi/store', 'App\Http\Controllers\AbsensiController@store');
 
 // Route Survey Hotels
 Route::get('survey/create', 'SurveyController@create');
+Route::post('survey/store', 'SurveyController@store');
 
 
