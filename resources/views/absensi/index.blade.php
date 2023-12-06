@@ -224,6 +224,7 @@
             }
         });
 
+        // Function datepicker
         $( function() {
             $( "#tanggal_awal" ).datepicker({
                 "dateFormat": "dd-mm-yy"
@@ -241,8 +242,8 @@
         function fetch(tanggal_awal, tanggal_akhir) {
             var table = $('#table-absensi').DataTable({
                 dom          : '<"card-body border-bottom p-0 pb-1"<"dt-action-buttons text-start"B>><"d-flex justify-content-start float-left mx-0 row"<"col-sm-3 col-md-6"l><"col-sm-3 col-md-6"f>>t<"d-flex justify-content-start mx-0 row"<"col-sm-3 col-md-6"i><"col-sm-3 col-md-6"p>>',
-                displayLength: 7,
-                lengthMenu   : [7, 10, 25, 50, 75, 100],
+                displayLength: 7, // Show entries
+                lengthMenu   : [7, 10, 25, 50, 75, 100], // Show entries option
                 buttons      : [
                     {
                         extend   : 'copy',
@@ -266,7 +267,7 @@
                     },
                 ],
                 processing: true,
-                serverSide: true,        //aktifkan server-side
+                serverSide: true,        //Aktifkan server-side
                 ajax: {
                     url     : "/absensi",
                     type    : 'GET',

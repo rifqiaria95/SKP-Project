@@ -19,7 +19,16 @@ class UserSeeder extends Seeder
                 'role'              => 'owner',
                 'status_user'       => 1,
                 'name'              => 'Rifqi Aria',
-                'email'             => 'rbenity@gmail.com',
+                'email'             => 'rifqi@luwansahotels.com',
+                'email_verified_at' => now(),
+                'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',   // password
+                'remember_token'    => Str::random(10)
+            ],
+            [
+                'role'              => 'owner',
+                'status_user'       => 1,
+                'name'              => 'Budi Utomo',
+                'email'             => 'budi@luwansahotels.com',
                 'email_verified_at' => now(),
                 'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',   // password
                 'remember_token'    => Str::random(10)
