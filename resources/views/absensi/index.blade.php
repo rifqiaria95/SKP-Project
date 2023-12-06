@@ -38,21 +38,41 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title"></h5>
-                                <button type="button" id="btn_tambah" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#tambahModal"><i data-feather='plus-circle'></i> Tambah Data</button>
-                                <a href="/absensi/exportexcel/" class="btn btn-success mb-5"><i data-feather='file'></i> Export Excel</a>
-                                <a href="/absensi/exportpdf" class="btn btn-danger mb-5"><i data-feather='file-text'></i> Export PDF</a>
-                                {{-- <button type="button" id="importkaryawan" class="btn btn-success mb-5" data-bs-toggle="modal" data-bs-target="#importModal">Import Data absensi</button> --}}
-                                <table id="table-absensi" class="datatables-ajax table table-responsive" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Nama</th>
-                                            <th>Status</th>
-                                            <th>Tanggal Dibuat</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                </table>
+                                <form method="GET" action="absensi/exportExcel">
+                                    <h5 class="card-title"></h5>
+                                    <div class="row g-1 mb-md-1">
+                                        <div class="col-md-2">
+                                            <button type="button" id="btn_tambah" class="mt-2 btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahModal"><i data-feather='plus-circle'></i> Tambah Data</button>
+                                            
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Tanggal Awal</label>
+                                            <input id="tanggal_awal" name="tanggal_awal" class="form-control" id="colFormLabel"/>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Tanggal Akhir</label>
+                                            <input id="tanggal_akhir" name="tanggal_akhir" class="form-control" id="colFormLabel"/>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="reset" id="btn_reset" class="mt-2 btn btn-danger"><i data-feather='delete'></i> Reset</button>
+                                        </div>
+                                    </div>
+                                    {{-- <button type="button" id="filter" class="btn btn-primary mb-5">Filter</button> --}}
+                                    {{-- <a href="/absensi/exportexcel/" class="btn btn-success mb-5"><i data-feather='file'></i> Export Excel</a>
+                                    <a href="/absensi/exportpdf" class="btn btn-danger mb-5"><i data-feather='file-text'></i> Export PDF</a> --}}
+                                    {{-- <button type="button" id="importkaryawan" class="btn btn-success mb-5" data-bs-toggle="modal" data-bs-target="#importModal">Import Data absensi</button> --}}
+                                    <table id="table-absensi" class="datatables-ajax table table-responsive" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Nama</th>
+                                                <th>Status</th>
+                                                <th>Tanggal Absensi (Admin)</th>
+                                                <th>Tanggal Dibuat</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -68,7 +88,7 @@
                             <h4 class="modal-title" id="modal-judul"></h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form id="formKaryawan" class="form-horizontal" enctype="multipart/form-data">
+                        <form id="formAbsensi" class="form-horizontal" enctype="multipart/form-data">
                             @csrf
                             <div class="modal-body">
                                 <input type="hidden" name="id" id="id">
@@ -89,10 +109,14 @@
                                         <label class="form-label">Status</label>
                                         <input type="text" name="status" class="status form-control">
                                     </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label">Tanggal</label>
+                                        <input id="tanggal_absensi_tambah" type="text" name="tanggal_absensi" class="tanggal_absensi form-control">
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary btn-block" id="btn-simpan" value="create">Simpan
+                                <button type="submit" class="btn btn-primary btn-block" data-backdrop="false" id="btn-simpan" value="create">Simpan
                                 </button>
                             </div>
                         </form>
@@ -124,12 +148,17 @@
                                                 @foreach ($karyawan as $kr)
                                                     <option value="{{ $kr->id }}">{{ $kr->nama_depan }}</option>
                                                 @endforeach
+                                                <option value="auditor">Auditor</option>
                                             </select>
                                         </fieldset>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Status</label>
                                         <input type="text" name="status" id="status" value="" class="status form-control">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label">Tanggal Absensi (Admin)</label>
+                                        <input type="text" name="tanggal_absensi" id="tanggal_absensi" value="" class="tanggal_absensi form-control">
                                     </div>
                                 </div>
                             </div>
@@ -169,9 +198,24 @@
 @endsection
 
 @section ('script')
-<script src="{{ asset('Template/app-assets/DataTables/datatables.min.js') }}"></script>
+
+<script src="{{ asset('Template/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('Template/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js') }}"></script>
+<script src="{{ asset('Template/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('Template/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.min.js') }}"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js" crossorigin="anonymous"></script>
+<script src="{{ asset('Template/app-assets/vendors/js/tables/datatable/jszip.min.js') }}" crossorigin="anonymous"></script>
+<script src="{{ asset('Template/app-assets/vendors/js/tables/datatable/pdfmake.min.js') }}" crossorigin="anonymous"></script>
+<script src="{{ asset('Template/app-assets/vendors/js/tables/datatable/vfs_fonts.js') }}" crossorigin="anonymous"></script>
+<script src="{{ asset('Template/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}" crossorigin="anonymous"></script>
+<script src="{{ asset('Template/app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}" crossorigin="anonymous"></script>
+<script src="{{ asset('Template/app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js') }}"></script>
+<script src="{{ asset('Template/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
 <script src="{{ asset('Template/app-assets/vendors/js/forms/select/select2.full.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js" integrity="sha256-sPB0F50YUDK0otDnsfNHawYmA5M0pjjUf4TvRJkGFrI=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
 <script>
     $(document).ready(function() {
         $.ajaxSetup({
@@ -179,40 +223,108 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-    });
 
-    //MULAI DATATABLE
-    //script untuk memanggil data json dari server dan menampilkannya berupa datatable
-    $(document).ready(function() {
-        // $.noConflict();
-        $('#table-absensi').DataTable({
-            processing: true,
-            serverSide: true, //aktifkan server-side 
-            ajax: {
-                url: "/absensi",
-                type: 'GET'
-            },
-            columns: [{
-                    data: 'karyawan',
-                    name: 'karyawan'
-                },
-                {
-                    data: 'status',
-                    name: 'status'
-                },
-                {
-                    data: 'created_at',
-                    name: 'created_at'
-                },
-                {
-                    data: 'aksi',
-                    name: 'aksi'
-                },
-            ],
-            order: [
-                [0, 'asc']
-            ]
+        $( function() {
+            $( "#tanggal_awal" ).datepicker({
+                "dateFormat": "dd-mm-yy"
+            });
+            $( "#tanggal_akhir" ).datepicker({
+                "dateFormat": "dd-mm-yy"
+            });
+            $( "#tanggal_absensi_tambah" ).datepicker({
+                "dateFormat": "dd-mm-yy"
+            });
         });
+
+        //MULAI DATATABLE
+        //script untuk memanggil data json dari server dan menampilkannya berupa datatable
+        function fetch(tanggal_awal, tanggal_akhir) {
+            var table = $('#table-absensi').DataTable({
+                dom          : '<"card-body border-bottom p-0 pb-1"<"dt-action-buttons text-start"B>><"d-flex justify-content-start float-left mx-0 row"<"col-sm-3 col-md-6"l><"col-sm-3 col-md-6"f>>t<"d-flex justify-content-start mx-0 row"<"col-sm-3 col-md-6"i><"col-sm-3 col-md-6"p>>',
+                displayLength: 7,
+                lengthMenu   : [7, 10, 25, 50, 75, 100],
+                buttons      : [
+                    {
+                        extend   : 'copy',
+                        text     : feather.icons['copy'].toSvg({ class: 'font-small-4 me-50' }) + 'Copy',
+                    },
+                    {
+                        extend   : 'print',
+                        text     : feather.icons['printer'].toSvg({ class: 'font-small-4 me-50' }) + 'Print',
+                    },
+                    {
+                        extend   : 'csv',
+                        text     : feather.icons['file-text'].toSvg({ class: 'font-small-4 me-50' }) + 'Csv',
+                    },
+                    {
+                        extend   : 'excel',
+                        text     : feather.icons['file'].toSvg({ class: 'font-small-4 me-50' }) + 'Excel',
+                    },
+                    {
+                        extend   : 'pdf',
+                        text     : feather.icons['clipboard'].toSvg({ class: 'font-small-4 me-50' }) + 'Pdf',
+                    },
+                ],
+                processing: true,
+                serverSide: true,        //aktifkan server-side
+                ajax: {
+                    url     : "/absensi",
+                    type    : 'GET',
+                    data    : {
+                        tanggal_awal : tanggal_awal,
+                        tanggal_akhir: tanggal_akhir
+                    },
+                },
+                columns: [{
+                        data: 'karyawan',
+                        name: 'karyawan'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'tanggal_absensi',
+                        name: 'tanggal_absensi'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
+                    },
+                    {
+                        data: 'aksi',
+                        name: 'aksi'
+                    },
+                ],
+                order: [
+                    [0, 'asc']
+                ],
+            });
+        }
+        fetch();
+
+        // Function untuk mengubah datatable berdasarkan tanggal yang dipilih
+        $("#tanggal_akhir").on("change", function(e) {
+            e.preventDefault();
+            var tanggal_awal = $("#tanggal_awal").val();
+            var tanggal_akhir = $("#tanggal_akhir").val();
+            if (tanggal_awal == "" || tanggal_akhir == "") {
+                alert("Both date required");
+            } else {
+                $('#table-absensi').DataTable().destroy();
+                fetch(tanggal_awal, tanggal_akhir);
+            }
+        });
+
+        // Reset
+        $("#btn_reset").on("click", function(e) {
+            e.preventDefault();
+            $("#tanggal_awal").val(''); // empty value
+            $("#tanggal_akhir").val('');
+            $('#table-absensi').DataTable().destroy();
+            fetch();
+        });
+
     });
 
     // Function untuk tombol tambah absensi dan tampilkan modal
@@ -223,7 +335,7 @@
             $('#btn-simpan').val("tambah-absensi");
             // $('#karyawan_id').val('');
             $('#tambahModal').modal('show');
-            $('#formKaryawan').trigger("reset");
+            $('#formAbsensi').trigger("reset");
             $('#modal-judul').html("Tambah Absensi");
             $('#optionKaryawan').select2({
                 dropdownParent: $('#tambahModal')
@@ -233,14 +345,14 @@
     });
 
     //SIMPAN & UPDATE DATA DAN VALIDASI (SISI CLIENT)
-    //jika id = formKaryawan panjangnya lebih dari 0 atau bisa dibilang terdapat data dalam form tersebut maka
+    //jika id = formAbsensi panjangnya lebih dari 0 atau bisa dibilang terdapat data dalam form tersebut maka
     //jalankan jquery validator terhadap setiap inputan dll dan eksekusi script ajax untuk simpan data
-    if ($("#formKaryawan").length > 0) {
-        $("#formKaryawan").validate({
+    if ($("#formAbsensi").length > 0) {
+        $("#formAbsensi").validate({
             submitHandler: function(form) {
                 var actionType = $('#btn-simpan').val();
                 // Mengubah data menjadi objek agar file image bisa diinput kedalam database
-                var formData = new FormData($('#formKaryawan')[0]);
+                var formData = new FormData($('#formAbsensi')[0]);
                 $.ajax({
                     data: formData, //function yang dipakai agar value pada form-control seperti input, textarea, select dll dapat digunakan pada URL query string ketika melakukan ajax request
                     url: "/absensi/store", //url simpan data
@@ -262,16 +374,15 @@
                         
                         // console.log(response.status);
                         } else if (response.status == 409) {
-                            $('#formKaryawan').find('input').val('');
+                            $('#formAbsensi').find('input').val('');
                             toastr.error(response.errors);
-                            $('#tambahModal').modal('hide');
+                            $('#tambahModal').trigger('click');
 
                         } else if (response.status == 200) {
                             $('#modalJudul').html("");
-                            $('#formKaryawan').find('input').val('');
+                            $('#formAbsensi').find('input').val('');
                             toastr.success(response.message + response.timestamp);
-
-                            $('#tambahModal').modal('hide');
+                            $('#tambahModal').trigger('click');
                         }
                     },
                     error: function(response) {
@@ -309,6 +420,7 @@
                     $('#id').val(id);
                     $('#karyawan_id').val(response.karyawan_id).trigger('change');
                     $('#status').val(response.status);
+                    $('#tanggal_absensi').val(response.tanggal_absensi);
                 }
             },
             error: function(response) {

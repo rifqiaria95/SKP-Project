@@ -306,8 +306,7 @@
                             $('#modalJudul').html("");
                             $('#formKaryawan').find('input').val('');
                             toastr.success(response.message);
-
-                            $('#tambahModal').modal('hide');
+                            $('#tambahModal').trigger('click');
 
                         }
                     },

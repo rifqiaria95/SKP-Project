@@ -3,18 +3,42 @@
 namespace App\Exports;
 
 use App\Models\Absensi;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
-class AbsensiExport implements FromCollection, WithMapping, WithHeadings
+class AbsensiExport implements FromQuery, WithMapping, WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    // public function collection()
+    // {
+    //     return Absensi::all();
+    // }
+
+    use Exportable;
+    
+    protected $tanggal_awal;
+    protected $tanggal_akhir;
+
+    function __construct($tanggal_awal, $tanggal_akhir) {
+        $this->tanggal_awal = $tanggal_awal;
+        $this->tanggal_akhir = $tanggal_akhir;
+    }
+
+    public function query()
     {
-        return Absensi::all();
+        $absensi = DB::table('absensi')
+        ->whereBetween('created_at',[ $this->tanggal_awal,$this->tanggal_akhir])
+        ->orderBy('id');
+            
+        // dd($absensi);
+            
+        return $absensi;
     }
 
     public function map($absensi): array
@@ -22,8 +46,10 @@ class AbsensiExport implements FromCollection, WithMapping, WithHeadings
         return [
             $absensi->karyawan->nama_lengkap(),
             $absensi->status,
-            $absensi->created_at,
-            $absensi->updated_at,
+            Carbon::parse($absensi->created_at)->toFormattedDateString(),
+            Carbon::parse($absensi->updated_at)->toFormattedDateString()
+            // $absensi->created_at,
+            // $absensi->updated_at,
         ];
     }
 

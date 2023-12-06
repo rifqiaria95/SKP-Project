@@ -18,8 +18,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/vendors/css/forms/select/select2.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/vendors/css/vendors.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap4.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/vendors/css/charts/apexcharts.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/vendors/css/extensions/toastr.min.css') }}">
     <!-- END: Vendor CSS-->
@@ -27,7 +33,6 @@
     <!-- BEGIN: Theme CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/bootstrap-extended.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/colors.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/components.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/themes/dark-layout.css') }}">
@@ -41,7 +46,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/plugins/extensions/ext-component-toastr.css') }}">
     <!-- END: Page CSS-->
 
-    {{-- <link href="{{ asset('Template/app-assets/DataTables/datatables.min.css') }}" rel="stylesheet"> --}}
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/assets/css/style.css') }}">
@@ -64,6 +68,7 @@
     
     <!-- BEGIN: Vendor JS-->
     <script src="{{ asset('Template/app-assets/vendors/js/vendors.min.js') }}"></script>
+    
     <!-- BEGIN Vendor JS-->
 
     <!-- BEGIN: Page Vendor JS-->
@@ -78,6 +83,8 @@
 
     <!-- BEGIN: Page JS-->
     <script src="{{ asset('Template/app-assets/js/scripts/pages/dashboard-ecommerce.js') }}"></script>
+    <script src="{{ asset('Template/app-assets/js/scripts/tables/table-datatables-basic.js') }}"></script>
+    
     <!-- END: Page JS-->
 
     @yield('script')

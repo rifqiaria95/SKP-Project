@@ -47,7 +47,7 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin']], function () {
     Route::get('absensi/edit/{id}', 'AbsensiController@edit');
     Route::post('absensi/update/{id}', 'AbsensiController@update');
     Route::delete('absensi/delete/{id}', 'AbsensiController@destroy');
-    Route::get('absensi/exportexcel/', 'AbsensiController@exportexcel');
+    Route::get('absensi/exportexcel/', 'AbsensiController@exportExcel');
     Route::get('absensi/exportpdf/', 'AbsensiController@exportPDF');
 
 });
