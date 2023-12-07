@@ -44,6 +44,7 @@
 			<div class="wrap-login100">
 				<form id="formAbsensi" class="login100-form validate-form" enctype="multipart/form-data">
 					{{ csrf_field() }}
+					<input type="hidden" name="id" id="id">
 					<span class="login100-form-title p-b-26">
 					<p class="tanggal">Tanggal: <span id="datetime"></span></p>
 						Meal Attendance SKP
@@ -56,53 +57,35 @@
 					<div id="errorlist">
 					</div>
                     <div class="wrap-input101 validate-input">
-						<select class="input101 form-select" aria-label="Default select example" name="karyawan_id">
+						<select class="input101 form-select" aria-label="Default select example" name="karyawan_id" id="nama_depan">
 							<option selected disabled>Nama</option>
                             @foreach ($karyawan as $kr)
-                                <option value="{{ $kr->id }}">{{ $kr->nama_depan ?? '' }}</option>
+                                <option value="{{ $kr->id }}">{{ $kr->nama_depan}}</option>
                             @endforeach
+							<option value="Non Karyawan">Non Karyawan</option>
 						</select>
 					</div>
 					<div class="wrap-input101 validate-input">
-						{{-- <input id="cb1" value="karyawan" class="form-check-input" type="radio" name="status"> --}}
 						<select class="input101 form-select" id="select1" aria-label="Default select example" name="status">
 							<option selected disabled>Status</option>
-							<option value="karyawan">Karyawan</option>
-							<option value="supir">Supir</option>
+							<option value="Karyawan">Karyawan</option>
+							<option value="Non Karyawan">Non Karyawan</option>
 							@if($errors->has('status'))
 								<div class="text-danger">
 									{{ $errors->first('status')}}
 								</div>
 							@endif
 						</select>
-						<div class="form-check mt-4">
-							<input id="cb2" class="form-check-input" type="radio" name="status" value="lainnya">
-							<label class="form-check-label">
-								Lainnya
-							</label>
-							@if($errors->has('lainnya'))
-								<div class="text-danger">
-									{{ $errors->first('lainnya')}}
-								</div>
-							@endif
-						</div>
-					<div>
-					<div id="form1" class="wrap-input100" style="display:none">
-						<input class="input100" type="text" name="status_manual">
-						<span class="input100"></span>
-						@if($errors->has('status'))
-							<div class="text-danger">
-								{{ $errors->first('status')}}
-							</div>
-						@endif
 					</div>
-					<div class="container-login100-form-btn">
+					<div class="wrap-input101 validate-input">
+						<input type="hidden" name="job_title" id="job_title" value=""  class="job_title form-control">
+					</div>
+					<div class="container-login100-form-btn mt-4">
 						<div class="wrap-login100-form-btn">
 							<div class="login100-form-bgbtn"></div>
 							<button type="submit" id="btn-simpan" class="login100-form-btn" value="Simpan">Kirim</button>
 						</div>
 					</div>
-
 					<div class="text-center p-t-115">
 						<span class="txt1">
 							Luwansa Hotels Group
@@ -153,15 +136,34 @@
 		document.getElementById("datetime").innerHTML = (("0"+dt.getDate()).slice(-2)) +"."+ (("0"+(dt.getMonth()+1)).slice(-2)) +"."+ (dt.getFullYear()) +" "+ (("0"+dt.getHours()).slice(-2)) +":"+ (("0"+dt.getMinutes()).slice(-2));
 		}
 
-		$(document).ready(function(){
-			$("#cb2").click(function(e){
-				$('#form1').show();
-				$( "#select1" ).val('');
+		// Function get job title
+		$(document).on('click', '#nama_depan', function(e) {
+			e.preventDefault();
+
+			var id  = $(this).val();
+			var url =  "/absensi/gettitle/" + id,
+			url 	= url.replace(':id', id);
+
+			$.ajax({
+				type    : "GET",
+				url     : url,
+				dataType: 'json',
+				success: function(response) {
+					// console.log(response);
+					// Jika sukses maka munculkan notifikasi
+					if (response.status == 404) {
+						$('#success_message').addClass('alert alert-success');
+						$('#success_message').text(response.message);
+					} else {
+						$('#id').val(id);
+						$('#job_title').val(response.job_title).trigger('change');
+					}
+				},
+				error: function(response) {
+					// console.log(response);
+				}
 			});
-			$("#select1").click(function(e){
-				$( "#cb2" ).prop( "checked", false );
-				$('#form1').hide().find('input').val('');
-			});
+
 		});
 		
 		$(document).ready(function () {

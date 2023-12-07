@@ -17,6 +17,8 @@ class Karyawan extends Model
         'tempat_lahir',
         'tanggal_lahir',
         'jenis_kelamin',
+        'status',
+        'job_title',
         'user_id',
         'avatar'
     ];

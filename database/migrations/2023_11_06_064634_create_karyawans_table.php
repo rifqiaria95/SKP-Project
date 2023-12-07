@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('tempat_lahir')->length(30);
             $table->string('tanggal_lahir')->length(30);
             $table->string('jenis_kelamin')->length(20);
+            $table->string('status')->length(20);
+            $table->string('job_title')->length(20);
             $table->unsignedBigInteger('user_id');
             $table->string('avatar')->nullable();
             $table->timestamps();

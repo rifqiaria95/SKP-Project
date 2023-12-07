@@ -102,14 +102,32 @@
                                                 @foreach ($karyawan as $kr)
                                                     <option value="{{ $kr->id }}">{{ $kr->nama_depan }}</option>
                                                 @endforeach
+                                                <option value="Non Karyawan">Non Karyawan</option>
+                                            </select>
+                                        </fieldset>
+                                    </div>
+                                    <div class="form-floating col-md-6">
+                                        <fieldset class="form-group">
+                                            <label class="form-label">Status</label>
+                                            <select class="select2 form-select" name="status" id="optionKaryawan" required>
+                                                <option selected disabled>Pilih Status</option>
+                                                <option value="Karyawan">Karyawan</option>
+                                                <option value="Non Karyawan">Non Karyawan</option>
+                                            </select>
+                                        </fieldset>
+                                    </div>
+                                    <div class="form-floating col-md-6">
+                                        <fieldset class="form-group">
+                                            <label class="form-label">Jabatan</label>
+                                            <select class="select2 form-select" name="job_title" id="optionKaryawan" required>
+                                                <option selected disabled>Pilih Jabatan</option>
+                                                @foreach ($karyawan as $kr)
+                                                    <option value="{{ $kr->job_title }}">{{ $kr->job_title }}</option>
+                                                @endforeach
                                             </select>
                                         </fieldset>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">Status</label>
-                                        <input type="text" name="status" class="status form-control">
-                                    </div>
-                                    <div class="col-md-12">
                                         <label class="form-label">Tanggal</label>
                                         <input id="tanggal_absensi_tambah" type="text" name="tanggal_absensi" class="tanggal_absensi form-control">
                                     </div>
@@ -148,13 +166,19 @@
                                                 @foreach ($karyawan as $kr)
                                                     <option value="{{ $kr->id }}">{{ $kr->nama_depan }}</option>
                                                 @endforeach
-                                                <option value="auditor">Auditor</option>
+                                                <option value="Non Karyawan">Non Karyawan</option>
                                             </select>
                                         </fieldset>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">Status</label>
-                                        <input type="text" name="status" id="status" value="" class="status form-control">
+                                        <fieldset class="form-group">
+                                            <label class="form-label">Status</label>
+                                            <select class="select2 form-select" name="status" id="status">
+                                                <option selected disabled>Pilih Status</option>
+                                                <option value="Karyawan">Karyawan</option>
+                                                <option value="Non Karyawan">Non Karyawan</option>
+                                            </select>
+                                        </fieldset>
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label">Tanggal Absensi (Admin)</label>
@@ -339,6 +363,9 @@
             $('#formAbsensi').trigger("reset");
             $('#modal-judul').html("Tambah Absensi");
             $('#optionKaryawan').select2({
+                dropdownParent: $('#tambahModal')
+            });
+            $('#optionPosisi').select2({
                 dropdownParent: $('#tambahModal')
             });
         });

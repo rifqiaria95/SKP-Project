@@ -8,9 +8,11 @@ use Carbon\Carbon;
 use App\Exports\AbsensiExport;
 use App\Models\Absensi;
 use App\Models\Karyawan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class AbsensiController extends Controller
 {
@@ -47,7 +49,7 @@ class AbsensiController extends Controller
             </div>';
                 return $button;
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['status','aksi'])
             ->addIndexColumn()
             ->toJson();
         }
@@ -62,46 +64,29 @@ class AbsensiController extends Controller
 		return view('absensi.create', compact(['absensi', 'karyawan']));
 	}
 
-    public function store(Request $request)
+    public function getTitle($id)
     {
-        // dd($request->all());
-        $messages  = [
-            'required'  =>  'Kolom :attribute harus diisi.',
-            'string'    =>  'Kolom :attribute harus berupa teks.',
-            'max'       =>  'Kolom :attribute maksimal :max kata.'
-        ];
+        $karyawan = Karyawan::find($id);
+        return response()->json($karyawan);
+    }
 
-        $validator = Validator::make($request->all(), [
-            'status'      => 'required|string|max:30',
-            'karyawan_id' => 'required|string|max:30',
-        ], $messages);
+    public function store(Request $request)
+    { 
+        $status          = $request->status;
+        $job_title       = $request->job_title;
+        $karyawan_id     = $request->karyawan_id;
+        $tanggal_absensi = $request->tanggal_absensi;
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 400,
-                'errors' => $validator->messages(),
-            ]);
+        $maxInserts = ($job_title == 'Supir') ? 2 : 1;
 
-        } else {
-            $status          = $request->status_manual ?? $request->status;
-            $karyawan_id     = $request->karyawan_id;
-            $tanggal_absensi = $request->tanggal_absensi;
+        $existingDataCount = Absensi::where('karyawan_id', $karyawan_id)
+            ->whereDay('created_at', now()->day)
+            ->count();
 
-            $maxInserts  = ($status == 'supir') ? 2 : 1;
-
-            $existingDataCount = Absensi::where('karyawan_id', $karyawan_id)
-                ->whereDay('created_at', now()->day)
-                ->count();
-
-            if ($existingDataCount >= $maxInserts) {
-                return response()->json([
-                    'status' => 409,
-                    'errors' => 'Kamu hanya boleh mengisi ' . $maxInserts . ' kali!',
-                ]);
-            }
-
+        if (auth()->user('owner' && 'admin')) {
             $absensi                  = new Absensi;
             $absensi->status          = $status;
+            $absensi->job_title       = $job_title;
             $absensi->tanggal_absensi = $tanggal_absensi;
             $absensi->karyawan_id     = $karyawan_id;
             $absensi->save();
@@ -111,7 +96,26 @@ class AbsensiController extends Controller
                 'message'   => 'Berhasil, ditambahkan pada tanggal_absensi: ',
                 'timestamp' => $absensi = Carbon::now()->isoFormat('D MMMM Y h:mm a'),
             ]);
+            
+        } else if ($existingDataCount >= $maxInserts) {
+            return response()->json([
+                'status' => 409,
+                'errors' => 'You can only input ' . $maxInserts . ' times!',
+            ]);
         }
+
+        $absensi                  = new Absensi;
+        $absensi->status          = $status;
+        $absensi->job_title       = $job_title;
+        $absensi->tanggal_absensi = $tanggal_absensi;
+        $absensi->karyawan_id     = $karyawan_id;
+        $absensi->save();
+
+        return response()->json([
+            'status'    => 200,
+            'message'   => 'Berhasil, ditambahkan pada tanggal_absensi: ',
+            'timestamp' => $absensi = Carbon::now()->isoFormat('D MMMM Y h:mm a'),
+        ]);
     }
 
 	public function edit($id)
@@ -144,6 +148,7 @@ class AbsensiController extends Controller
             // dd($request->all());
             $absensi                  = Absensi::find($id);
             $absensi->status          = $request->status;
+            $absensi->job_title       = $request->job_title;
             $absensi->tanggal_absensi = $request->tanggal_absensi;
             $absensi->karyawan_id     = $request->karyawan_id;
             $absensi->save();

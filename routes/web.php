@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin,karyawan']], funct
 // Route Meal Attendance (User)
 Route::get('absensi/create', 'AbsensiController@create');
 Route::post('absensi/store', 'App\Http\Controllers\AbsensiController@store');
+Route::get('absensi/gettitle/{id}', 'AbsensiController@getTitle');
 
 // Route Survey Hotels
 Route::get('survey/create', 'SurveyController@create');

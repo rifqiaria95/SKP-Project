@@ -16,8 +16,21 @@
             @if(auth()->user()->role == 'owner')
                 <li class=" navigation-header"><span data-i18n="Forms &amp; Tables">Forms &amp; Tables</span><i data-feather="more-horizontal"></i>
                 </li>
-                <li class="{{ Request::is('absensi')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="/absensi"><i data-feather="copy"></i><span class="menu-title text-truncate" data-i18n="Form Elements">Meal Attendance</span></a>
-                <li class="{{ Request::is('survey')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="/survey"><i data-feather="copy"></i><span class="menu-title text-truncate" data-i18n="Form Elements">Guess Satisfaction</span></a>
+                <li class="{{ Request::is('absensi')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="User">Meal Attendance</span></a>
+                    <ul class="menu-content">
+                        <li class="nav-item"><a class="d-flex align-items-center" href="/absensi"><i data-feather="circle"></i><span class="menu-title text-truncate" data-i18n="Form Elements">SKP</span></a>
+                        </li>
+                        <li class="nav-item"><a class="d-flex align-items-center" href="/absensi/lumire"><i data-feather="circle"></i><span class="menu-title text-truncate" data-i18n="Form Elements">Lumire</span></a>
+                        </li>
+                        <li class="nav-item"><a class="d-flex align-items-center" href="/absensi/jsluwansa"><i data-feather="circle"></i><span class="menu-title text-truncate" data-i18n="Form Elements">JS Luwansa</span></a>
+                        </li>
+                        <li class="nav-item"><a class="d-flex align-items-center" href="/absensi/luwansamanado"><i data-feather="circle"></i><span class="menu-title text-truncate" data-i18n="Form Elements">Luwansa Manado</span></a>
+                        </li>
+                        <li class="nav-item"><a class="d-flex align-items-center" href="/absensi/palangkaraya"><i data-feather="circle"></i><span class="menu-title text-truncate" data-i18n="Form Elements">Luwansa Palangka Raya</span></a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="{{ Request::is('survey')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="/survey"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Form Elements">Guess Satisfaction</span></a>
                 <li class="{{ Request::is('karyawan')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="/karyawan"><i data-feather="grid"></i><span class="menu-title text-truncate" data-i18n="Datatables">Karyawan SKP</span></a>
                 <li class=" navigation-header"><span data-i18n="Forms &amp; Tables">Apps &amp; Pages</span><i data-feather="more-horizontal"></i>
                 </li>
@@ -26,6 +39,8 @@
                         <li><a class="d-flex align-items-center" href="/user"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Data User</span></a>
                         </li>
                     </ul>
+                </li>
+                <li><a class="d-flex align-items-center" href="/activitylog"><i data-feather='activity'></i><span class="menu-item text-truncate" data-i18n="List">Activity Log</span></a>
                 </li>
             @endif
             @if(auth()->user()->role == 'admin')

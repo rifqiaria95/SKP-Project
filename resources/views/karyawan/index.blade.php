@@ -50,6 +50,8 @@
                                             <th>Tempat Lahir</th>
                                             <th>Tanggal Lahir</th>
                                             <th>Jenis Kelamin</th>
+                                            <th>Status</th>
+                                            <th>Jabatan</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -101,6 +103,14 @@
                                                 <option value="P">Perempuan</option>
                                             </select>
                                         </fieldset>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Status</label>
+                                        <input type="text" name="status" class="form-control" id="status" readonly="readonly" value="Karyawan">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Jabatan</label>
+                                        <input type="text" name="job_title" class="job_title form-control" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Email</label>
@@ -162,6 +172,14 @@
                                                 <option value="P">Perempuan</option>
                                             </select>
                                         </fieldset>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Status</label>
+                                        <input type="text" id="status" name="status" class="status form-control" readonly="readonly" value="" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Jabatan</label>
+                                        <input type="text" id="job_title" name="job_title" class="job_title form-control" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="exampleInputPassword1" class="form-label">Avatar</label>
@@ -247,6 +265,14 @@
                 {
                     data: 'jenis_kelamin',
                     name: 'jenis_kelamin'
+                },
+                {
+                    data: 'status',
+                    name: 'status'
+                },
+                {
+                    data: 'job_title',
+                    name: 'job_title'
                 },
                 {
                     data: 'aksi',
@@ -335,7 +361,7 @@
             type: "GET",
             url: "/karyawan/edit/" + id,
             success: function(response) {
-                // console.log(response);
+                console.log(response);
                 // Jika sukses maka munculkan notifikasi
                 if (response.status == 404) {
                     $('#success_message').addClass('alert alert-success');
@@ -348,6 +374,8 @@
                     $('#tempat_lahir').val(response.tempat_lahir);
                     $('#tanggal_lahir').val(response.tanggal_lahir);
                     $('#jenis_kelamin').val(response.jenis_kelamin).trigger('change');
+                    $('#status').val(response.status);
+                    $('#job_title').val(response.job_title);
                     $('#avatar').val();
                 }
             },

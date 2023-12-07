@@ -24,6 +24,7 @@ class Absensi extends Model
 
     protected $fillable = [
         'status',
+        'job_title',
         'tanggal_absensi',
         'karyawan_id',
     ];

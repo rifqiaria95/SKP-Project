@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('absensi', function (Blueprint $table) {
             $table->id();
             $table->string('status')->length(30);
+            $table->string('job_title')->length(30);
             $table->string('tanggal_absensi')->nullable();
             $table->unsignedBigInteger('karyawan_id')->length(30);
             $table->timestamps();
