@@ -28,6 +28,9 @@ Route::group(['middleware' => ['auth', 'checkRole:owner']], function () {
     // Route Survey Hotels (Admin)
     Route::get('survey', 'SurveyController@index');
 
+    // Route Activity Log
+    Route::get('activitylog', 'ActivityLogController@activity');
+
 });
 
 Route::group(['middleware' => ['auth', 'checkRole:owner,admin']], function () {
@@ -47,8 +50,6 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin']], function () {
     Route::get('absensi/edit/{id}', 'AbsensiController@edit');
     Route::post('absensi/update/{id}', 'AbsensiController@update');
     Route::delete('absensi/delete/{id}', 'AbsensiController@destroy');
-    Route::get('absensi/exportexcel/', 'AbsensiController@exportExcel');
-    Route::get('absensi/exportpdf/', 'AbsensiController@exportPDF');
 
 });
 
@@ -62,7 +63,7 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin,karyawan']], funct
 
 // Route Meal Attendance (User)
 Route::get('absensi/create', 'AbsensiController@create');
-Route::post('absensi/store', 'App\Http\Controllers\AbsensiController@store');
+Route::post('absensi/store', 'AbsensiController@store');
 Route::get('absensi/gettitle/{id}', 'AbsensiController@getTitle');
 
 // Route Survey Hotels

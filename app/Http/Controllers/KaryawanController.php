@@ -20,19 +20,19 @@ class KaryawanController extends Controller
         // dd($kelas);
         if ($request->ajax()) {
             return datatables()->of($karyawan)
-                ->addColumn('aksi', function ($data) {
-                    $button = '<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                   <div class="btn-group me-2" role="group" aria-label="First group">
-                       <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $data->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-karyawan"><i class="fa-solid fa-pen"></i></a>
-                       <button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
-                       <a href="karyawan/' . $data->id . '/profile" name="view" class="view btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
-                   </div>
-               </div>';
-                    return $button;
-                })
-                ->rawColumns(['aksi'])
-                ->addIndexColumn()
-                ->toJson();
+            ->addColumn('aksi', function ($data) {
+                $button = '<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group me-2" role="group" aria-label="First group">
+                    <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $data->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-karyawan"><i class="fa-solid fa-pen"></i></a>
+                    <button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
+                    <a href="karyawan/' . $data->id . '/profile" name="view" class="view btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
+                </div>
+            </div>';
+                return $button;
+            })
+            ->rawColumns(['aksi'])
+            ->addIndexColumn()
+            ->toJson();
         }
 
         return view('karyawan.index', compact(['karyawan']));
@@ -71,6 +71,8 @@ class KaryawanController extends Controller
                     $karyawan->avatar = $request->file('avatar')->getClientOriginalName();
                 }
                 $karyawan->save();
+
+                \ActivityLog::addToLog('Menambah data karyawan');
 
                 return response()->json([
                     'status'    => 200,
@@ -119,6 +121,8 @@ class KaryawanController extends Controller
 
                 $karyawan->save();
 
+                \ActivityLog::addToLog('Mengubah data karyawan');
+
                 return response()->json([
                     'status'    => 200,
                     'message'   => 'Data karyawan berhasil diubah'
@@ -141,6 +145,9 @@ class KaryawanController extends Controller
                 File::delete($path);
             }
             $karyawan->delete();
+
+            \ActivityLog::addToLog('Menghapus data karyawan');
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Data Karyawan Berhasil Dihapus'

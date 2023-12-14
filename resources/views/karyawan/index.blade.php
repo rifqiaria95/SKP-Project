@@ -174,10 +174,6 @@
                                         </fieldset>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">Status</label>
-                                        <input type="text" id="status" name="status" class="status form-control" readonly="readonly" value="" required>
-                                    </div>
-                                    <div class="col-md-6">
                                         <label class="form-label">Jabatan</label>
                                         <input type="text" id="job_title" name="job_title" class="job_title form-control" required>
                                     </div>

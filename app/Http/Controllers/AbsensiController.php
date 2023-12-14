@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use App\Exports\AbsensiExport;
 use App\Models\Absensi;
 use App\Models\Karyawan;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -91,6 +88,8 @@ class AbsensiController extends Controller
             $absensi->karyawan_id     = $karyawan_id;
             $absensi->save();
 
+            \ActivityLog::addToLog('Menambah data absensi');
+
             return response()->json([
                 'status'    => 200,
                 'message'   => 'Berhasil, ditambahkan pada tanggal_absensi: ',
@@ -100,9 +99,11 @@ class AbsensiController extends Controller
         } else if ($existingDataCount >= $maxInserts) {
             return response()->json([
                 'status' => 409,
-                'errors' => 'You can only input ' . $maxInserts . ' times!',
+                'errors' => 'Oops kamu hanya boleh input ' . $maxInserts . ' kali!',
             ]);
         }
+
+        \ActivityLog::addToLog('Menambah data absensi');
 
         $absensi                  = new Absensi;
         $absensi->status          = $status;
@@ -110,12 +111,13 @@ class AbsensiController extends Controller
         $absensi->tanggal_absensi = $tanggal_absensi;
         $absensi->karyawan_id     = $karyawan_id;
         $absensi->save();
-
+        
         return response()->json([
             'status'    => 200,
             'message'   => 'Berhasil, ditambahkan pada tanggal_absensi: ',
             'timestamp' => $absensi = Carbon::now()->isoFormat('D MMMM Y h:mm a'),
         ]);
+        
     }
 
 	public function edit($id)
@@ -146,6 +148,8 @@ class AbsensiController extends Controller
         }
         else {
             // dd($request->all());
+            \ActivityLog::addToLog('Mengubah data absensi');
+
             $absensi                  = Absensi::find($id);
             $absensi->status          = $request->status;
             $absensi->job_title       = $request->job_title;
@@ -163,6 +167,9 @@ class AbsensiController extends Controller
 	public function destroy($id)
     {
         $absensi = Absensi::find($id);
+        
+        \ActivityLog::addToLog('Menghapus data absensi');
+
         if($absensi)
         {
             $absensi->delete();
@@ -178,22 +185,7 @@ class AbsensiController extends Controller
                 'errors'    => 'Error! Data absensi tidak Ditemukan'
             ]);
         }
-    }
 
-    public function exportExcel(Request $request) 
-    {
-        $tanggal_awal  = $request->tanggal_awal;
-        $tanggal_akhir = $request->tanggal_akhir;
-        // dd($request->all() ) ;
-
-        return Excel::download(new AbsensiExport($tanggal_awal, $tanggal_akhir), 'absensi.xlsx');
-    }
-
-    public function exportPDF()
-    {
-        $absensi = Absensi::all();
-        $pdf     = PDF::loadview('absensi.exportpdf', ['absensi' => $absensi]);
-        return $pdf->download('Meal Attendance.pdf');
     }
 
 }

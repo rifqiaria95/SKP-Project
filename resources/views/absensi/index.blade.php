@@ -66,6 +66,7 @@
                                             <tr>
                                                 <th>Nama</th>
                                                 <th>Status</th>
+                                                <th>Jabatan</th>
                                                 <th>Tanggal Absensi (Admin)</th>
                                                 <th>Tanggal Dibuat</th>
                                                 <th>Aksi</th>
@@ -102,7 +103,6 @@
                                                 @foreach ($karyawan as $kr)
                                                     <option value="{{ $kr->id }}">{{ $kr->nama_depan }}</option>
                                                 @endforeach
-                                                <option value="Non Karyawan">Non Karyawan</option>
                                             </select>
                                         </fieldset>
                                     </div>
@@ -180,7 +180,18 @@
                                             </select>
                                         </fieldset>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <fieldset class="form-group">
+                                            <label class="form-label">Jabatan</label>
+                                            <select class="select2 form-select" name="job_title" id="job_title">
+                                                <option selected disabled>Pilih Jabatan</option>
+                                                @foreach ($karyawan as $kr)
+                                                    <option value="{{ $kr->job_title }}">{{ $kr->job_title }}</option>
+                                                @endforeach
+                                            </select>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-6">
                                         <label class="form-label">Tanggal Absensi (Admin)</label>
                                         <input type="text" name="tanggal_absensi" id="tanggal_absensi" value="" class="tanggal_absensi form-control">
                                     </div>
@@ -274,10 +285,6 @@
                         text     : feather.icons['copy'].toSvg({ class: 'font-small-4 me-50' }) + 'Copy',
                     },
                     {
-                        extend   : 'print',
-                        text     : feather.icons['printer'].toSvg({ class: 'font-small-4 me-50' }) + 'Print',
-                    },
-                    {
                         extend   : 'csv',
                         text     : feather.icons['file-text'].toSvg({ class: 'font-small-4 me-50' }) + 'Csv',
                     },
@@ -307,6 +314,10 @@
                     {
                         data: 'status',
                         name: 'status'
+                    },
+                    {
+                        data: 'job_title',
+                        name: 'job_title'
                     },
                     {
                         data: 'tanggal_absensi',
@@ -448,6 +459,7 @@
                     $('#id').val(id);
                     $('#karyawan_id').val(response.karyawan_id).trigger('change');
                     $('#status').val(response.status);
+                    $('#job_title').val(response.job_title);
                     $('#tanggal_absensi').val(response.tanggal_absensi);
                 }
             },

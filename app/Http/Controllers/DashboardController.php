@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Absensi;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard.index');
+        $absensi  = Absensi::latest()->take(4)->get();
+        $karyawan = Karyawan::all();
+
+        return view('dashboard.index', compact('absensi', 'karyawan'));
     }
 }

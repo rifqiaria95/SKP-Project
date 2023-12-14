@@ -3,10 +3,13 @@
 <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
     <div class="navbar-header">
         <ul class="nav navbar-nav flex-row">
-            <li class="nav-item me-auto"><a class="navbar-brand" href="{{ asset('Template/app-assets/images/logo/logo.png') }}"><span class="brand-logo">
-                        <img  src="{{ asset('Template/app-assets/images/logo/logo.png') }}" alt="" srcset="">
-                </a></li>
-            <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a></li>
+            <li class="nav-item me-auto"><a class="navbar-brand" href="/dashboard"><span class="brand-logo">
+                <img src="{{ asset('Template/app-assets/images/logo/logo3.png') }}" alt="" srcset=""></span>
+                <h2 class="brand-text d-none"></h2>
+                </a>
+            </li>
+            <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i id="closeButton" class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a>
+            </li>
         </ul>
     </div>
     <div class="shadow-bottom"></div>
@@ -42,6 +45,8 @@
                 </li>
                 <li><a class="d-flex align-items-center" href="/activitylog"><i data-feather='activity'></i><span class="menu-item text-truncate" data-i18n="List">Activity Log</span></a>
                 </li>
+                <li class=" navigation-header"><span data-i18n="Forms &amp; Tables">Settings</span><i data-feather="more-horizontal"></i>
+                <li><a class="d-flex align-items-center" href="/rolemanagement"><i data-feather='settings'></i><span class="menu-item text-truncate" data-i18n="Settings">Role & Permission</span></a>
             @endif
             @if(auth()->user()->role == 'admin')
                 <li class=" navigation-header"><span data-i18n="Forms &amp; Tables">Forms &amp; Tables</span><i data-feather="more-horizontal"></i>

@@ -78,6 +78,8 @@ class UserController extends Controller
 
                 $user->save();
 
+                \ActivityLog::addToLog('Mengubah data user');
+
                 return response()->json([
                     'status'    => 200,
                     'message'   => 'Data user berhasil diubah'
@@ -100,6 +102,9 @@ class UserController extends Controller
                 File::delete($path);
             }
             $user->delete();
+
+            \ActivityLog::addToLog('Menghapus data user');
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Data User Berhasil Dihapus'

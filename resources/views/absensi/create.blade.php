@@ -62,7 +62,6 @@
                             @foreach ($karyawan as $kr)
                                 <option value="{{ $kr->id }}">{{ $kr->nama_depan}}</option>
                             @endforeach
-							<option value="Non Karyawan">Non Karyawan</option>
 						</select>
 					</div>
 					<div class="wrap-input101 validate-input">

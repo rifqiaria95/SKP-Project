@@ -61,6 +61,8 @@ class SurveyController extends Controller
             ]);
 
         } else {
+            \ActivityLog::addToLog('Menambah data survey');
+
             $survey                   = new Survey;
             $survey->username         = $request->username;
             $survey->email            = $request->email;

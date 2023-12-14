@@ -40,6 +40,11 @@ class User extends Authenticatable
         return $this->hasOne(Karyawan::class);
     }
 
+    public function activity()
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
+
     /**
      * The attributes that should be cast.
      *

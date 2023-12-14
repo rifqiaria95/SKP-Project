@@ -171,6 +171,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Spatie\Activitylog\ActivitylogServiceProvider::class,
         
     ])->toArray(),
 
@@ -187,6 +188,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'ActivityLog' => App\Helpers\ActivityLog::class,
     ])->toArray(),
 
 ];
