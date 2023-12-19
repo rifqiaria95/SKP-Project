@@ -28,11 +28,13 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/themes/dark-layout.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/themes/bordered-layout.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/themes/semi-dark-layout.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/vendors/css/extensions/toastr.min.css') }}">
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/core/menu/menu-types/vertical-menu.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/plugins/forms/form-validation.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/pages/page-auth.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/plugins/extensions/ext-component-toastr.css') }}">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -45,6 +47,7 @@
 <!-- BEGIN: Body-->
 
 <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
+    {{-- {!! Toastr::message() !!} --}}
     <!-- BEGIN: Content-->
     <div class="app-content content ">
         <div class="content-overlay"></div>
@@ -151,6 +154,8 @@
 
 
     <!-- BEGIN: Vendor JS-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="{{ asset('Template/app-assets/vendors/js/extensions/toastr.min.js') }}"></script>
     <script src="{{ asset('Template/app-assets/vendors/js/vendors.min.js') }}"></script>
     <!-- BEGIN Vendor JS-->
 
@@ -166,6 +171,7 @@
     <!-- BEGIN: Page JS-->
     <script src="{{ asset('Template/app-assets/js/scripts/pages/page-auth-login.js') }}"></script>
     <!-- END: Page JS-->
+    {!! Toastr::message() !!}
 
     <script>
         $(window).on('load', function() {

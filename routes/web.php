@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,9 @@ Auth::routes();
 
 // Route Home
 Route::get('/', 'SiteController@home');
+
+Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
+Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'authenticate']);
 
 Route::group(['middleware' => ['auth', 'checkRole:owner']], function () {
 

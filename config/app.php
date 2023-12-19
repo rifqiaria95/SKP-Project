@@ -172,6 +172,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Spatie\Activitylog\ActivitylogServiceProvider::class,
+        Brian2694\Toastr\ToastrServiceProvider::class,
         
     ])->toArray(),
 
@@ -188,6 +189,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'Toastr'  => Brian2694\Toastr\Facades\Toastr::class,
         'ActivityLog' => App\Helpers\ActivityLog::class,
     ])->toArray(),
 

@@ -90,7 +90,11 @@
                                             </select>
                                         </fieldset>
                                     </div>
-                                    <div class="form-floating col-md-12">
+                                    <div class="col-md-12">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" id="email" name="email" class="email form-control" value="" required>
+                                    </div>
+                                    <div class="form-floating col-md-6">
                                         <fieldset class="form-group">
                                             <label class="form-label">Status</label>
                                             <select class="select2 form-select" name="status_user" id="status_user" required>
@@ -100,9 +104,9 @@
                                             </select>
                                         </fieldset>
                                     </div>
-                                    <div class="col-md-12">
-                                        <label class="form-label">Email</label>
-                                        <input type="email" id="email" name="email" class="email form-control" value="" required>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Password</label>
+                                        <input type="password" id="password" name="password" class="password form-control" value="">
                                     </div>
                                 </div>
                             </div>
@@ -212,7 +216,7 @@
             type: "GET",
             url: "/user/edit/" + id,
             success: function(response) {
-                console.log(response);
+                // console.log(response);
                 // Jika sukses maka munculkan notifikasi
                 if (response.status == 404) {
                     $('#success_message').addClass('alert alert-success');

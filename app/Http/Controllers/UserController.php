@@ -21,9 +21,9 @@ class UserController extends Controller
             return datatables()->of($user)
             ->addColumn('status_user', function(User $user) {
                 if($user->status_user == 0){
-                    return '<span class="badge rounded-pill bg-danger">Inactive</span>';
+                    return '<span class="badge rounded-pill badge-light-danger">Inactive</span>';
                 }  else if ($user->status_user == 1) {
-                    return '<span class="badge rounded-pill bg-success">Active</span>';
+                    return '<span class="badge rounded-pill badge-light-success">Active</span>';
                 }
             })
             ->addColumn('aksi', function ($data) {

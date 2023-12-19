@@ -84,6 +84,8 @@
     <!-- BEGIN: Page JS-->
     <script src="{{ asset('Template/app-assets/js/scripts/pages/dashboard-ecommerce.js') }}"></script>
     <script src="{{ asset('Template/app-assets/js/scripts/tables/table-datatables-basic.js') }}"></script>
+
+    {!! Toastr::message() !!}
     
     <!-- END: Page JS-->
 

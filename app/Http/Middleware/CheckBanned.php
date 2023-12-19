@@ -18,13 +18,14 @@ class CheckBanned
     public function handle(Request $request, Closure $next)
     {
         if(auth()->check() && (auth()->user()->status_user == 0)){
-                Auth::logout();
+            Auth::logout();
 
-                $request->session()->invalidate();
+            $request->session()->invalidate();
 
-                $request->session()->regenerateToken();
+            $request->session()->regenerateToken();
 
-                return redirect()->route('login')->with('error', 'Akun kamu telah diblokir, silakan kontak Admin.');
+            toastr()->error('Maaf, akun yang kamu gunakan sudah aktif. Silakan kontak Admin.', 'Error!');
+            return redirect()->route('login');
 
         }
 
