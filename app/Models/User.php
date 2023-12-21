@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
     ];
 
     /**
@@ -34,6 +35,15 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function getAvatar()
+    {
+        if (!$this->avatar) {
+            return asset('images/default.png');
+        }
+
+        return asset('images/'.$this->avatar);
+    }
 
     public function karyawan()
     {

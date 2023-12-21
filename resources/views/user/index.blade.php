@@ -85,14 +85,19 @@
                                             <label class="form-label">Role</label>
                                             <select class="select2 form-select" name="role" id="role" required>
                                                 <option>Pilih Role</option>
+                                                <option value="owner">Owner</option>
                                                 <option value="admin">Admin</option>
                                                 <option value="karyawan">Karyawan</option>
                                             </select>
                                         </fieldset>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <label class="form-label">Email</label>
                                         <input type="email" id="email" name="email" class="email form-control" value="" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Password</label>
+                                        <input type="password" id="password" name="password" class="password form-control" value="">
                                     </div>
                                     <div class="form-floating col-md-6">
                                         <fieldset class="form-group">
@@ -104,9 +109,9 @@
                                             </select>
                                         </fieldset>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Password</label>
-                                        <input type="password" id="password" name="password" class="password form-control" value="">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="exampleInputPassword1" class="form-label">Avatar</label>
+                                        <input type="file" name="avatar" class="form-control">
                                     </div>
                                 </div>
                             </div>

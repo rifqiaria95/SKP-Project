@@ -44,6 +44,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/pages/dashboard-ecommerce.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/plugins/charts/chart-apex.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/plugins/extensions/ext-component-toastr.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('Template/app-assets/css/pages/app-user.css') }}">
     <!-- END: Page CSS-->
 
 

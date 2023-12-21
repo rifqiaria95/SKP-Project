@@ -47,6 +47,7 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin']], function () {
     Route::get('karyawan/edit/{id}', 'KaryawanController@edit');
     Route::post('karyawan/update/{id}', 'KaryawanController@update');
     Route::delete('karyawan/delete/{id}', 'KaryawanController@destroy');
+    Route::get('karyawan/profile/{id}', 'KaryawanController@profile');
     Route::get('karyawan/exportexcelkaryawan/', 'KaryawanController@exportexcelkaryawan');
 
     // Route Meal Attendance (Admin)
