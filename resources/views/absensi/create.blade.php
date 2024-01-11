@@ -57,7 +57,7 @@
 					<div id="errorlist">
 					</div>
                     <div class="wrap-input101 validate-input">
-						<select class="input101 form-select" aria-label="Default select example" name="karyawan_id" id="nama_depan">
+						<select class="input101 form-select" aria-label="Default select example" name="karyawan_id" id="nama_depan" required>
 							<option selected disabled>Nama</option>
                             @foreach ($karyawan as $kr)
                                 <option value="{{ $kr->id }}">{{ $kr->nama_depan}}</option>
@@ -65,7 +65,7 @@
 						</select>
 					</div>
 					<div class="wrap-input101 validate-input">
-						<select class="input101 form-select" id="select1" aria-label="Default select example" name="status">
+						<select class="input101 form-select" id="select1" aria-label="Default select example" name="status" required>
 							<option selected disabled>Status</option>
 							<option value="Karyawan">Karyawan</option>
 							<option value="Non Karyawan">Non Karyawan</option>
@@ -82,7 +82,7 @@
 					<div class="container-login100-form-btn mt-4">
 						<div class="wrap-login100-form-btn">
 							<div class="login100-form-bgbtn"></div>
-							<button type="submit" id="btn-simpan" class="login100-form-btn" value="Simpan">Kirim</button>
+							<button type="submit" id="btn-simpan" class="login100-form-btn">Kirim</button>
 						</div>
 					</div>
 					<div class="text-center p-t-115">
@@ -100,7 +100,6 @@
 <!--===============================================================================================-->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js" integrity="sha256-sPB0F50YUDK0otDnsfNHawYmA5M0pjjUf4TvRJkGFrI=" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -136,7 +135,7 @@
 		}
 
 		// Function get job title
-		$(document).on('click', '#nama_depan', function(e) {
+		$(document).on('change', '#nama_depan', function(e) {
 			e.preventDefault();
 
 			var id  = $(this).val();
@@ -158,8 +157,9 @@
 						$('#job_title').val(response.job_title).trigger('change');
 					}
 				},
-				error: function(response) {
+				error: function(jqXHR, exception) {
 					// console.log(response);
+					alert(jqXHR.responseText);
 				}
 			});
 
@@ -186,8 +186,7 @@
 									$('#errorlist').html("");
 									$('#errorlist').addClass('class="alert alert-danger mb-3 alert-validation-msg" role="alert"');
 									$.each(response.errors, function(key, err_value) {
-										$('#errorlist').append('<div class="alert-body d-flex align-items-center"><i data-feather="info" class="me-50"></i><span>' + err_value +
-											'</span></div>');
+										$('#errorlist').append('<div class="alert-body d-flex align-items-center"><i data-feather="info" class="me-50"></i><span>' + err_value + '</span></div>');
 									});
 
 									$('#btn-simpan').text('Mengirim..');
@@ -206,13 +205,12 @@
 									$('#modalJudul').html("");
 									$('#formAbsensi').find('input').val('');
 									toastr.success(response.message + response.timestamp);
-
-									$('#tambahModal').modal('hide');
 								}
 							},
-							error: function(response) {
-								// console.log('Error:', response);
-								$('#btn-simpan').html('Simpan');
+							error: function(jqXHR, exception) {
+								// console.log(response.errors);
+								alert(jqXHR.responseText);
+								// $('#btn-simpan').html('Kirim');
 							}
 						});
 					}
