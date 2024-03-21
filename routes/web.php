@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth', 'checkRole:owner']], function () {
     Route::get('user/edit/{id}', 'UserController@edit');
     Route::post('user/update/{id}', 'UserController@update');
     Route::delete('user/delete/{id}', 'UserController@destroy');
+    Route::get('user/profile/{id}', 'UserController@profile');
 
     // Route Survey Hotels (Admin)
     Route::get('survey', 'SurveyController@index');
@@ -61,6 +62,26 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin']], function () {
 Route::group(['middleware' => ['auth', 'checkRole:owner,admin,karyawan']], function () {
     // Route Dashboard
     Route::get('dashboard', 'DashboardController@index');
+
+    // Route Purchase Order
+    Route::get('purchaseorder', 'PurchaseController@index');
+    Route::get('purchaseorder/edit/{id}', 'PurchaseController@edit');
+    Route::post('purchaseorder/update/{id}', 'PurchaseController@update');
+    Route::delete('purchaseorder/delete/{id}', 'PurchaseController@destroy');
+
+    // Route Vendor
+    Route::get('vendor', 'VendorController@index');
+    Route::post('vendor/store', 'VendorController@store');
+    Route::get('vendor/edit/{id}', 'VendorController@edit');
+    Route::post('vendor/update/{id}', 'VendorController@update');
+    Route::delete('vendor/delete/{id}', 'VendorController@destroy');
+
+    // Route Perusahaan
+    Route::get('perusahaan', 'PerusahaanController@index');
+    Route::post('perusahaan/store', 'PerusahaanController@store');
+    Route::get('perusahaan/edit/{id}', 'PerusahaanController@edit');
+    Route::post('perusahaan/update/{id}', 'PerusahaanController@update');
+    Route::delete('perusahaan/delete/{id}', 'PerusahaanController@destroy');
 
 });
 

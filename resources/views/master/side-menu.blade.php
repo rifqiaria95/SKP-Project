@@ -1,61 +1,114 @@
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+  <div class="layout-container">
+    <!-- Menu -->
 
-<!-- BEGIN: Main Menu-->
-<div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
-    <div class="navbar-header">
-        <ul class="nav navbar-nav flex-row">
-            <li class="nav-item me-auto"><a class="navbar-brand" href="/dashboard"><span class="brand-logo">
-                <img src="{{ asset('Template/app-assets/images/logo/logo3.png') }}" alt="" srcset=""></span>
-                <h2 class="brand-text d-none"></h2>
+    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+      <div class="app-brand demo">
+        <a href="index.html" class="app-brand-link">
+          <span class="app-brand-text demo menu-text fw-bold"><img src="{{ asset('Template/master/img/logo3.png') }}" alt="" srcset="" style="width: 60%"></span>
+          
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+          <i class="ti menu-toggle-icon d-none d-xl-block ti-sm align-middle"></i>
+          <i class="ti ti-x d-block d-xl-none ti-sm align-middle"></i>
+        </a>
+      </div>
+
+      <div class="menu-inner-shadow"></div>
+
+      <ul class="menu-inner py-1">
+        <!-- Dashboards -->
+        <li class="menu-item  {{ Request::is('dashboard')?'active':'' }}">
+          <a href="/dashboard" class="menu-link">
+            <i class="menu-icon tf-icons ti ti-smart-home"></i>
+            <div data-i18n="Dashboard">Dashboard</div>
+          </a>
+        </li>
+        <!-- SKP -->
+        <li class="menu-header small text-uppercase">
+          <span class="menu-header-text">Santini Kelola Persada</span>
+        </li>
+        @if(auth()->user()->role == 'owner' || auth()->user()->role == 'admin')
+          <li class="menu-item {{ Request::is('karyawan')?'active':'' }}">
+            <a href="/karyawan" class="menu-link">
+              <i class="menu-icon tf-icons ti ti-users"></i>
+              <div data-i18n="Karyawan">Karyawan</div>
+            </a>
+          </li>
+          <li class="menu-item {{ Request::is('absensi')?'active':'' }}">
+            <a href="/absensi" class="menu-link">
+              <i class="menu-icon tf-icons ti ti-layout-navbar"></i>
+              <div data-i18n="Meal Attendance">Meal Attendance</div>
+            </a>
+          </li>
+        @endif
+        @if(auth()->user()->role == 'karyawan' || auth()->user()->role == 'admin' || auth()->user()->role == 'owner')
+          <li class="menu-item {{ Request::is('purchaseorder')?'active':'' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons ti ti-file-dollar"></i>
+              <div data-i18n="Purchase Order">Purchase Order</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item {{ Request::is('purchaseorder')?'active':'' }}">
+                <a href="/purchaseorder" class="menu-link">
+                  <div data-i18n="List PO">List PO</div>
                 </a>
-            </li>
-            <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i id="closeButton" class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a>
-            </li>
-        </ul>
-    </div>
-    <div class="shadow-bottom"></div>
-    <div class="main-menu-content">
-        <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class="{{ Request::is('dashboard')?'active':'' }}"><a class="d-flex align-items-center" href="/dashboard"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboards</span></a>
-            @if(auth()->user()->role == 'owner')
-                <li class=" navigation-header"><span data-i18n="Forms &amp; Tables">Forms &amp; Tables</span><i data-feather="more-horizontal"></i>
-                </li>
-                <li class="{{ Request::is('absensi')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="#"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="User">Meal Attendance</span></a>
-                    <ul class="menu-content">
-                        <li class="nav-item"><a class="d-flex align-items-center" href="/absensi"><i data-feather="circle"></i><span class="menu-title text-truncate" data-i18n="Form Elements">SKP</span></a>
-                        </li>
-                        <li class="nav-item"><a class="d-flex align-items-center" href="/absensi/lumire"><i data-feather="circle"></i><span class="menu-title text-truncate" data-i18n="Form Elements">Lumire</span></a>
-                        </li>
-                        <li class="nav-item"><a class="d-flex align-items-center" href="/absensi/jsluwansa"><i data-feather="circle"></i><span class="menu-title text-truncate" data-i18n="Form Elements">JS Luwansa</span></a>
-                        </li>
-                        <li class="nav-item"><a class="d-flex align-items-center" href="/absensi/luwansamanado"><i data-feather="circle"></i><span class="menu-title text-truncate" data-i18n="Form Elements">Luwansa Manado</span></a>
-                        </li>
-                        <li class="nav-item"><a class="d-flex align-items-center" href="/absensi/palangkaraya"><i data-feather="circle"></i><span class="menu-title text-truncate" data-i18n="Form Elements">Luwansa Palangka Raya</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="{{ Request::is('survey')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="/survey"><i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="Form Elements">Guess Satisfaction</span></a>
-                <li class="{{ Request::is('karyawan')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="/karyawan"><i data-feather="grid"></i><span class="menu-title text-truncate" data-i18n="Datatables">Karyawan SKP</span></a>
-                <li class=" navigation-header"><span data-i18n="Forms &amp; Tables">Apps &amp; Pages</span><i data-feather="more-horizontal"></i>
-                </li>
-                <li class="{{ Request::is('user')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="User">User</span></a>
-                    <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="/user"><i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Data User</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li><a class="d-flex align-items-center" href="/activitylog"><i data-feather='activity'></i><span class="menu-item text-truncate" data-i18n="List">Activity Log</span></a>
-                </li>
-                <li class=" navigation-header"><span data-i18n="Forms &amp; Tables">Settings</span><i data-feather="more-horizontal"></i>
-                <li><a class="d-flex align-items-center" href="/rolemanagement"><i data-feather='settings'></i><span class="menu-item text-truncate" data-i18n="Settings">Role & Permission</span></a>
-            @endif
-            @if(auth()->user()->role == 'admin')
-                <li class=" navigation-header"><span data-i18n="Forms &amp; Tables">Forms &amp; Tables</span><i data-feather="more-horizontal"></i>
-                </li>
-                <li class="{{ Request::is('absensi')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="/absensi"><i data-feather="copy"></i><span class="menu-title text-truncate" data-i18n="Form Elements">Meal Attendance</span></a>
-                <li class="{{ Request::is('karyawan')?'active':'' }} nav-item"><a class="d-flex align-items-center" href="/karyawan"><i data-feather="grid"></i><span class="menu-title text-truncate" data-i18n="Datatables">Karyawan SKP</span></a>
-                </li>
-            @endif
-        </ul>
-    </div>
-</div>
-<!-- END: Main Menu-->
+              </li>
+              <li class="menu-item {{ Request::is('vendor')?'active':'' }}">
+                <a href="/vendor" class="menu-link">
+                  <div data-i18n="List Vendor">List Vendor</div>
+                </a>
+              </li>
+              <li class="menu-item {{ Request::is('item')?'active':'' }}">
+                <a href="/item" class="menu-link">
+                  <div data-i18n="List Barang">List Barang</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- Apps & Pages -->
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Misc</span>
+          </li>
+          <li class="menu-item {{ Request::is('perusahaan')?'active':'' }}">
+            <a href="/perusahaan" class="menu-link">
+              <i class="menu-icon tf-icons ti ti-building"></i>
+              <div data-i18n="Perusahaan">Perusahaan</div>
+            </a>
+          </li>
+        @endif
+        @if(auth()->user()->role == 'owner')
+          <li class="menu-item {{ Request::is('user')?'active':'' }}">
+            <a href="/user" class="menu-link">
+              <i class="menu-icon tf-icons ti ti-users"></i>
+              <div data-i18n="Users">Users</div>
+            </a>
+          </li>
+          <li class="menu-item {{ Request::is('activitylog')?'active':'' }}">
+            <a href="/activitylog" class="menu-link">
+              <i class="menu-icon tf-icons ti ti-activity"></i>
+              <div data-i18n="Activity Log">Activity Log</div>
+            </a>
+          </li>
+          <!-- Settings -->
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Settings</span>
+          </li>
+          <li class="menu-item">
+            <a href="/roles" class="menu-link">
+              <i class="menu-icon tf-icons ti ti-settings"></i>
+              <div data-i18n="Roles & Permissions">Roles & Permissions</div>
+            </a>
+          </li>
+        @endif
+      </ul>
+    </aside>
+    <!-- / Menu -->
+
+    <!-- Layout container -->
+    <div class="layout-page">
+      
+
+<!-- / Layout wrapper -->

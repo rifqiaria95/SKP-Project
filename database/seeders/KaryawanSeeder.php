@@ -25,7 +25,8 @@ class KaryawanSeeder extends Seeder
                 'jenis_kelamin' => 'Laki-Laki',
                 'status'        => 'Karyawan',
                 'job_title'     => 'IT',
-                'user_id'       => '1'
+                'user_id'       => '1',
+                'perusahaan_id' => '1'
             ],
             [
                 'nama_depan'    => 'Budi',
@@ -35,7 +36,8 @@ class KaryawanSeeder extends Seeder
                 'jenis_kelamin' => 'Laki-Laki',
                 'status'        => 'Karyawan',
                 'job_title'     => 'IT',
-                'user_id'       => '2'
+                'user_id'       => '1',
+                'perusahaan_id' => '1'
             ],
             [
                 'nama_depan'    => 'Nila',
@@ -45,7 +47,8 @@ class KaryawanSeeder extends Seeder
                 'jenis_kelamin' => 'Perempuan',
                 'status'        => 'Karyawan',
                 'job_title'     => 'Finance',
-                'user_id'       => '3'
+                'user_id'       => '1',
+                'perusahaan_id' => '1'
             ],
             [
                 'nama_depan'    => 'Non Karyawan',
@@ -55,7 +58,8 @@ class KaryawanSeeder extends Seeder
                 'jenis_kelamin' => 'Pilih Jenis Kelamin',
                 'status'        => 'Non Karyawan',
                 'job_title'     => '-',
-                'user_id'       => '4'
+                'user_id'       => '1',
+                'perusahaan_id' => '1'
             ],
         ]);
     }

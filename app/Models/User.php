@@ -42,7 +42,7 @@ class User extends Authenticatable
             return asset('images/default.png');
         }
 
-        return asset('images/'.$this->avatar);
+        return asset('images/' . $this->avatar);
     }
 
     public function karyawan()

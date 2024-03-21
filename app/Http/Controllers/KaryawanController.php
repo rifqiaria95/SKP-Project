@@ -4,38 +4,43 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Karyawan;
-use App\Exports\KaryawanExport;
-use Illuminate\Http\Request;
+use App\Models\Perusahaan;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Exports\KaryawanExport;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 
 class KaryawanController extends Controller
 {
     public function index(Request $request)
     {
         // Menampilkan Data karyawan
-        $karyawan      = Karyawan::all();
-        // dd($kelas);
+        $karyawan   = Karyawan::all();
+        $perusahaan = Perusahaan::all();
+        // dd($karyawan);
         if ($request->ajax()) {
             return datatables()->of($karyawan)
-            ->addColumn('aksi', function ($data) {
-                $button = '<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                <div class="btn-group me-2" role="group" aria-label="First group">
-                    <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $data->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-karyawan"><i class="fa-solid fa-pen"></i></a>
-                    <button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
-                    <a href="karyawan/profile/'. $data->id .'" name="view" class="view btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
-                </div>
-            </div>';
-                return $button;
-            })
-            ->rawColumns(['aksi'])
-            ->addIndexColumn()
-            ->toJson();
+                ->addColumn('perusahaan', function(Karyawan $karyawan) {
+                    return $karyawan->perusahaan->nama_perusahaan;
+                })
+                ->addColumn('aksi', function ($data) {
+                    $button = '<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group me-2" role="group" aria-label="First group">
+                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $data->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-karyawan"><i class="fa-solid fa-pen"></i></a>
+                        <button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
+                        <a href="karyawan/profile/' . $data->id . '" name="view" class="view btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
+                        </div>
+                    </div>';
+                    return $button;
+                })
+                ->rawColumns(['perusahaan', 'aksi'])
+                ->addIndexColumn()
+                ->toJson();
         }
 
-        return view('karyawan.index', compact(['karyawan']));
+        return view('karyawan.index', compact(['karyawan', 'perusahaan']));
     }
 
     public function store(Request $request)
@@ -160,7 +165,7 @@ class KaryawanController extends Controller
         }
     }
 
-    public function exportExcelKaryawan() 
+    public function exportExcelKaryawan()
     {
         return Excel::download(new KaryawanExport, 'karyawan.xlsx');
     }

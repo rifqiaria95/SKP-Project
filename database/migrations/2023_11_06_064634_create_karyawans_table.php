@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('status')->length(20);
             $table->string('job_title')->length(20);
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('perusahaan_id');
             $table->string('avatar')->nullable();
             $table->timestamps();
         });

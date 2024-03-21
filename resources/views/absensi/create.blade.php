@@ -8,33 +8,33 @@
 	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('Template/app-assets/images/ico/favicon.ico') }}">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-<!--===============================================================================================-->	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<!--===============================================================================================-->	
 	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{ asset('FrontEnd/vendor/bootstrap/css/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('Template/master/vendor/bootstrap/css/bootstrap.min.css') }}">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{ asset('FrontEnd/fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('Template/master/vendor/font-awesome-4.7.0/css/font-awesome.min.css') }}">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{ asset('FrontEnd/fonts/iconic/css/material-design-iconic-font.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('Template/master/vendor/iconic/css/material-design-iconic-font.min.css') }}">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{ asset('FrontEnd/vendor/animate/animate.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('Template/master/vendor/animate/animate.css') }}">
 <!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="{{ asset('FrontEnd/vendor/css-hamburgers/hamburgers.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('Template/master/vendor/css-hamburgers/hamburgers.min.css') }}">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{ asset('FrontEnd/vendor/animsition/css/animsition.min.css') }}">
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+	<link rel="stylesheet" type="text/css" href="{{ asset('Template/master/vendor/animsition/css/animsition.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('Template/master/vendor/libs/toastr/toastr.css') }}" />
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{ asset('FrontEnd/vendor/select2/select2.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('Template/master/vendor/libs/select2/select2.css') }}" />
 <!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="{{ asset('FrontEnd/vendor/daterangepicker/daterangepicker.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('Template/master/vendor/daterangepicker/daterangepicker.css') }}">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{ asset('FrontEnd/css/util.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('FrontEnd/css/main.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('Template/master/vendor/css/util.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('Template/master/vendor/css/main.css') }}">
 <!--===============================================================================================-->
 </head>
 <body>
 	<div class="full-screen flex-container-center">
-		<img class="logo" src="{{ asset('FrontEnd/images/Logo Luwansa 2.png') }}" alt="">
+		<img class="logo" src="{{ asset('Template/master/img/Logo Luwansa 2.png') }}" alt="">
 		<h2 >Meal Attendance SKP</h2>
 		<p>Santini Kelola Persada</p>
 		<button class="button-click" onclick="closePopup()">Mulai</button>
@@ -44,7 +44,6 @@
 			<div class="wrap-login100">
 				<form id="formAbsensi" class="login100-form validate-form" enctype="multipart/form-data">
 					{{ csrf_field() }}
-					<input type="hidden" name="id" id="id">
 					<span class="login100-form-title p-b-26">
 					<p class="tanggal">Tanggal: <span id="datetime"></span></p>
 						Meal Attendance SKP
@@ -52,7 +51,7 @@
 					<input type="hidden" name="id" id="id">
 					{{-- <input type="hidden" name="karyawan_id" id="karyawan_id"> --}}
 					<span class="login100-form-title p-b-48">
-                        <img src="{{ asset('FrontEnd/images/Logo Luwansa 2.png') }}" alt="">
+                        <img src="{{ asset('Template/master/img/Logo Luwansa 2.png') }}" alt="">
 					</span>
 					<div id="errorlist">
 					</div>
@@ -106,118 +105,16 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!--===============================================================================================-->
-	<script src="{{ asset('FrontEnd/vendor/animsition/js/animsition.min.js') }}"></script>
+	<script src="{{ asset('Template/master/vendor/animsition/js/animsition.min.js') }}"></script>
 <!--===============================================================================================-->
-	<script src="{{ asset('FrontEnd/vendor/select2/select2.min.js') }}"></script>
+	<script src="{{ asset('Template/master/vendor/libs/select2/select2.js') }}"></script>
 <!--===============================================================================================-->
-	<script src="{{ asset('FrontEnd/vendor/daterangepicker/moment.min.js') }}"></script>
-	<script src="{{ asset('FrontEnd/vendor/daterangepicker/daterangepicker.js') }}"></script>
+	<script src="{{ asset('Template/master/vendor/daterangepicker/moment.min.js') }}"></script>
+	<script src="{{ asset('Template/master/vendor/daterangepicker/daterangepicker.js') }}"></script>
 <!--===============================================================================================-->
-	<script src="{{ asset('FrontEnd/vendor/countdowntime/countdowntime.js') }}"></script>
+	<script src="{{ asset('Template/master/vendor/countdowntime/countdowntime.js') }}"></script>
 <!--===============================================================================================-->
-	<script src="{{ asset('FrontEnd/js/main.js') }}"></script>
-
-	<script>
-		$(document).ready(function() {
-			$.ajaxSetup({
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				}
-			});
-		});
-		const popup = document.querySelector(".full-screen, .button-click");
-
-		function closePopup(){
-		popup.classList.add('hidden');
-
-		var dt = new Date();
-		document.getElementById("datetime").innerHTML = (("0"+dt.getDate()).slice(-2)) +"."+ (("0"+(dt.getMonth()+1)).slice(-2)) +"."+ (dt.getFullYear()) +" "+ (("0"+dt.getHours()).slice(-2)) +":"+ (("0"+dt.getMinutes()).slice(-2));
-		}
-
-		// Function get job title
-		$(document).on('change', '#nama_depan', function(e) {
-			e.preventDefault();
-
-			var id  = $(this).val();
-			var url =  "/absensi/gettitle/" + id,
-			url 	= url.replace(':id', id);
-
-			$.ajax({
-				type    : "GET",
-				url     : url,
-				dataType: 'json',
-				success: function(response) {
-					// console.log(response);
-					// Jika sukses maka munculkan notifikasi
-					if (response.status == 404) {
-						$('#success_message').addClass('alert alert-success');
-						$('#success_message').text(response.message);
-					} else {
-						$('#id').val(id);
-						$('#job_title').val(response.job_title).trigger('change');
-					}
-				},
-				error: function(jqXHR, exception) {
-					// console.log(response);
-					alert(jqXHR.responseText);
-				}
-			});
-
-		});
-		
-		$(document).ready(function () {
-			//SIMPAN & UPDATE DATA DAN VALIDASI (SISI CLIENT)
-			//jika id = formAbsensi panjangnya lebih dari 0 atau bisa dibilang terdapat data dalam form tersebut maka
-			//jalankan jquery validator terhadap setiap inputan dll dan eksekusi script ajax untuk simpan data
-			if ($("#formAbsensi").length > 0) {
-				$("#formAbsensi").validate({
-					submitHandler: function(form) {
-						var actionType = $('#btn-simpan').val();
-						// Mengubah data menjadi objek agar file image bisa diinput kedalam database
-						var formData = new FormData($('#formAbsensi')[0]);
-						$.ajax({
-							data: formData, //function yang dipakai agar value pada form-control seperti input, textarea, select dll dapat digunakan pada URL query string ketika melakukan ajax request
-							url: "/absensi/store", //url simpan data
-							type: "POST", //data tipe kita kirim berupa JSON
-							contentType: false,
-							processData: false,
-							success: function(response) {
-								if (response.status == 400) {
-									$('#errorlist').html("");
-									$('#errorlist').addClass('class="alert alert-danger mb-3 alert-validation-msg" role="alert"');
-									$.each(response.errors, function(key, err_value) {
-										$('#errorlist').append('<div class="alert-body d-flex align-items-center"><i data-feather="info" class="me-50"></i><span>' + err_value + '</span></div>');
-									});
-
-									$('#btn-simpan').text('Mengirim..');
-								
-								// console.log(response.status);
-								} else if (response.status == 409) {
-									setTimeout(function(){ // wait for 2 secs(2)
-										location.reload(); // then reload the page.(3)
-									}, 2000); 
-									$('#formAbsensi').find('input').val('');
-									toastr.error(response.errors);
-								} else if (response.status == 200) {
-									setTimeout(function(){ // wait for 5 secs(2)
-										location.reload(); // then reload the page.(3)
-									}, 5000); 
-									$('#modalJudul').html("");
-									$('#formAbsensi').find('input').val('');
-									toastr.success(response.message + response.timestamp);
-								}
-							},
-							error: function(jqXHR, exception) {
-								// console.log(response.errors);
-								alert(jqXHR.responseText);
-								// $('#btn-simpan').html('Kirim');
-							}
-						});
-					}
-				})
-			}
-		});
-	</script>
-
+	<script src="{{ asset('Template/master/js/main.js') }}"></script>
+	<script src="{{ asset('Template/master/js/skp/absensi-create.js') }}"></script>
 </body>
 </html>

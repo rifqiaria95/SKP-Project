@@ -24,7 +24,7 @@ class CheckBanned
 
             $request->session()->regenerateToken();
 
-            toastr()->error('Maaf, akun yang kamu gunakan sudah aktif. Silakan kontak Admin.', 'Error!');
+            toastr()->error('Maaf, akun yang kamu gunakan sudah tidak aktif, Silakan kontak Admin.', 'Error!');
             return redirect()->route('login');
 
         }

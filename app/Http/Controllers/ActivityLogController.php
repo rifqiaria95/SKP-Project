@@ -11,21 +11,20 @@ class ActivityLogController extends Controller
     public function activity(Request $request)
     {
         // Menampilkan Data Activity
-        // $logs = \ActivityLog::ActivityLogList();
-        $logs = ActivityLog::all();
+        $logs = ActivityLog::latest()->get();
         $user = User::all();
 
         if ($request->ajax()) {
             return datatables()->of($logs)
-            ->addColumn('user', function (ActivityLog $logs) {
-                if ($logs->user_id === 'Not Login') {
-                    return 'Not Login';
-                } else {
-                    return $logs->user->name;
-                }
-            })
-            ->addIndexColumn()
-            ->toJson();
+                ->addColumn('user', function (ActivityLog $logs) {
+                    if ($logs->user_id === 'Not Login') {
+                        return 'Not Login';
+                    } else {
+                        return $logs->user->name;
+                    }
+                })
+                ->addIndexColumn()
+                ->toJson();
         }
 
         return view('activitylog.index', compact(['logs', 'user']));

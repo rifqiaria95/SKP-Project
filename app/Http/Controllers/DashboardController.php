@@ -11,7 +11,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $absensi  = Absensi::latest()->take(4)->get();
+        $absensi  = Absensi::latest()->take(5)->get();
         $karyawan = Karyawan::all();
 
         return view('dashboard.index', compact('absensi', 'karyawan'));

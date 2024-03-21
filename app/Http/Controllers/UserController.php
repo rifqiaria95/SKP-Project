@@ -21,9 +21,9 @@ class UserController extends Controller
             return datatables()->of($user)
             ->addColumn('status_user', function(User $user) {
                 if($user->status_user == 0){
-                    return '<span class="badge rounded-pill badge-light-danger">Inactive</span>';
+                    return '<span class="badge bg-label-danger">Inactive</span>';
                 }  else if ($user->status_user == 1) {
-                    return '<span class="badge rounded-pill badge-light-success">Active</span>';
+                    return '<span class="badge bg-label-success">Active</span>';
                 }
             })
             ->addColumn('aksi', function ($data) {
@@ -31,7 +31,7 @@ class UserController extends Controller
                 <div class="btn-group me-2" role="group" aria-label="First group">
                     <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $data->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-user"><i class="fa-solid fa-pen"></i></a>
                     <button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
-                    <a href="user/' . $data->id . '/profile" name="view" class="view btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
+                    <a href="user/profile/' . $data->id . '" name="view" class="view btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
                 </div>
             </div>';
                 return $button;
@@ -52,14 +52,21 @@ class UserController extends Controller
 
     public function update($id, Request $request)
     {
+        $messages  = [
+            'required' => 'Kolom harus diisi.',
+            'string'   => 'Kolom harus berupa teks.',
+            'max'      => 'Kolom maksimal :max kata.',
+            'mimes'    => 'Format file harus jpg/png.',
+        ];
+        
         $validator = Validator::make($request->all(), [
             'avatar'        => 'mimes:jpg,png'
-        ]);
+        ], $messages);
 
         if ($validator->fails()) {
             return response()->json([
-                'status'    => 400,
-                'errors'    => $validator->messages()
+                'status'  => 400,
+                'errors'  => $validator->messages(),
             ]);
         } else {
             $user = User::find($id);
@@ -115,5 +122,11 @@ class UserController extends Controller
                 'errors' => 'Data User Tidak Ditemukan'
             ]);
         }
+    }
+
+    public function profile($id)
+    {
+        $user     = User::find($id);
+        return view('user.profile', compact(['user']));
     }
 }
