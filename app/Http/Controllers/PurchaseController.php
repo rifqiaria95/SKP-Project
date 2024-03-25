@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Vendor;
+use App\Models\Perusahaan;
 use Illuminate\Http\Request;
 use App\Models\PurchaseOrder;
 use Illuminate\Support\Facades\Validator;
@@ -14,10 +15,11 @@ class PurchaseController extends Controller
     public function index(Request $request)
     {
         // Menampilkan Data perusahaan
-        $purchase = PurchaseOrder::all();
-        $user     = User::all();
-        $item     = Item::all();
-        $vendor   = Vendor::all();
+        $purchase   = PurchaseOrder::all();
+        $user       = User::all();
+        $item       = Item::all();
+        $vendor     = Vendor::all();
+        $perusahaan = Perusahaan::all();
         // dd($kelas);
         if ($request->ajax()) {
             return datatables()->of($purchase)
@@ -39,7 +41,7 @@ class PurchaseController extends Controller
             ->toJson();
         }
 
-        return view('purchaseorder.index', compact(['purchase', 'user', 'item', 'vendor']));
+        return view('purchaseorder.index', compact(['purchase', 'user', 'item', 'vendor', 'perusahaan']));
     }
 
     public function store(Request $request)

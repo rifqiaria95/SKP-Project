@@ -154,6 +154,15 @@
                                     </select>
                                     </div>
                                 </div>
+                                <div class="col-12">
+                                    <label class="form-label" for="multicol-first-name">Perusahaan</label>
+                                    <select name="perusahaan_id" id="perusahaan_id" class="select2 form-select mb-3" required>
+                                        <option selected disabled>Pilih Perusahaan</option>
+                                        @foreach ($perusahaan as $ps)
+                                            <option value="{{ $ps->id }}">{{ $ps->nama_perusahaan }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <hr class="my-4 mx-n4" />
                             <h6>Detail Vendor</h6>
