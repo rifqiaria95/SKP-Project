@@ -55,10 +55,12 @@
     <link rel="stylesheet" href="{{ asset('Template/master/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css') }}" />
     <link rel="stylesheet" href="{{ asset('Template/master/vendor/libs/select2/select2.css') }}" />
     <link rel="stylesheet" href="{{ asset('Template/master/vendor/libs/formvalidation/dist/css/formValidation.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('Template/master/vendor/libs/flatpickr/flatpickr.css') }}" />
     
 
     <!-- Page CSS -->
     <link rel="stylesheet" href="{{ asset('Template/master/vendor/css/pages/cards-advance.css') }}" />
+    <link rel="stylesheet" href="{{ asset('Template/master/vendor/css/pages/app-invoice.css') }}" />
     <!-- Helpers -->
     <script src="{{ asset('Template/master/vendor/js/helpers.js') }}"></script>
 
@@ -97,8 +99,10 @@
     <script src="{{ asset('Template/master/vendor/libs/formvalidation/dist/js/FormValidation.min.js') }}"></script>
     <script src="{{ asset('Template/master/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js') }}"></script>
     <script src="{{ asset('Template/master/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js') }}"></script>
+    <script src="{{ asset('Template/master/vendor/libs/flatpickr/flatpickr.js') }}"></script>
     <script src="{{ asset('Template/master/vendor/libs/cleavejs/cleave.js') }}"></script>
     <script src="{{ asset('Template/master/vendor/libs/cleavejs/cleave-phone.js') }}"></script>
+    <script src="{{ asset('Template/master/vendor/libs/jquery-repeater/jquery-repeater.js') }}"></script>
 
     <!-- Main JS -->
     <script src="{{ asset('Template/master/js/main.js') }}"></script>
@@ -106,6 +110,7 @@
     <!-- Page JS -->
     <script src="{{ asset('Template/master/js/dashboards-analytics.js') }}"></script>
     <script src="{{ asset('Template/master/js/skp/dashboard.js') }}"></script>
+    <script src="{{ asset('Template/master/js/app-invoice-add.js') }}"></script>
 
     {!! Toastr::message() !!}
 

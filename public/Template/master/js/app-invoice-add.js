@@ -69,13 +69,13 @@ $(function () {
   // Apply item changes btn
   if (applyChangesBtn.length) {
     $(document).on('click', '.btn-apply-changes', function (e) {
-      var $this = $(this);
-      tax1Input = $this.closest('.dropdown-menu').find('#taxInput1');
-      tax2Input = $this.closest('.dropdown-menu').find('#taxInput2');
+      var $this     = $(this);
+      tax1Input     = $this.closest('.dropdown-menu').find('#taxInput1');
+      tax2Input     = $this.closest('.dropdown-menu').find('#taxInput2');
       discountInput = $this.closest('.dropdown-menu').find('#discountInput');
-      tax1 = $this.closest('.repeater-wrapper').find('.tax-1');
-      tax2 = $this.closest('.repeater-wrapper').find('.tax-2');
-      discount = $('.discount');
+      tax1          = $this.closest('.repeater-wrapper').find('.tax-1');
+      tax2          = $this.closest('.repeater-wrapper').find('.tax-2');
+      discount      = $('.discount');
 
       if (tax1Input.val() !== null) {
         updateValue(tax1Input, tax1);

@@ -20,12 +20,12 @@ class VendorController extends Controller
             return datatables()->of($vendor)
                 ->addColumn('aksi', function ($data) {
                     $button = '<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                    <div class="btn-group me-2" role="group" aria-label="First group">
-                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $data->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-vendor"><i class="fa-solid fa-pen"></i></a>
-                        <button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
-                        <a href="vendor/profile/' . $data->id . '" name="view" class="view btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
-                        </div>
-                    </div>';
+                        <div class="btn-group me-2" role="group" aria-label="First group">
+                            <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $data->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-vendor"><i class="fa-solid fa-pen"></i></a>
+                            <button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
+                            <a href="vendor/profile/' . $data->id . '" name="view" class="view btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
+                            </div>
+                        </div>';
                     return $button;
                 })
                 ->rawColumns(['aksi'])

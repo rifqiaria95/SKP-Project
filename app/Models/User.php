@@ -55,6 +55,11 @@ class User extends Authenticatable
         return $this->hasMany(ActivityLog::class);
     }
 
+    public function purchase_order()
+    {
+        return $this->hasMany(PurchaseOrder::class);
+    }
+
     /**
      * The attributes that should be cast.
      *

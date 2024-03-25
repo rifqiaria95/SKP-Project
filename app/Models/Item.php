@@ -12,4 +12,9 @@ class Item extends Model
     protected $table = 'item';
 
     protected $guarded = [];
+
+    public function purchase_order()
+    {
+        return $this->belongsToMany(PurchaseOrder::class);
+    }
 }

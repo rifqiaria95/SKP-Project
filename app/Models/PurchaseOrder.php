@@ -14,9 +14,25 @@ class PurchaseOrder extends Model
     protected $guarded = [];
 
 
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function item()
+    {
+        return $this->belongsToMany(Item::class);
+    }
+
     public function vendor()
     {
-        return $this->hasMany(Vendor::class);
+        return $this->belongsTo(Vendor::class);
+    }
+
+    public function perusahaan(): BelongsTo
+    {
+        return $this->belongsTo(Perusahaan::class);
     }
 
 }

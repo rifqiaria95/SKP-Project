@@ -18,4 +18,9 @@ class Perusahaan extends Model
     {
         return $this->hasMany(Karyawan::class);
     }
+
+    public function purchase_order(): HasMany
+    {
+        return $this->hasMany(PurchaseOrder::class);
+    }
 }

@@ -15,8 +15,8 @@ class Vendor extends Model
 
 
 
-    public function purchaseOrder()
+    public function purchase_order()
     {
-        return $this->belongsTo(PurchaseOrder::class);
+        return $this->hasMany(PurchaseOrder::class);
     }
 }

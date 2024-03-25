@@ -88,7 +88,7 @@ $(document).ready(function() {
           // Function untuk mengubah datatable berdasarkan tanggal yang dipilih
           $("#tanggal_akhir").on("change", function(e) {
               e.preventDefault();
-              var tanggal_awal = $("#tanggal_awal").val();
+              var tanggal_awal  = $("#tanggal_awal").val();
               var tanggal_akhir = $("#tanggal_akhir").val();
               if (tanggal_awal == "" || tanggal_akhir == "") {
                   alert("Both date required");

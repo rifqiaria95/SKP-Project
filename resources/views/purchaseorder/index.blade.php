@@ -97,57 +97,212 @@
                     <tr>
                         <th>Nomor PO</th>
                         <th>Nama PO</th>
-                        <th>Nama Vendor</th>
                         <th>Tanggal</th>
+                        <th>Created By</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 </table>
             </div>
-            <!-- Modal Edit Purchase -->
+            
+            <!-- Modal Tambah purchase -->
+            <div class="modal fade text-start" id="tambahModal" tabindex="-1" aria-labelledby="myModalLabel18" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modal-judul">Tambah Purchase Order</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="formPurchase" class="card-body" enctype="multipart/form-data">
+                            @csrf
+                            <h6>Detail PO</h6>
+                            <input type="hidden" name="user_id" id="user_id">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="multicol-username">Nomor PO</label>
+                                    <input type="text" name="nomor_po" id="nomor_po" class="form-control" placeholder="#001" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="multicol-email">Nama PO</label>
+                                    <div class="input-group input-group-merge">
+                                    <input
+                                        type="text"
+                                        name="nama_po"
+                                        id="nama_po"
+                                        class="form-control"
+                                        placeholder="Masukkan nama PO"
+                                        aria-label="Masukkan nama PO"
+                                        aria-describedby="nama_po"
+                                    />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-password-toggle">
+                                    <label class="form-label" for="multicol-password">Tanggal</label>
+                                    <div class="input-group input-group-merge">
+                                        <input id="tanggal" name="tanggal" type="text" class="form-control w-px-150 date-picker" placeholder="YYYY-MM-DD" />
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-password-toggle">
+                                    <label class="form-label" for="multicol-confirm-password">Status</label>
+                                    <select class="select form-select" name="status" id="status">
+                                        <option selected disabled>Pilih Status</option>
+                                        <option value="0">Pending</option>
+                                        <option value="1">Selesai</option>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="my-4 mx-n4" />
+                            <h6>Detail Vendor</h6>
+                            <div class="row g-3">
+                              <div class="col-12">
+                                <label class="form-label" for="multicol-first-name">Nama Vendor</label>
+                                <select name="vendor_id" id="vendor_id" class="select2 form-select mb-3" required>
+                                    <option selected disabled>Pilih Vendor</option>
+                                    @foreach ($vendor as $vd)
+                                        <option value="{{ $vd->id }}">{{ $vd->nama_vendor }}</option>
+                                    @endforeach
+                                </select>
+                              </div>
+                            </div>
+                            <hr class="my-4 mx-n4" />
+                            <h6>Detail Item</h6>
+                            <div class="row g-3">
+                              <div class="col-md-6">
+                                <label class="form-label" for="multicol-first-name">Nama Item</label>
+                                <select id="item" name="item" class="select2 form-select mb-3" required>
+                                    <option selected disabled>Pilih Item</option>
+                                    @foreach ($item as $itm)
+                                        <option value="{{ $itm->id }}">{{ $itm->nama_item }}</option>
+                                    @endforeach
+                                </select>
+                              </div>
+                              <div class="col-md-6">
+                                <label class="form-label" for="multicol-phone">Harga</label>
+                                <input
+                                  type="text"
+                                  id="harga"
+                                  name="harga"
+                                  class="form-control phone-mask "
+                                  placeholder="Masukkan harga item"
+                                  aria-label="Masukkan harga item"
+                                />
+                              </div>
+                              <div class="col-md-6">
+                                <label class="form-label" for="multicol-phone">Quantity</label>
+                                <input
+                                  type="text"
+                                  id="quantity"
+                                  name="quantity"
+                                  class="form-control phone-mask"
+                                  placeholder="Masukkan quantity"
+                                  aria-label="Masukkan quantity"
+                                />
+                              </div>
+                              <div class="col-md-6">
+                                <label class="form-label" for="multicol-phone">Total Harga</label>
+                                <input
+                                  type="text"
+                                  id="total_harga"
+                                  name="total_harga"
+                                  class="form-control phone-mask"
+                                  placeholder="Total Harga"
+                                  aria-label="Total Harga"
+                                />
+                              </div>
+                              <div class="col-md-6 select2-primary">
+                                <label class="form-label" for="multicol-language">PPN</label>
+                                <input
+                                  type="text"
+                                  id="ppn"
+                                  name="ppn"
+                                  class="form-control"
+                                  placeholder="PPN 11%"
+                                  aria-label="PPN 11%"
+                                />
+                              </div>
+                              <div class="col-md-6">
+                                <label class="form-label" for="multicol-birthdate">Grand Total</label>
+                                <input
+                                  type="text"
+                                  id="grand_total"
+                                  name="grand_total"
+                                  class="form-control"
+                                  placeholder="Manager"
+                                />
+                              </div>
+                            </div>
+                            <div class="pt-4">
+                                <button type="submit" class="btn btn-primary btn-block" id="btn-simpan" value="create">Simpan
+                                </button>
+                              <button type="reset" class="btn btn-label-secondary">Cancel</button>
+                            </div>
+                          </form>
+                    </div>
+                </div>
+            </div>
+            {{-- End Modal Tambah PO --}}
+
+            <!-- Modal Edit purchase -->
             <div class="modal fade text-start" id="editModal" tabindex="-1" aria-labelledby="myModalLabel18" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" id="titleEdit"></h4>
+                            <ul class="alert alert-warning d-none" id="modalJudulEdit"></ul>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <form id="formEdit" name="formEdit" class="form-horizontal" enctype="multipart/form-data">
                             @csrf
                             <div class="modal-body">
                                 <input type="hidden" name="id" id="id">
-                                <ul class="alert alert-warning d-none" id="modalJudulEdit"></ul>
+                                <ul id="save_errorList"></ul>
                                 <div class="row g-3">
                                     <div class="col-md-6">
-                                        <label class="form-label">Nama</label>
-                                        <input type="text" id="name" name="name" class="name form-control" value="" required>
+                                        <label class="form-label">Nama Depan</label>
+                                        <input type="text" id="nama_depan" name="nama_depan" class="nama_depan form-control" value="" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">Email</label>
-                                        <input type="email" id="email" name="email" class="email form-control" value="" required>
+                                        <label class="form-label">Nama Belakang</label>
+                                        <input type="text" id="nama_belakang" name="nama_belakang" class="nama_belakang form-control" value="">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Tempat Lahir</label>
+                                        <input type="text" id="tempat_lahir" name="tempat_lahir" class="tempat_lahir form-control" value="" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Tanggal Lahir</label>
+                                        <input type="text" id="tanggal_lahir" name="tanggal_lahir" class="tanggal_lahir form-control" value="" required>
                                     </div>
                                     <div class="form-floating col-md-6">
                                         <fieldset class="form-group">
-                                            <label class="form-label">Role</label>
-                                            <select class="select2 form-select" name="role" id="role" required>
-                                                <option>Pilih Role</option>
-                                                <option value="owner">Owner</option>
-                                                <option value="admin">Admin</option>
-                                                <option value="karyawan">Karyawan</option>
+                                            <label class="form-label">Jenis Kelamin</label>
+                                            <select class="select2 form-select" name="jenis_kelamin" id="jenis_kelamin">
+                                                <option disabled>Pilih Jenis Kelamin</option>
+                                                <option value="L">Laki-Laki</option>
+                                                <option value="P">Perempuan</option>
                                             </select>
                                         </fieldset>
                                     </div>
-                                    <div class="form-floating col-md-6">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Jabatan</label>
+                                        <input type="text" id="job_title" name="job_title" class="job_title form-control" required>
+                                    </div>
+                                    {{-- <div class="form-floating col-md-6">
                                         <fieldset class="form-group">
-                                            <label class="form-label">Status</label>
-                                            <select class="select2 form-select" name="status_user" id="status_user" required>
-                                                <option>Pilih Role</option>
-                                                <option value="0">Inactive</option>
-                                                <option value="1">Active</option>
+                                            <label class="form-label">Perusahaan</label>
+                                            <select class="select2 form-select" name="perusahaan_id" id="perusahaan_id" required>
+                                                <option selected disabled>Pilih Perusahaan</option>
+                                                @foreach ($perusahaan as $ph)
+                                                    <option value="{{ $ph->id }}">{{ $ph->nama_perusahaan }}</option>
+                                                @endforeach
                                             </select>
                                         </fieldset>
-                                    </div>
-                                    <div class="col-lg-12 mb-3">
+                                    </div> --}}
+                                    <div class="col-md-6 mb-3">
                                         <label for="exampleInputPassword1" class="form-label">Avatar</label>
                                         <input type="file" name="avatar" class="form-control">
                                     </div>
@@ -161,27 +316,7 @@
                     </div>
                 </div>
             </div>
-            {{-- End Modal Tambah User --}}
-
-            <!-- Modal Konfirmasi Delete -->
-            <div class="modal fade" tabindex="-1" role="dialog" id="modalHapus" data-backdrop="false">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">PERHATIAN</h5>
-                        </div>
-                        <div class="modal-body">
-                            <p><b>Jika menghapus karyawan maka</b></p>
-                            <p>*data karyawan tersebut hilang selamanya, apakah anda yakin?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" id="btn-hapus" data-target="#btn-hapus" class="btn btn-danger tambah_data" value="add">Hapus</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{-- End Modal Konfirmasi Delete --}}
+            {{-- End Modal Edit Karyawan --}}
             </div>
         </div>
         <!-- / Content -->
@@ -193,4 +328,22 @@
     <!-- Page JS -->
     <script src="{{ asset('Template/master/js/tables-datatables-basic.js') }}"></script>
     <script src="{{ asset('Template/master/js/skp/purchase.js') }}"></script>
+{{-- 
+    <script>
+        $("#rowAdder").click(function () {
+            newRowAdd =
+                '<label class="form-label mt-3">Nama Item</label>' +
+                '<select class="select2 form-select" name="nama_item" id="selectItem" required>' +
+                    '<option selected disabled>Pilih Item</option>' + 
+                    '@foreach ($item as $itm)' +
+                    '<option value="{{ $itm->id }}">{{ $itm->nama_item }}</option>' +
+                    '@endforeach' +
+                '</select>';
+ 
+            $('#newInput').append(newRowAdd);
+        });
+        $("body").on("click", "#DeleteRow", function () {
+            $(this).parents("#row").remove();
+        })
+    </script> --}}
 @endsection

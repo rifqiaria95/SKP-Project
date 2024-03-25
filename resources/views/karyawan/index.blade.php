@@ -32,7 +32,7 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="modal-judul">Tambah Data Perusahaan</h4>
+                            <h4 class="modal-title" id="modal-judul"></h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <form id="formKaryawan" class="form-horizontal" enctype="multipart/form-data">
@@ -43,16 +43,57 @@
                                 <ul id="save_errorList"></ul>
                                 <div class="row g-3">
                                     <div class="col-md-6">
-                                        <label class="form-label">Nama Perusahaan</label>
-                                        <input type="text" name="nama_perusahaan" class="nama_perusahaan form-control" required>
+                                        <label class="form-label">Nama Depan</label>
+                                        <input type="text" name="nama_depan" class="nama_depan form-control" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">Alamat Perusahaan</label>
-                                        <input type="text" name="alamat_perusahaan" class="alamat_perusahaan form-control">
+                                        <label class="form-label">Nama Belakang</label>
+                                        <input type="text" name="nama_belakang" class="nama_belakang form-control">
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">No. Tlp</label>
-                                        <input type="text" name="no_tlp_perusahaan" class="no_tlp_perusahaan form-control" required>
+                                        <label class="form-label">Tempat Lahir</label>
+                                        <input type="text" name="tempat_lahir" class="tempat_lahir form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Tanggal Lahir</label>
+                                        <input type="text" name="tanggal_lahir" class="tanggal_lahir form-control" required>
+                                    </div>
+                                    <div class="form-floating col-md-6">
+                                        <fieldset class="form-group">
+                                            <label class="form-label">Jenis Kelamin</label>
+                                            <select class="select2 form-select" name="jenis_kelamin" id="selectJK" required>
+                                                <option>Pilih Jenis Kelamin</option>
+                                                <option value="L">Laki-Laki</option>
+                                                <option value="P">Perempuan</option>
+                                            </select>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Status</label>
+                                        <input type="text" name="status" class="form-control" id="status" readonly="readonly" value="Karyawan">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Jabatan</label>
+                                        <input type="text" name="job_title" class="job_title form-control" required>
+                                    </div>
+                                    <div class="form-floating col-md-6">
+                                        <fieldset class="form-group">
+                                            <label class="form-label">Perusahaan</label>
+                                            <select class="select2 form-select" name="perusahaan_id" id="selectPerusahaan" required>
+                                                <option selected disabled>Pilih Perusahaan</option>
+                                                @foreach ($perusahaan as $ph)
+                                                    <option value="{{ $ph->id }}">{{ $ph->nama_perusahaan }}</option>
+                                                @endforeach
+                                            </select>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" name="email" class="email form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="exampleInputPassword1" class="form-label">Avatar</label>
+                                        <input type="file" name="avatar" class="form-control">
                                     </div>
                                 </div>
                             </div>
