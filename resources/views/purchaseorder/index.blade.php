@@ -326,7 +326,7 @@
                             <div class="row g-3">
                               <div class="col-md-6">
                                 <label class="form-label" for="multicol-first-name">Nama Item</label>
-                                <select id="item" name="item" class="select2 form-select mb-3" required>
+                                <select id="item_id" name="item_id" class="select2 form-select mb-3" required>
                                     <option selected disabled>Pilih Item</option>
                                     @foreach ($item as $itm)
                                         <option value="{{ $itm->id }}">{{ $itm->nama_item }}</option>

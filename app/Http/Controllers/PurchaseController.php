@@ -117,18 +117,21 @@ class PurchaseController extends Controller
 
     public function edit($id)
     {
-        $purchase = PurchaseOrder::find($id); // Dapatkan instance dari ModelA
+        $purchase = PurchaseOrder::find($id);
+        $item     = Item::find($id);
+        $item     = $purchase->item()->where('item_id', $item->id)->first()->pivot;
+        // $purchase->item()->where('item_id', $item->id)->first()->pivot;
 
-        // Akses relasi many-to-many dengan ModelB yang sudah menggunakan withPivot
-        $item = $purchase->item;
+        // // Akses relasi many-to-many dengan ModelB yang sudah menggunakan withPivot
+        // $item = $purchase->item;
 
-        // Iterasi melalui setiap ModelB dan akses ID dari pivot table
-        foreach ($item as $itm) {
-            $item_id = $itm->pivot->id;
-            // Lakukan sesuatu dengan $pivotId
-        }
+        // // Iterasi melalui setiap ModelB dan akses ID dari pivot table
+        // foreach ($item as $itm) {
+        //     $item_id = $itm->pivot->id;
+        //     // Lakukan sesuatu dengan $pivotId
+        // }
         
-        return response()->json($purchase);
+        return response()->json($item);
     }
 
     public function getDetail($id)

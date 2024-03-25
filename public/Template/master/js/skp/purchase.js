@@ -181,7 +181,7 @@ $(document).on('click', '.edit-purchase', function(e) {
     $('#perusahaan_id').select2({
         dropdownParent: $('#editModal')
     });
-    $('#item').select2({
+    $('#item_id').select2({
         dropdownParent: $('#editModal')
     });
 
@@ -208,7 +208,7 @@ $(document).on('click', '.edit-purchase', function(e) {
                 $('#status').val(response.status);
                 $('#vendor_id').val(response.vendor_id);
                 $('#perusahaan_id').val(response.perusahaan_id).trigger('change');
-                $('#item').val(response.item.nama_item);
+                $('#item_id').val(response.item_id);
             }
         },
         error: function(response) {
