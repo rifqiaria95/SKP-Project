@@ -74,8 +74,7 @@ class PurchaseController extends Controller
             $grand_total   = $request->grand_total;
             $quantity      = $request->quantity;
             $status        = $request->status;
-            $user_id       = $request->user_id;
-            $item_id       = $request->item_id;
+            $user_id       = auth()->user()->id;
             $vendor_id     = $request->vendor_id;
             $perusahaan_id = $request->perusahaan_id;
             
@@ -90,8 +89,8 @@ class PurchaseController extends Controller
             $purchase->grand_total   = $grand_total;
             $purchase->quantity      = $quantity;
             $purchase->status        = $status;
-            $purchase->user_id       = $user_id;
-            $purchase->ppn           = $vendor_id;
+            $purchase->user_id       = auth()->user()->id;
+            $purchase->vendor_id     = $vendor_id;
             $purchase->perusahaan_id = $perusahaan_id;
             $purchase->save();
 
