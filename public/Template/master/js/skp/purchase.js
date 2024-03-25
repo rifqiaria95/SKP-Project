@@ -83,7 +83,7 @@ $(document).ready(function() {
         $('#selectJK').select2({
             dropdownParent: $('#tambahModal')
         });
-        $('#selectPerusahaan').select2({
+        $('#selectPurchase').select2({
             dropdownParent: $('#tambahModal')
         });
     });
@@ -169,6 +169,99 @@ $(document).on('change', '#nama_vendor', function(e) {
 
 });
 
+
+// Function Edit Purchase
+$(document).on('click', '.edit-purchase', function(e) {
+    e.preventDefault();
+
+    var id = $(this).data('id');
+
+    $('#editModal').modal('show');
+    $('#titleEdit').html("Edit Data Purchase");
+    $('#perusahaan_id').select2({
+        dropdownParent: $('#editModal')
+    });
+    $('#item').select2({
+        dropdownParent: $('#editModal')
+    });
+
+    $.ajax({
+        type: "GET",
+        url: "/purchaseorder/edit/" + id,
+        success: function(response) {
+            console.log(response);
+            // Jika sukses maka munculkan notifikasi
+            if (response.status == 404) {
+                $('#success_message').addClass('alert alert-success');
+                $('#success_message').text(response.message);
+                $('#editModal').modal('hide');
+            } else {
+                $('#id').val(id);
+                $('#nomor_po').val(response.nomor_po);
+                $('#nama_po').val(response.nama_po);
+                $('#tanggal').val(response.editTanggal);
+                $('#harga').val(response.harga);
+                $('#total_harga').val(response.total_harga);
+                $('#ppn').val(response.ppn);
+                $('#grand_total').val(response.grand_total);
+                $('#quantity').val(response.quantity);
+                $('#status').val(response.status);
+                $('#vendor_id').val(response.vendor_id);
+                $('#perusahaan_id').val(response.perusahaan_id).trigger('change');
+                $('#item').val(response.item.nama_item);
+            }
+        },
+        error: function(response) {
+            console.log(response);
+        }
+    });
+    $('.btn-close').find('input').val('');
+
+});
+
+// Function Update Data Purchase
+$(document).on('submit', '#formEdit', function(e) {
+    e.preventDefault();
+    var id = $('#id').val();
+
+    // Mengubah data menjadi objek agar file image bisa diinput kedalam database
+    var EditFormData = new FormData($('#formEdit')[0]);
+
+    $.ajax({
+        type: "POST",
+        url: "/purchaseorder/update/" + id,
+        data: EditFormData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            console.log(response);
+            var oTable = $('#table-purchase').dataTable(); //inialisasi datatable
+            oTable.fnDraw(false); //reset datatable
+            if (response.status == 400) {
+                $('#modalJudulEdit').html("");
+                $('#modalJudulEdit').removeClass('d-none');
+                $.each(response.errors, function(key, err_value) {
+                    $('#modalJudulEdit').append('<li>' + err_value +
+                        '</li>');
+                });
+
+                $('#btn-update').text('Update');
+            } else if (response.status == 404) {
+                toastr.success(response.message);
+            } else if (response.status == 200) {
+                $('#modalJudulEdit').html("");
+                toastr.success(response.message);
+
+                $('#editModal').modal('hide');
+            }
+        },
+        error: function(response) {
+            console.log('Error:', response);
+        }
+    });
+
+});
+
 // Function get detail item
 $(document).on('change', '#nama_item', function(e) {
     e.preventDefault();
@@ -202,9 +295,9 @@ $(document).on('change', '#nama_item', function(e) {
 });
 
 // Function kalkulasi item + hitung pajak
-$('#harga, #quantity').on('change', function(){
-    var quantity    = $('#quantity').val();
-    var harga       = $('#harga').val();
+$('.harga, .quantity').on('change', function(){
+    var quantity    = $('.quantity').val();
+    var harga       = $('.harga').val();
     var tax         = 11
     var grand_total = (harga * tax) / 100;
     
@@ -212,7 +305,7 @@ $('#harga, #quantity').on('change', function(){
     console.log(harga);
     
     if(isNaN(harga) || isNaN(quantity)){
-		$('#total_harga').val('');
+		$('.total_harga').val('');
 		return;
 	}
 	
@@ -220,6 +313,6 @@ $('#harga, #quantity').on('change', function(){
 	grand_total = total * tax;
 	total       = Math.round((total + Number.EPSILON) * 100) / 100;
 
-	$('#total_harga').val(total.toLocaleString());
-	$('#grand_total').val(grand_total.toLocaleString());
+	$('.total_harga').val(total.toLocaleString());
+	$('.grand_total').val(grand_total.toLocaleString());
 });

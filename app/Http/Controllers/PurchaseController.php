@@ -23,7 +23,7 @@ class PurchaseController extends Controller
         // dd($kelas);
         if ($request->ajax()) {
             return datatables()->of($purchase)
-            ->addColumn('purchase', function(PurchaseOrder $purchase) {
+            ->addColumn('user', function(PurchaseOrder $purchase) {
                 return $purchase->user->name;
             })
             ->addColumn('aksi', function ($data) {
@@ -31,7 +31,7 @@ class PurchaseController extends Controller
                 <div class="btn-group me-2" role="group" aria-label="First group">
                     <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $data->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-purchase"><i class="fa-solid fa-pen"></i></a>
                     <button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
-                    <a href="purchase/view/' . $data->id . '" name="view" class="view btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
+                    <a href="purchase/detail/' . $data->id . '" name="view" class="view btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
                     </div>
                 </div>';
                 return $button;
@@ -41,12 +41,18 @@ class PurchaseController extends Controller
             ->toJson();
         }
 
-        return view('purchaseorder.index', compact(['purchase', 'user', 'item', 'vendor', 'perusahaan']));
+        return view('purchaseorder.index', compact(
+        [
+            'purchase',
+            'user',
+            'item',
+            'vendor',
+            'perusahaan'
+        ]));
     }
 
     public function store(Request $request)
     {
-
         $messages  = [
             'required' => 'Kolom :attribute harus diisi.',
             'string'   => 'Kolom :attribute harus berupa teks.',
@@ -58,7 +64,7 @@ class PurchaseController extends Controller
         $validator = Validator::make($request->all(), [
             'nomor_po' => 'required|max:100',
             'nama_po'     => 'required'
-        ],$messages);
+        ], $messages);
 
         if ($validator->fails()) {
             return response()->json([
@@ -96,14 +102,7 @@ class PurchaseController extends Controller
             $purchase->perusahaan_id = $perusahaan_id;
             $purchase->save();
 
-            $purchaseId = $purchaseId->id;
-
-            $item = new Item();
-            // Lakukan pengisian atribut-atribut Item
-            $item->item_id     = $item_id;
-            $item->purchase_id = $purchase_id;
-            $item->save();
-            $purchaseOrder->item()->attach($item->id);
+            $purchase->item()->attach($request->item);
 
             // Tambahkan aktivitas log
             \ActivityLog::addToLog('Menambah data PO');
@@ -114,6 +113,22 @@ class PurchaseController extends Controller
                 'message' => 'Data PO berhasil ditambahkan. '
             ]);
         }
+    }
+
+    public function edit($id)
+    {
+        $purchase = PurchaseOrder::find($id); // Dapatkan instance dari ModelA
+
+        // Akses relasi many-to-many dengan ModelB yang sudah menggunakan withPivot
+        $item = $purchase->item;
+
+        // Iterasi melalui setiap ModelB dan akses ID dari pivot table
+        foreach ($item as $itm) {
+            $item_id = $itm->pivot->id;
+            // Lakukan sesuatu dengan $pivotId
+        }
+        
+        return response()->json($purchase);
     }
 
     public function getDetail($id)
