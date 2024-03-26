@@ -93,7 +93,14 @@ class PurchaseController extends Controller
             //         'quantity'          => $prc->quantity
             //     ]); // Jika ada atribut tambahan pada pivot
             // }
-            $purchase->item()->attach($request->item);
+
+            $purchase->item()->attach($request->item, [
+                'harga'             => $request->harga,
+                'total_harga'       => $request->total_harga,
+                'ppn'               => $request->ppn,
+                'grand_total'       => $request->grand_total,
+                'quantity'          => $request->quantity
+            ]);
 
             // Tambahkan aktivitas log
             \ActivityLog::addToLog('Menambah data PO');
