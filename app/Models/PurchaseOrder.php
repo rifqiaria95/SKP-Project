@@ -17,7 +17,7 @@ class PurchaseOrder extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withPivot(['item_id', 'purchase_order_id', 'harga', 'total_harga', 'ppn', 'grand_total', 'quantity']);
     }
 
     public function item()

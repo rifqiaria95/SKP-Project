@@ -138,7 +138,6 @@ class VendorController extends Controller
         }
     }
 
-
     public function destroy($id)
     {
         $vendor = Vendor::find($id);

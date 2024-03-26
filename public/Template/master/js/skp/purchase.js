@@ -9,6 +9,9 @@ $(document).ready(function() {
 //MULAI DATATABLE
 //script untuk memanggil data json dari server dan menampilkannya berupa datatable
 $(document).ready(function() {
+
+    'use strict';
+
     // $.noConflict();
     $('#table-purchase').DataTable({
         dom:
@@ -69,6 +72,112 @@ $(document).ready(function() {
     });
 });
 
+// Function kalkulasi item + hitung pajak
+$('.harga, .quantity').on('change', function(){
+    var quantity    = $('.quantity').val();
+    var harga       = $('.harga').val();
+    var tax         = 0.11
+    var grand_total = (harga * tax) / 100;
+    
+    harga = Number(harga.toLocaleString().replace(/[^0-9\.-]+/g,""));
+    // console.log(harga);
+    
+    if(isNaN(harga) || isNaN(quantity)){
+		$('.total_harga').val('');
+		return;
+	}
+	
+	total       = quantity * harga;
+	totalTax    = total * tax;
+	grand_total = totalTax + total;
+	total       = Math.round((total + Number.EPSILON) * 100) / 100;
+
+	$('.total_harga').val(total.toLocaleString());
+	$('.grand_total').val(grand_total.toLocaleString());
+});
+
+(function () {
+    const invoiceDateList = document.querySelectorAll('.date-picker');
+  
+    // Datepicker
+    if (invoiceDateList) {
+      invoiceDateList.forEach(function (invoiceDateEl) {
+        invoiceDateEl.flatpickr({
+          monthSelectorType: 'static'
+        });
+      });
+    }
+})();
+
+$("#addItem").on("click", function () {
+    // Adding a row inside the tbody.
+    $("#repeater").append(`
+        <div class="d-flex border rounded position-relative pe-0">
+            <div class="row w-100 p-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="multicol-first-name">Nama Item</label>
+                    <select name="item" class="select2 form-select" required>
+                        <option selected disabled>Pilih Item</option>
+                        <option value="Tes">Tes</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="multicol-phone">Harga</label>
+                    <input
+                    type="text"
+                    name="harga"
+                    class="form-control harga"
+                    placeholder="Masukkan harga item"
+                    aria-label="Masukkan harga item"
+                    />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="multicol-phone">Quantity</label>
+                    <input
+                    type="text"
+                    name="quantity"
+                    class="form-control quantity"
+                    placeholder="Masukkan quantity"
+                    aria-label="Masukkan quantity"
+                    />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="multicol-phone">Total Harga</label>
+                    <input
+                    type="text"
+                    name="total_harga"
+                    class="form-control total_harga"
+                    placeholder="Total Harga"
+                    aria-label="Total Harga"
+                    />
+                </div>
+                <div class="col-md-6 select2-primary">
+                    <label class="form-label" for="multicol-language">PPN</label>
+                    <input
+                    type="text"
+                    name="ppn"
+                    value="11%"
+                    class="form-control ppn"
+                    placeholder="PPN 11%"
+                    aria-label="PPN 11%"
+                    />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="multicol-birthdate">Grand Total</label>
+                    <input
+                    type="text"
+                    name="grand_total"
+                    class="form-control grand_total"
+                    placeholder="Grand Total"
+                    />
+                </div>
+            </div>
+            <div class="d-flex flex-column align-items-center justify-content-between border-start p-2">
+                <i class="ti ti-x cursor-pointer" data-repeater-delete></i>
+            </div>
+        </div>`
+    );
+});
 
 // Function untuk tombol tambah purchase dan tampilkan modal
 $(document).ready(function() {
@@ -80,10 +189,10 @@ $(document).ready(function() {
         $('#tambahModal').modal('show');
         $('#formPurchase').trigger("reset");
         $('#modal-judul').html("Tambah PO");
-        $('#selectJK').select2({
+        $('#perusahaan_id').select2({
             dropdownParent: $('#tambahModal')
         });
-        $('#selectPurchase').select2({
+        $('#vendor_id').select2({
             dropdownParent: $('#tambahModal')
         });
     });
@@ -134,42 +243,6 @@ if ($("#formPurchase").length > 0) {
     })
 }
 
-// Function get job title
-$(document).on('change', '#nama_vendor', function(e) {
-    e.preventDefault();
-
-    var id  = $(this).val();
-    var url =  "/purchaseorder/getDetail/" + id,
-    url 	= url.replace(':id', id);
-
-    $.ajax({
-        type    : "GET",
-        url     : url,
-        dataType: 'json',
-        success: function(response) {
-            console.log(response);
-            // Jika sukses maka munculkan notifikasi
-            if (response.status == 404) {
-                $('#success_message').addClass('alert alert-success');
-                $('#success_message').text(response.message);
-            } else {
-                $('#id').val(id);
-                $('#pic').val(response.pic).trigger('change');
-                $('#jabatan_pic').val(response.jabatan_pic);
-                $('#no_tlp').val(response.no_tlp);
-                $('#alamat').val(response.alamat);
-                $('#note').val(response.note);
-            }
-        },
-        error: function(jqXHR, exception) {
-            // console.log(response);
-            alert(jqXHR.responseText);
-        }
-    });
-
-});
-
-
 // Function Edit Purchase
 $(document).on('click', '.edit-purchase', function(e) {
     e.preventDefault();
@@ -181,6 +254,9 @@ $(document).on('click', '.edit-purchase', function(e) {
     $('#perusahaan_id').select2({
         dropdownParent: $('#editModal')
     });
+    $('#vendor_id').select2({
+        dropdownParent: $('#editModal')
+    });
     $('#item_id').select2({
         dropdownParent: $('#editModal')
     });
@@ -189,7 +265,7 @@ $(document).on('click', '.edit-purchase', function(e) {
         type: "GET",
         url: "/purchaseorder/edit/" + id,
         success: function(response) {
-            console.log(response);
+            // console.log(response);
             // Jika sukses maka munculkan notifikasi
             if (response.status == 404) {
                 $('#success_message').addClass('alert alert-success');
@@ -199,7 +275,7 @@ $(document).on('click', '.edit-purchase', function(e) {
                 $('#id').val(id);
                 $('#nomor_po').val(response.nomor_po);
                 $('#nama_po').val(response.nama_po);
-                $('#tanggal').val(response.editTanggal);
+                $('#tanggal').val(response.tanggal);
                 $('#harga').val(response.harga);
                 $('#total_harga').val(response.total_harga);
                 $('#ppn').val(response.ppn);
@@ -208,7 +284,7 @@ $(document).on('click', '.edit-purchase', function(e) {
                 $('#status').val(response.status);
                 $('#vendor_id').val(response.vendor_id);
                 $('#perusahaan_id').val(response.perusahaan_id).trigger('change');
-                $('#item_id').val(response.item_id);
+                $('#item_id').val(response.item[0].id).trigger('change');
             }
         },
         error: function(response) {
@@ -234,7 +310,7 @@ $(document).on('submit', '#formEdit', function(e) {
         contentType: false,
         processData: false,
         success: function(response) {
-            console.log(response);
+            // console.log(response);
             var oTable = $('#table-purchase').dataTable(); //inialisasi datatable
             oTable.fnDraw(false); //reset datatable
             if (response.status == 400) {
@@ -247,7 +323,7 @@ $(document).on('submit', '#formEdit', function(e) {
 
                 $('#btn-update').text('Update');
             } else if (response.status == 404) {
-                toastr.success(response.message);
+                toastr.error(response.message);
             } else if (response.status == 200) {
                 $('#modalJudulEdit').html("");
                 toastr.success(response.message);
@@ -260,6 +336,39 @@ $(document).on('submit', '#formEdit', function(e) {
         }
     });
 
+});
+
+// Function Delete
+//jika klik class delete (yang ada pada tombol delete) maka tampilkan modal konfirmasi hapus maka
+$('body').on('click', '.delete', function() {
+    id = $(this).attr('id');
+    $('#modalHapus').modal('show');
+});
+//jika tombol hapus pada modal konfirmasi di klik maka
+$('#btn-hapus').click(function(e) {
+    e.preventDefault();
+    $.ajax({
+        url: "/purchaseorder/delete/" + id, //eksekusi ajax ke url ini
+        type: 'delete',
+        beforeSend: function() {
+            $('#btn-hapus').text('Hapus Data...'); //set text untuk tombol hapus
+        },
+        success: function(response) { //jika sukses
+            setTimeout(function() {
+                $('#modalHapus').modal('hide');
+                var oTable = $('#table-purchase').dataTable();
+                oTable.fnDraw(false); //reset datatable
+                if (response.status == 404) {
+                    toastr.success(response.message);
+                } else if (response.status == 200) {
+                    toastr.success(response.message);
+                }
+            });
+        },
+        error: function(response) {
+            console.log('Error:', response);
+        }
+    })
 });
 
 // Function get detail item
@@ -294,25 +403,37 @@ $(document).on('change', '#nama_item', function(e) {
 
 });
 
-// Function kalkulasi item + hitung pajak
-$('.harga, .quantity').on('change', function(){
-    var quantity    = $('.quantity').val();
-    var harga       = $('.harga').val();
-    var tax         = 11
-    var grand_total = (harga * tax) / 100;
-    
-    harga = Number(harga.toLocaleString().replace(/[^0-9\.-]+/g,""));
-    console.log(harga);
-    
-    if(isNaN(harga) || isNaN(quantity)){
-		$('.total_harga').val('');
-		return;
-	}
-	
-	total       = quantity * harga;
-	grand_total = total * tax;
-	total       = Math.round((total + Number.EPSILON) * 100) / 100;
+// Function get job title
+$(document).on('change', '#nama_vendor', function(e) {
+    e.preventDefault();
 
-	$('.total_harga').val(total.toLocaleString());
-	$('.grand_total').val(grand_total.toLocaleString());
+    var id  = $(this).val();
+    var url =  "/purchaseorder/getDetail/" + id,
+    url 	= url.replace(':id', id);
+
+    $.ajax({
+        type    : "GET",
+        url     : url,
+        dataType: 'json',
+        success: function(response) {
+            console.log(response);
+            // Jika sukses maka munculkan notifikasi
+            if (response.status == 404) {
+                $('#success_message').addClass('alert alert-success');
+                $('#success_message').text(response.message);
+            } else {
+                $('#id').val(id);
+                $('#pic').val(response.pic).trigger('change');
+                $('#jabatan_pic').val(response.jabatan_pic);
+                $('#no_tlp').val(response.no_tlp);
+                $('#alamat').val(response.alamat);
+                $('#note').val(response.note);
+            }
+        },
+        error: function(jqXHR, exception) {
+            // console.log(response);
+            alert(jqXHR.responseText);
+        }
+    });
+
 });

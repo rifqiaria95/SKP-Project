@@ -110,7 +110,7 @@
     <!-- Page JS -->
     <script src="{{ asset('Template/master/js/dashboards-analytics.js') }}"></script>
     <script src="{{ asset('Template/master/js/skp/dashboard.js') }}"></script>
-    <script src="{{ asset('Template/master/js/app-invoice-add.js') }}"></script>
+    {{-- <script src="{{ asset('Template/master/js/app-invoice-add.js') }}"></script> --}}
 
     {!! Toastr::message() !!}
 

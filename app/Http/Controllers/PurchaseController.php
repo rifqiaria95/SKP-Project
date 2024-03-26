@@ -63,7 +63,7 @@ class PurchaseController extends Controller
         
         $validator = Validator::make($request->all(), [
             'nomor_po' => 'required|max:100',
-            'nama_po'     => 'required'
+            'nama_po'  => 'required'
         ], $messages);
 
         if ($validator->fails()) {
@@ -73,35 +73,26 @@ class PurchaseController extends Controller
             ]);
         } else {
 
-            $nomor_po      = $request->nomor_po;
-            $nama_po       = $request->nama_po;
-            $tanggal       = $request->tanggal;
-            $harga         = $request->harga;
-            $total_harga   = $request->total_harga;
-            $ppn           = $request->ppn;
-            $grand_total   = $request->grand_total;
-            $quantity      = $request->quantity;
-            $status        = $request->status;
-            $user_id       = auth()->user()->id;
-            $vendor_id     = $request->vendor_id;
-            $perusahaan_id = $request->perusahaan_id;
-            
-            // Buat objek Vendor dan simpan data jika memenuhi syarat
-            $purchase = new PurchaseOrder;
-            $purchase->nomor_po      = $nomor_po;
-            $purchase->nama_po       = $nama_po;
-            $purchase->tanggal       = $tanggal;
-            $purchase->harga         = $harga;
-            $purchase->total_harga   = $total_harga;
-            $purchase->ppn           = $ppn;
-            $purchase->grand_total   = $grand_total;
-            $purchase->quantity      = $quantity;
-            $purchase->status        = $status;
+            $purchase                = new PurchaseOrder;
+            $purchase->nomor_po      = $request->nomor_po;
+            $purchase->nama_po       = $request->nama_po;
+            $purchase->tanggal       = $request->tanggal;
+            $purchase->status        = $request->status;
             $purchase->user_id       = auth()->user()->id;
-            $purchase->vendor_id     = $vendor_id;
-            $purchase->perusahaan_id = $perusahaan_id;
+            $purchase->vendor_id     = $request->vendor_id;
+            $purchase->perusahaan_id = $request->perusahaan_id;
             $purchase->save();
 
+            // foreach ($purchase as $prc) {
+            //     $purchase->item()->attach($request->item, [
+            //         'item_id'           => $prc->item_id,
+            //         'harga'             => $prc->harga,
+            //         'total_harga'       => $prc->total_harga,
+            //         'ppn'               => $prc->ppn,
+            //         'grand_total'       => $prc->grand_total,
+            //         'quantity'          => $prc->quantity
+            //     ]); // Jika ada atribut tambahan pada pivot
+            // }
             $purchase->item()->attach($request->item);
 
             // Tambahkan aktivitas log
@@ -119,19 +110,86 @@ class PurchaseController extends Controller
     {
         $purchase = PurchaseOrder::find($id);
         $item     = Item::find($id);
-        $item     = $purchase->item()->where('item_id', $item->id)->first()->pivot;
-        // $purchase->item()->where('item_id', $item->id)->first()->pivot;
-
-        // // Akses relasi many-to-many dengan ModelB yang sudah menggunakan withPivot
-        // $item = $purchase->item;
-
-        // // Iterasi melalui setiap ModelB dan akses ID dari pivot table
-        // foreach ($item as $itm) {
-        //     $item_id = $itm->pivot->id;
-        //     // Lakukan sesuatu dengan $pivotId
-        // }
+        foreach ($purchase->item as $itm) {
+            $itm->pivot->item_purchase_order;
+        }
         
-        return response()->json($item);
+        return response()->json($purchase);
+    }
+
+    public function update($id, Request $request)
+    {
+        $messages  = [
+            'required' => 'Kolom :attribute harus diisi.',
+            'string'   => 'Kolom :attribute harus berupa huruf.',
+            'numeric'  => 'Kolom :attribute harus berupa angka.',
+            'alpha'    => 'Kolom :attribute harus berupa huruf.',
+            'max'      => 'Kolom :attribute maksimal :max kata.',
+        ];
+        
+        $validator = Validator::make($request->all(), [
+            'nomor_po' => 'required|max:100',
+            'nama_po'  => 'required'
+        ],$messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->messages(),
+            ]);
+        } else {
+
+            \ActivityLog::addToLog('Mengedit data PO');
+
+            $item                    = Item::find($id);
+            $purchase                = PurchaseOrder::find($id);
+            $purchase->nomor_po      = $request->nomor_po;
+            $purchase->nama_po       = $request->nama_po;
+            $purchase->tanggal       = $request->tanggal;
+            $purchase->harga         = $request->harga;
+            $purchase->total_harga   = $request->total_harga;
+            $purchase->ppn           = $request->ppn;
+            $purchase->grand_total   = $request->grand_total;
+            $purchase->quantity      = $request->quantity;
+            $purchase->status        = $request->status;
+            $purchase->user_id       = auth()->user()->id;
+            $purchase->vendor_id     = $request->vendor_id;
+            $purchase->perusahaan_id = $request->perusahaan_id;
+            $purchase->save();
+            
+            $purchase->item()->updateExistingPivot($id, [
+                'item_id' => $request->item_id
+            ]);
+
+            return response()->json([
+                'status'    => 200,
+                'message'   => 'Sukses! Data PO berhasil diupdate'
+            ]);
+        }
+    }
+
+    
+    public function destroy($id)
+    {
+        $purchase = PurchaseOrder::find($id);
+        $item     = Item::find($id);
+
+        $purchase->item()->detach();
+
+        \ActivityLog::addToLog('Menghapus data purchase');
+
+        if ($purchase) {
+            $purchase->delete();
+            return response()->json([
+                'status'    => 200,
+                'message'   => 'Sukses! Data purchase berhasil dihapus'
+            ]);
+        } else {
+            return response()->json([
+                'status'    => 404,
+                'errors'    => 'Error! Data purchase tidak ditemukan'
+            ]);
+        }
     }
 
     public function getDetail($id)

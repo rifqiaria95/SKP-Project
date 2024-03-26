@@ -107,13 +107,13 @@
             
             <!-- Modal Tambah purchase -->
             <div class="modal fade text-start" id="tambahModal" tabindex="-1" aria-labelledby="myModalLabel18" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" id="modal-judul">Tambah Purchase Order</h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form id="formPurchase" class="card-body" enctype="multipart/form-data">
+                        <form id="formPurchase" class="card-body source-item" enctype="multipart/form-data">
                             @csrf
                             <h6>Detail PO</h6>
                             <input type="hidden" name="user_id" id="user_id">
@@ -155,7 +155,7 @@
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label" for="multicol-first-name">Perusahaan</label>
-                                    <select name="perusahaan_id" class="select2 form-select mb-3" required>
+                                    <select id="selectPr" name="perusahaan_id" class="select2 form-select mb-3" required>
                                         <option selected disabled>Pilih Perusahaan</option>
                                         @foreach ($perusahaan as $ps)
                                             <option value="{{ $ps->id }}">{{ $ps->nama_perusahaan }}</option>
@@ -168,7 +168,7 @@
                             <div class="row g-3">
                               <div class="col-12">
                                 <label class="form-label" for="multicol-first-name">Nama Vendor</label>
-                                <select name="vendor_id" class="select2 form-select mb-3" required>
+                                <select id="selectVendor" name="vendor_id" class="select2 form-select" required>
                                     <option selected disabled>Pilih Vendor</option>
                                     @foreach ($vendor as $vd)
                                         <option value="{{ $vd->id }}">{{ $vd->nama_vendor }}</option>
@@ -178,10 +178,88 @@
                             </div>
                             <hr class="my-4 mx-n4" />
                             <h6>Detail Item</h6>
-                            <div class="row g-3">
+                            <div class="mb-3" data-repeater-list="group-a">
+                                <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
+                                    <div class="d-flex border rounded position-relative pe-0">
+                                        <div class="row w-100 p-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="multicol-first-name">Nama Item</label>
+                                                <select name="item_id" class="select2 form-select" required>
+                                                    <option selected disabled>Pilih Item</option>
+                                                    @foreach ($item as $itm)
+                                                        <option value="{{ $itm->id }}">{{ $itm->nama_item }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="multicol-phone">Harga</label>
+                                                <input
+                                                type="text"
+                                                name="harga"
+                                                class="form-control harga"
+                                                placeholder="Masukkan harga item"
+                                                aria-label="Masukkan harga item"
+                                                />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="multicol-phone">Quantity</label>
+                                                <input
+                                                type="text"
+                                                name="quantity"
+                                                class="form-control quantity"
+                                                placeholder="Masukkan quantity"
+                                                aria-label="Masukkan quantity"
+                                                />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="multicol-phone">Total Harga</label>
+                                                <input
+                                                type="text"
+                                                name="total_harga"
+                                                class="form-control total_harga"
+                                                placeholder="Total Harga"
+                                                aria-label="Total Harga"
+                                                />
+                                            </div>
+                                            <div class="col-md-6 select2-primary">
+                                                <label class="form-label" for="multicol-language">PPN</label>
+                                                <input
+                                                type="text"
+                                                name="ppn"
+                                                value="11%"
+                                                class="form-control ppn"
+                                                placeholder="PPN 11%"
+                                                aria-label="PPN 11%"
+                                                />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="multicol-birthdate">Grand Total</label>
+                                                <input
+                                                type="text"
+                                                name="grand_total"
+                                                class="form-control grand_total"
+                                                placeholder="Grand Total"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column align-items-center justify-content-between border-start p-2">
+                                            <i class="ti ti-x cursor-pointer" data-repeater-delete></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                <div id="repeater" class="mb-3" data-repeater-list="group-a">
+
+                                </div>
+                                <div class="row pb-4">
+                                <div class="col-12">
+                                    <button id="addItem" type="button" class="btn btn-primary" data-repeater-create>Add Item</button>
+                                </div>
+                            </div>
+                            {{-- <div class="row g-3">
                               <div class="col-md-6">
                                 <label class="form-label" for="multicol-first-name">Nama Item</label>
-                                <select name="item" class="select2 form-select mb-3" required>
+                                <select name="item" class="select2 form-select" required>
                                     <option selected disabled>Pilih Item</option>
                                     @foreach ($item as $itm)
                                         <option value="{{ $itm->id }}">{{ $itm->nama_item }}</option>
@@ -193,7 +271,7 @@
                                 <input
                                   type="text"
                                   name="harga"
-                                  class="form-control hargak "
+                                  class="form-control harga"
                                   placeholder="Masukkan harga item"
                                   aria-label="Masukkan harga item"
                                 />
@@ -223,9 +301,11 @@
                                 <input
                                   type="text"
                                   name="ppn"
+                                  value="11"
                                   class="form-control ppn"
                                   placeholder="PPN 11%"
                                   aria-label="PPN 11%"
+                                  readonly="readonly"
                                 />
                               </div>
                               <div class="col-md-6">
@@ -234,14 +314,14 @@
                                   type="text"
                                   name="grand_total"
                                   class="form-control grand_total"
-                                  placeholder="Manager"
+                                  placeholder="Grand Total"
                                 />
                               </div>
-                            </div>
+                            </div> --}}
                             <div class="pt-4">
                                 <button type="submit" class="btn btn-primary btn-block" id="btn-simpan" value="create">Simpan
                                 </button>
-                              <button type="reset" class="btn btn-label-secondary">Cancel</button>
+                                <button type="reset" class="btn btn-label-secondary mx-3">Cancel</button>
                             </div>
                           </form>
                     </div>
@@ -255,12 +335,14 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" id="modal-judul">Tambah Purchase Order</h4>
+                            <ul class="alert alert-warning d-none" id="modalJudulEdit"></ul>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <form id="formEdit" name="formEdit" class="card-body" enctype="multipart/form-data">
                             @csrf
                             <h6>Detail PO</h6>
-                            <input type="hidden" name="user_id" id="user_id" value="{{ auth()->user()->name }}">
+                            <input type="hidden" name="id" id="id">
+                            <input type="hidden" name="user_id" id="user_id">
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label" for="multicol-username">Nomor PO</label>
@@ -372,9 +454,11 @@
                                   type="text"
                                   id="ppn"
                                   name="ppn"
+                                  value="11"
                                   class="form-control ppn"
                                   placeholder="PPN 11%"
                                   aria-label="PPN 11%"
+                                  readonly="readonly"
                                 />
                               </div>
                               <div class="col-md-6">
@@ -389,15 +473,34 @@
                               </div>
                             </div>
                             <div class="pt-4">
-                                <button type="submit" class="btn btn-primary btn-block" id="btn-simpan" value="create">Simpan
+                                <button type="submit" class="btn btn-primary btn-block" id="btn-update" value="create">Simpan
                                 </button>
-                              <button type="reset" class="btn btn-label-secondary">Cancel</button>
+                              <button type="reset" class="btn btn-label-secondary mx-3">Cancel</button>
                             </div>
                           </form>
                     </div>
                 </div>
             </div>
             {{-- End Modal Edit Karyawan --}}
+            <!-- Modal Konfirmasi Delete -->
+            <div class="modal fade" tabindex="-1" role="dialog" id="modalHapus" data-backdrop="false">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">PERHATIAN</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p><b>Jika menghapus purchase order maka</b></p>
+                            <p>*data purchase order tersebut hilang selamanya, apakah anda yakin?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" id="btn-hapus" data-target="#btn-hapus" class="btn btn-danger tambah_data" value="add">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- End Modal Konfirmasi Delete --}}
             </div>
         </div>
         <!-- / Content -->
@@ -409,22 +512,4 @@
     <!-- Page JS -->
     <script src="{{ asset('Template/master/js/tables-datatables-basic.js') }}"></script>
     <script src="{{ asset('Template/master/js/skp/purchase.js') }}"></script>
-{{-- 
-    <script>
-        $("#rowAdder").click(function () {
-            newRowAdd =
-                '<label class="form-label mt-3">Nama Item</label>' +
-                '<select class="select2 form-select" name="nama_item" id="selectItem" required>' +
-                    '<option selected disabled>Pilih Item</option>' + 
-                    '@foreach ($item as $itm)' +
-                    '<option value="{{ $itm->id }}">{{ $itm->nama_item }}</option>' +
-                    '@endforeach' +
-                '</select>';
- 
-            $('#newInput').append(newRowAdd);
-        });
-        $("body").on("click", "#DeleteRow", function () {
-            $(this).parents("#row").remove();
-        })
-    </script> --}}
 @endsection
