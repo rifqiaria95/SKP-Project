@@ -72,60 +72,57 @@ $(document).ready(function() {
     });
 });
 
-// Function kalkulasi item + hitung pajak
-$('.harga, .quantity').on('change', function(){
-    var quantity    = $('.quantity').val();
-    var harga       = $('.harga').val();
-    var tax         = 0.11
-    var grand_total = (harga * tax) / 100;
-    
-    harga = Number(harga.toLocaleString().replace(/[^0-9\.-]+/g,""));
-    // console.log(harga);
-    
-    if(isNaN(harga) || isNaN(quantity)){
-		$('.total_harga').val('');
-		return;
-	}
-	
-	total       = quantity * harga;
-	totalTax    = total * tax;
-	grand_total = totalTax + total;
-	total       = Math.round((total + Number.EPSILON) * 100) / 100;
+function calculateTotalAndGrandTotal() {
+    var total      = 0;
+    var grandTotal = 0;
+    var tax        = 0.11;
 
-	$('.total_harga').val(total.toLocaleString('id-ID'));
-	$('.total_harga').text(total.toLocaleString('id-ID'));
-	$('.grand_total').val(grand_total.toLocaleString('id-ID'));
-	$('.grand_total').text(grand_total.toLocaleString('id-ID'));
-});
+    // Calculation for the initial set of elements
+    var quantity = $('.quantity').val();
+    var harga    = $('.harga').val();
 
+    if (!isNaN(parseFloat(harga)) && !isNaN(parseFloat(quantity))) {
+        var subTotal = parseFloat(quantity) * parseFloat(harga);
+        var totalTax = subTotal * tax;
+        total      = subTotal;
+        grandTotal = total + totalTax;
+    }
 
-// Function kalkulasi item + hitung pajak
-$('#repeater').on('change', '.harga2, .quantity2', function(){
+    $('.total_harga').val(total.toLocaleString('id-ID'));
+    $('.total_harga').text(total.toLocaleString('id-ID'));
+    $('.grand_total').val(grandTotal.toLocaleString('id-ID'));
+    $('.grand_total').text(grandTotal.toLocaleString('id-ID'));
+
+    // Calculation for dynamically added elements
     $('.repeater2').each(function() {
-        var quantity = $(this).find('.quantity2').val();
-        var harga = $(this).find('.harga2').val();
-        var total_harga = 0;
+        var quantity   = $(this).find('.quantity2').val();
+        var harga      = $(this).find('.harga2').val();
+        var totalHarga = 0;
 
         if (!isNaN(parseFloat(harga)) && !isNaN(parseFloat(quantity))) {
-            total_harga = parseFloat(quantity) * parseFloat(harga);
+            totalHarga = parseFloat(quantity) * parseFloat(harga);
+            var subTotal = totalHarga;
+            var totalTax = subTotal * tax;
+            totalHarga = subTotal + totalTax;
+            grandTotal += totalHarga;
         }
 
-        $(this).find('.total_harga2').val(total_harga.toLocaleString('id-ID'));
-        $(this).find('.total_harga2').text(total_harga.toLocaleString('id-ID'));
-    });
-
-    // Calculate Grand Total
-    var grandTotal = 0;
-    $('.total_harga2').each(function() {
-        var harga = parseFloat($(this).val().replace(/[^0-9\.-]+/g,""));
-        if (!isNaN(harga)) {
-            grandTotal += harga;
-        }
+        $(this).find('.total_harga2').val(totalHarga.toLocaleString('id-ID'));
+        $(this).find('.total_harga2').text(totalHarga.toLocaleString('id-ID'));
     });
 
     $('.grand_total2').val(grandTotal.toLocaleString('id-ID'));
     $('.grand_total2').text(grandTotal.toLocaleString('id-ID'));
+}
+
+// Call the function initially and bind it to the change event
+$(document).ready(function() {
+    calculateTotalAndGrandTotal();
+
+    $('.harga, .quantity').on('change', calculateTotalAndGrandTotal);
+    $('#repeater').on('change', '.harga2, .quantity2', calculateTotalAndGrandTotal);
 });
+
 
 (function () {
     const invoiceDateList = document.querySelectorAll('.date-picker');
