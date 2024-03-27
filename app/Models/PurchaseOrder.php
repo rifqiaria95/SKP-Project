@@ -17,12 +17,12 @@ class PurchaseOrder extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class)->withPivot(['item_id', 'purchase_order_id', 'harga', 'total_harga', 'ppn', 'grand_total', 'quantity']);
+        return $this->belongsTo(User::class);
     }
 
     public function item()
     {
-        return $this->belongsToMany(Item::class);
+        return $this->belongsToMany(Item::class)->withPivot(['total_harga', 'quantity']);
     }
 
     public function vendor()

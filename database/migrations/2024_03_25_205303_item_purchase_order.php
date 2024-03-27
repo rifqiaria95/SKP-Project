@@ -15,10 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('item_id')->length(11);
             $table->unsignedBigInteger('purchase_order_id')->length(11);
-            $table->string('harga')->length(100);
-            $table->string('total_harga')->length(100);
-            $table->string('ppn')->length(100);
-            $table->string('grand_total')->length(100);
+            $table->decimal('total_harga', 10, 10)->default(0);
             $table->string('quantity')->length(100);
             $table->timestamps();
         });

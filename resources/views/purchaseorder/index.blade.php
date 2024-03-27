@@ -181,64 +181,46 @@
                             <div class="mb-3" data-repeater-list="group-a">
                                 <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
                                     <div class="d-flex border rounded position-relative pe-0">
-                                        <div class="row w-100 p-3">
-                                            <div class="col-md-6">
+                                        <div id="rowAja" class="row w-100 p-3">
+                                            <div class="col-md-4">
                                                 <label class="form-label" for="multicol-first-name">Nama Item</label>
-                                                <select name="item_id" class="select2 form-select" required>
+                                                <select name="item[]" id="getItem1" class="select2 form-select" required>
                                                     <option selected disabled>Pilih Item</option>
                                                     @foreach ($item as $itm)
                                                         <option value="{{ $itm->id }}">{{ $itm->nama_item }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-3 col-12 mb-md-0 mb-3">
                                                 <label class="form-label" for="multicol-phone">Harga</label>
                                                 <input
                                                 type="text"
-                                                name="harga"
+                                                id="getHarga"
                                                 class="form-control harga"
-                                                placeholder="Masukkan harga item"
-                                                aria-label="Masukkan harga item"
+                                                placeholder="Harga item"
+                                                aria-label="Masukkan quantity"
+                                                readonly="readonly"
                                                 />
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-2 col-12 mb-md-0 mb-3">
                                                 <label class="form-label" for="multicol-phone">Quantity</label>
                                                 <input
                                                 type="text"
-                                                name="quantity"
+                                                name="quantity[]"
                                                 class="form-control quantity"
-                                                placeholder="Masukkan quantity"
+                                                placeholder="1"
                                                 aria-label="Masukkan quantity"
                                                 />
                                             </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label" for="multicol-phone">Total Harga</label>
+                                            <div class="col-md-3 col-12">
+                                                <label class="form-label" for="multicol-phone">Total</label>
                                                 <input
                                                 type="text"
-                                                name="total_harga"
+                                                name="total_harga[]"
                                                 class="form-control total_harga"
                                                 placeholder="Total Harga"
                                                 aria-label="Total Harga"
-                                                />
-                                            </div>
-                                            <div class="col-md-6 select2-primary">
-                                                <label class="form-label" for="multicol-language">PPN</label>
-                                                <input
-                                                type="text"
-                                                name="ppn"
-                                                value="11%"
-                                                class="form-control ppn"
-                                                placeholder="PPN 11%"
-                                                aria-label="PPN 11%"
-                                                />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label" for="multicol-birthdate">Grand Total</label>
-                                                <input
-                                                type="text"
-                                                name="grand_total"
-                                                class="form-control grand_total"
-                                                placeholder="Grand Total"
+                                                readonly="readonly"
                                                 />
                                             </div>
                                         </div>
@@ -256,68 +238,44 @@
                                     <button id="addItem" type="button" class="btn btn-primary" data-repeater-create>Add Item</button>
                                 </div>
                             </div>
-                            {{-- <div class="row g-3">
-                              <div class="col-md-6">
-                                <label class="form-label" for="multicol-first-name">Nama Item</label>
-                                <select name="item" class="select2 form-select" required>
-                                    <option selected disabled>Pilih Item</option>
-                                    @foreach ($item as $itm)
-                                        <option value="{{ $itm->id }}">{{ $itm->nama_item }}</option>
-                                    @endforeach
-                                </select>
-                              </div>
-                              <div class="col-md-6">
-                                <label class="form-label" for="multicol-phone">Harga</label>
-                                <input
-                                  type="text"
-                                  name="harga"
-                                  class="form-control harga"
-                                  placeholder="Masukkan harga item"
-                                  aria-label="Masukkan harga item"
-                                />
-                              </div>
-                              <div class="col-md-6">
-                                <label class="form-label" for="multicol-phone">Quantity</label>
-                                <input
-                                  type="text"
-                                  name="quantity"
-                                  class="form-control quantity"
-                                  placeholder="Masukkan quantity"
-                                  aria-label="Masukkan quantity"
-                                />
-                              </div>
-                              <div class="col-md-6">
-                                <label class="form-label" for="multicol-phone">Total Harga</label>
-                                <input
-                                  type="text"
-                                  name="total_harga"
-                                  class="form-control total_harga"
-                                  placeholder="Total Harga"
-                                  aria-label="Total Harga"
-                                />
-                              </div>
-                              <div class="col-md-6 select2-primary">
-                                <label class="form-label" for="multicol-language">PPN</label>
-                                <input
-                                  type="text"
-                                  name="ppn"
-                                  value="11"
-                                  class="form-control ppn"
-                                  placeholder="PPN 11%"
-                                  aria-label="PPN 11%"
-                                  readonly="readonly"
-                                />
-                              </div>
-                              <div class="col-md-6">
-                                <label class="form-label" for="multicol-birthdate">Grand Total</label>
-                                <input
-                                  type="text"
-                                  name="grand_total"
-                                  class="form-control grand_total"
-                                  placeholder="Grand Total"
-                                />
-                              </div>
-                            </div> --}}
+                            <hr class="my-4 mx-n4" />
+                            <div class="row p-0 p-sm-4">
+                                <div class="col-md-6 mb-md-0 mb-3">
+                                  <div class="d-flex align-items-center mb-3">
+                                    <input
+                                      type="hidden"
+                                      name="ppn"
+                                      value="11"
+                                      class="form-control ms-3 ppn"
+                                      id="salesperson"
+                                    />
+                                  </div>
+                                  <input
+                                    type="hidden"
+                                    name="grand_total"
+                                    value="150000"
+                                    class="form-control grand_total"
+                                    id="invoiceMsg"
+                                  />
+                                </div>
+                                <div class="col-md-6 d-flex justify-content-end">
+                                    <div class="invoice-calculations">
+                                      <div class="d-flex justify-content-between mb-2">
+                                        <span class="w-px-100">Subtotal:</span>
+                                        <span class="fw-semibold total_harga"></span>
+                                      </div>
+                                      <div class="d-flex justify-content-between mb-2">
+                                        <span class="w-px-100">PPN:</span>
+                                        <span class="fw-semibold">11%</span>
+                                      </div>
+                                      <hr />
+                                      <div class="d-flex justify-content-between">
+                                        <span class="w-px-100">Grand Total:</span>
+                                        <span class="fw-semibold grand_total"></span>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="pt-4">
                                 <button type="submit" class="btn btn-primary btn-block" id="btn-simpan" value="create">Simpan
                                 </button>
@@ -512,4 +470,8 @@
     <!-- Page JS -->
     <script src="{{ asset('Template/master/js/tables-datatables-basic.js') }}"></script>
     <script src="{{ asset('Template/master/js/skp/purchase.js') }}"></script>
+
+    <script>
+        var items = {!! json_encode($item) !!};
+    </script>
 @endsection

@@ -8,6 +8,7 @@ use App\Models\Vendor;
 use App\Models\Perusahaan;
 use Illuminate\Http\Request;
 use App\Models\PurchaseOrder;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class PurchaseController extends Controller
@@ -53,6 +54,8 @@ class PurchaseController extends Controller
 
     public function store(Request $request)
     {
+        Log::info($request->all());
+
         $messages  = [
             'required' => 'Kolom :attribute harus diisi.',
             'string'   => 'Kolom :attribute harus berupa teks.',
@@ -78,29 +81,22 @@ class PurchaseController extends Controller
             $purchase->nama_po       = $request->nama_po;
             $purchase->tanggal       = $request->tanggal;
             $purchase->status        = $request->status;
+            $purchase->ppn           = $request->ppn;
+            $purchase->grand_total   = $request->grand_total;
             $purchase->user_id       = auth()->user()->id;
             $purchase->vendor_id     = $request->vendor_id;
             $purchase->perusahaan_id = $request->perusahaan_id;
             $purchase->save();
 
-            // foreach ($purchase as $prc) {
-            //     $purchase->item()->attach($request->item, [
-            //         'item_id'           => $prc->item_id,
-            //         'harga'             => $prc->harga,
-            //         'total_harga'       => $prc->total_harga,
-            //         'ppn'               => $prc->ppn,
-            //         'grand_total'       => $prc->grand_total,
-            //         'quantity'          => $prc->quantity
-            //     ]); // Jika ada atribut tambahan pada pivot
-            // }
 
-            $purchase->item()->attach($request->item, [
-                'harga'             => $request->harga,
-                'total_harga'       => $request->total_harga,
-                'ppn'               => $request->ppn,
-                'grand_total'       => $request->grand_total,
-                'quantity'          => $request->quantity
-            ]);
+            foreach ($request->item as $key => $itemId) {
+                $item = Item::find($itemId);
+
+                $purchase->item()->attach($item->id, [
+                    'quantity'    => $request->quantity[$key],
+                    'total_harga' => $request->total_harga[$key],
+                ]);
+            }
 
             // Tambahkan aktivitas log
             \ActivityLog::addToLog('Menambah data PO');

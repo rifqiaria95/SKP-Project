@@ -92,8 +92,39 @@ $('.harga, .quantity').on('change', function(){
 	grand_total = totalTax + total;
 	total       = Math.round((total + Number.EPSILON) * 100) / 100;
 
-	$('.total_harga').val(total.toLocaleString());
-	$('.grand_total').val(grand_total.toLocaleString());
+	$('.total_harga').val(total.toLocaleString('id-ID'));
+	$('.total_harga').text(total.toLocaleString('id-ID'));
+	$('.grand_total').val(grand_total.toLocaleString('id-ID'));
+	$('.grand_total').text(grand_total.toLocaleString('id-ID'));
+});
+
+
+// Function kalkulasi item + hitung pajak
+$('#repeater').on('change', '.harga2, .quantity2', function(){
+    $('.repeater2').each(function() {
+        var quantity = $(this).find('.quantity2').val();
+        var harga = $(this).find('.harga2').val();
+        var total_harga = 0;
+
+        if (!isNaN(parseFloat(harga)) && !isNaN(parseFloat(quantity))) {
+            total_harga = parseFloat(quantity) * parseFloat(harga);
+        }
+
+        $(this).find('.total_harga2').val(total_harga.toLocaleString('id-ID'));
+        $(this).find('.total_harga2').text(total_harga.toLocaleString('id-ID'));
+    });
+
+    // Calculate Grand Total
+    var grandTotal = 0;
+    $('.total_harga2').each(function() {
+        var harga = parseFloat($(this).val().replace(/[^0-9\.-]+/g,""));
+        if (!isNaN(harga)) {
+            grandTotal += harga;
+        }
+    });
+
+    $('.grand_total2').val(grandTotal.toLocaleString('id-ID'));
+    $('.grand_total2').text(grandTotal.toLocaleString('id-ID'));
 });
 
 (function () {
@@ -109,66 +140,54 @@ $('.harga, .quantity').on('change', function(){
     }
 })();
 
+
 $("#addItem").on("click", function () {
-    // Adding a row inside the tbody.
-    $("#repeater").append(`
-        <div class="d-flex border rounded position-relative pe-0">
-            <div class="row w-100 p-3">
-                <div class="col-md-6">
+    var options = '';
+    $.each(items, function(index, item) {
+        options += '<option value="' + item.id + '">' + item.nama_item + '</option>';
+    });
+
+    // Create new element and hide it
+    var newElement = $(`
+        <div class="repeater2 d-flex border rounded position-relative pe-0 mt-3" style="display: none;">
+            <div id="rowHarga" class="row w-100 p-3">
+                <div class="col-md-4">
                     <label class="form-label" for="multicol-first-name">Nama Item</label>
-                    <select name="item" class="select2 form-select" required>
+                    <select name="item[]" id="getItem2" class="select2 form-select" required>
                         <option selected disabled>Pilih Item</option>
-                        <option value="Tes">Tes</option>
+                        ` + options + `
                     </select>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3 col-12 mb-md-0 mb-3">
                     <label class="form-label" for="multicol-phone">Harga</label>
                     <input
                     type="text"
-                    name="harga"
-                    class="form-control harga"
-                    placeholder="Masukkan harga item"
-                    aria-label="Masukkan harga item"
+                    id="getHarga2"
+                    class="form-control harga2"
+                    placeholder="Harga item"
+                    aria-label="Masukkan quantity"
+                    readonly="readonly"
                     />
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-2 col-12 mb-md-0 mb-3">
                     <label class="form-label" for="multicol-phone">Quantity</label>
                     <input
                     type="text"
-                    name="quantity"
-                    class="form-control quantity"
-                    placeholder="Masukkan quantity"
+                    name="quantity[]"
+                    class="form-control quantity2"
+                    placeholder="1"
                     aria-label="Masukkan quantity"
                     />
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="multicol-phone">Total Harga</label>
+                <div class="col-md-3 col-12">
+                    <label class="form-label" for="multicol-phone">Total</label>
                     <input
                     type="text"
-                    name="total_harga"
-                    class="form-control total_harga"
+                    name="total_harga[]"
+                    class="form-control total_harga2"
                     placeholder="Total Harga"
                     aria-label="Total Harga"
-                    />
-                </div>
-                <div class="col-md-6 select2-primary">
-                    <label class="form-label" for="multicol-language">PPN</label>
-                    <input
-                    type="text"
-                    name="ppn"
-                    value="11%"
-                    class="form-control ppn"
-                    placeholder="PPN 11%"
-                    aria-label="PPN 11%"
-                    />
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="multicol-birthdate">Grand Total</label>
-                    <input
-                    type="text"
-                    name="grand_total"
-                    class="form-control grand_total"
-                    placeholder="Grand Total"
+                    readonly="readonly"
                     />
                 </div>
             </div>
@@ -177,6 +196,17 @@ $("#addItem").on("click", function () {
             </div>
         </div>`
     );
+
+    // Append the new element and slide it down
+    $("#repeater").append(newElement);
+    newElement.slideDown();
+});
+
+
+$(document).on("click", ".ti-x.cursor-pointer", function () {
+    $(this).closest('.d-flex.border.rounded.position-relative.pe-0').slideUp(400, function(){
+        $(this).remove();
+    });
 });
 
 // Function untuk tombol tambah purchase dan tampilkan modal
@@ -372,35 +402,48 @@ $('#btn-hapus').click(function(e) {
 });
 
 // Function get detail item
-$(document).on('change', '#nama_item', function(e) {
+$(document).on('change', '#getItem1', function(e) {
     e.preventDefault();
 
     var id  = $(this).val();
-    var url =  "/purchaseorder/getDetailItem/" + id,
-    url 	= url.replace(':id', id);
+    var url = "/purchaseorder/getDetailItem/" + id;
 
     $.ajax({
         type    : "GET",
         url     : url,
         dataType: 'json',
         success: function(response) {
-            // console.log(response);
-            // Jika sukses maka munculkan notifikasi
+            console.log(response);
+            // Jika sukses maka perbarui nilai input harga
             if (response.status == 404) {
-                $('#success_message').addClass('alert alert-success');
+                $('#success_message').addClass('alert alert-danger');
                 $('#success_message').text(response.message);
             } else {
                 $('#id').val(id);
-                $('#spesifikasi_item').val(response.spesifikasi_item);
-                $('#note').val(response.note);
+                // $(this).closest('#rowAja').find('#getHarga').val(response.harga);
+                $('#getHarga').val(response.harga); // Memperbarui nilai input harga
             }
         },
         error: function(jqXHR, exception) {
-            // console.log(response);
-            alert(jqXHR.responseText);
+            console.error(jqXHR.responseText);
+            alert("Terjadi kesalahan saat mengambil detail item.");
         }
     });
 
+});
+
+
+// Mengikatkan peristiwa perubahan pada elemen select dengan id getItem
+$(document).on("change", "#getItem2", function() {
+    // Mendapatkan nilai yang dipilih dari elemen select
+    var itemId = $(this).val();
+    
+    // Anda kemudian dapat menggunakan itemId untuk mencari harga terkait dari sumber data Anda
+    // Misalnya, jika Anda memiliki daftar item di dalam items array dan setiap item memiliki harga tersimpan di dalamnya
+    var selectedPrice = items.find(item => item.id == itemId).harga;
+    
+    // Setel nilai harga ke dalam input harga yang sesuai
+    $(this).closest('#rowHarga').find('#getHarga2').val(selectedPrice);
 });
 
 // Function get job title

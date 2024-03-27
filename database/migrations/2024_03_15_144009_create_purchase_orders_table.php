@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('nama_po')->length(100);
             $table->string('tanggal')->length(100);
             $table->integer('status');
+            $table->string('ppn');
+            $table->decimal('grand_total', 10, 10)->default(0);
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('vendor_id');
             $table->unsignedBigInteger('perusahaan_id');

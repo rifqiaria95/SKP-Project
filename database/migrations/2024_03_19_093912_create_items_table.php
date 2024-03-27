@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nomor_item')->length(100);
             $table->string('nama_item')->length(100);
             $table->string('spesifikasi_item')->length(100);
+            $table->decimal('harga', 10, 10)->default(0);
             $table->string('note')->nullable();
             $table->timestamps();
         });
