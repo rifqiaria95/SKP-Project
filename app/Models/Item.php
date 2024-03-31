@@ -15,6 +15,6 @@ class Item extends Model
 
     public function purchase_order()
     {
-        return $this->belongsToMany(PurchaseOrder::class)->withPivot(['total_harga', 'quantity']);
+        return $this->belongsToMany(PurchaseOrder::class)->withPivot(['quantity', 'total_harga'])->withTimestamps();
     }
 }

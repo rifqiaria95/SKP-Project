@@ -50,6 +50,11 @@ class Karyawan extends Model
         return $this->hasOne(Absensi::class);
     }
 
+    public function purchase_order()
+    {
+        return $this->belongsTo(PurchaseOrder::class);
+    }
+
     public function nama_lengkap()
     {
         return $this->nama_depan. ' ' .$this->nama_belakang;

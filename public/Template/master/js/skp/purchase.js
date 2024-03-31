@@ -35,7 +35,10 @@ $(document).ready(function() {
             attr: {
                 'data-bs-toggle': 'modal',
                 'data-bs-target': '#tambahModal'
-            } 
+            },
+            // action: function ( e, dt, button, config ) {
+            //     window.location = '/purchaseorder/create';
+            // }    
         }
         ],
         processing: true,
@@ -73,54 +76,61 @@ $(document).ready(function() {
 });
 
 function calculateTotalAndGrandTotal() {
-    var total      = 0;
+    var total = 0;
     var grandTotal = 0;
-    var tax        = 0.11;
+    var totalHargaAll = 0; // Initialize totalHargaAll
+
+    var tax = 0.11;
 
     // Calculation for the initial set of elements
     var quantity = $('.quantity').val();
-    var harga    = $('.harga').val();
+    var harga = $('.harga').val();
 
     if (!isNaN(parseFloat(harga)) && !isNaN(parseFloat(quantity))) {
         var subTotal = parseFloat(quantity) * parseFloat(harga);
         var totalTax = subTotal * tax;
-        total      = subTotal;
-        grandTotal = total + totalTax;
+        total = subTotal;
+        grandTotal += total + totalTax; // Tambahkan nilai total_harga ke grandTotal
     }
 
-    $('.total_harga').val(total.toLocaleString('id-ID'));
-    $('.total_harga').text(total.toLocaleString('id-ID'));
-    $('.grand_total').val(grandTotal.toLocaleString('id-ID'));
-    $('.grand_total').text(grandTotal.toLocaleString('id-ID'));
+    $('.total_harga').val(total.toFixed(3));
+    $('.total_harga').text(total.toFixed(3)); // Update tampilan total_harga
 
     // Calculation for dynamically added elements
-    $('.repeater2').each(function() {
-        var quantity   = $(this).find('.quantity2').val();
-        var harga      = $(this).find('.harga2').val();
+    $('.repeater2').each(function () {
+        var quantity = $(this).find('.quantity2').val();
+        var harga = $(this).find('.harga2').val();
         var totalHarga = 0;
 
         if (!isNaN(parseFloat(harga)) && !isNaN(parseFloat(quantity))) {
             totalHarga = parseFloat(quantity) * parseFloat(harga);
             var subTotal = totalHarga;
             var totalTax = subTotal * tax;
-            totalHarga = subTotal + totalTax;
-            grandTotal += totalHarga;
+            totalHarga = subTotal;
+            grandTotal += totalHarga + totalTax;
+            totalHargaAll += totalHarga; // Tambahkan nilai total_harga2 ke total_harga_all
         }
 
-        $(this).find('.total_harga2').val(totalHarga.toLocaleString('id-ID'));
-        $(this).find('.total_harga2').text(totalHarga.toLocaleString('id-ID'));
+        $(this).find('.total_harga2').val(totalHarga.toFixed(3));
+        $(this).find('.total_harga2').text(totalHarga.toFixed(3)); // Update tampilan total_harga2
     });
 
-    $('.grand_total2').val(grandTotal.toLocaleString('id-ID'));
-    $('.grand_total2').text(grandTotal.toLocaleString('id-ID'));
+    // Update grand total including both grandTotal and grandTotal2
+    $('.grand_total').val(grandTotal.toFixed(3));
+    $('.grand_total').text(grandTotal.toFixed(3));
+
+    // Update total harga all
+    $('.total_harga_all').val(totalHargaAll.toFixed(3));
+    $('.total_harga_all').text(totalHargaAll.toFixed(3));
 }
 
 // Call the function initially and bind it to the change event
-$(document).ready(function() {
+$(document).ready(function () {
     calculateTotalAndGrandTotal();
 
     $('.harga, .quantity').on('change', calculateTotalAndGrandTotal);
     $('#repeater').on('change', '.harga2, .quantity2', calculateTotalAndGrandTotal);
+    $('#repeaterEdit').on('change', '.harga2, .quantity2', calculateTotalAndGrandTotal); // Add this line for #repeaterEdit
 });
 
 
@@ -137,8 +147,8 @@ $(document).ready(function() {
     }
 })();
 
-
-$("#addItem").on("click", function () {
+// Tambah row item
+function addItemHandler(target) {
     var options = '';
     $.each(items, function(index, item) {
         options += '<option value="' + item.id + '">' + item.nama_item + '</option>';
@@ -162,7 +172,7 @@ $("#addItem").on("click", function () {
                     id="getHarga2"
                     class="form-control harga2"
                     placeholder="Harga item"
-                    aria-label="Masukkan quantity"
+                    aria-label=""
                     readonly="readonly"
                     />
                 </div>
@@ -195,11 +205,17 @@ $("#addItem").on("click", function () {
     );
 
     // Append the new element and slide it down
-    $("#repeater").append(newElement);
+    $(target).append(newElement);
     newElement.slideDown();
+}
+
+$("#addItem, #addItem2").on("click", function () {
+    var target = $(this).attr("id") === "addItem" ? "#repeater" : "#repeaterEdit";
+    addItemHandler(target);
 });
 
 
+// Delete item
 $(document).on("click", ".ti-x.cursor-pointer", function () {
     $(this).closest('.d-flex.border.rounded.position-relative.pe-0').slideUp(400, function(){
         $(this).remove();
@@ -208,22 +224,34 @@ $(document).on("click", ".ti-x.cursor-pointer", function () {
 
 // Function untuk tombol tambah purchase dan tampilkan modal
 $(document).ready(function() {
-    // $.noConflict();
-    $('#btn_tambah').click(function() {
-        // console.log($('#btn_tambah'));
-        $('#btn-simpan').val("tambah-purchase");
-        $('#purchase_id').val('');
-        $('#tambahModal').modal('show');
-        $('#formPurchase').trigger("reset");
-        $('#modal-judul').html("Tambah PO");
-        $('#perusahaan_id').select2({
+    // Function to initialize Select2 dropdowns
+    function initializeSelect2() {
+        $('.select2').select2({
             dropdownParent: $('#tambahModal')
         });
-        $('#vendor_id').select2({
-            dropdownParent: $('#tambahModal')
-        });
+        // You may need to initialize other Select2 dropdowns if present
+    }
+
+    // Initialize Select2 dropdowns when modal is shown
+    $('#tambahModal').on('shown.bs.modal', function() {
+        initializeSelect2();
     });
+
+    // Function to handle form submission
+    function handleFormSubmission() {
+        // Your form submission code here
+    }
+
+    // Validate and handle form submission when form is submitted
+    if ($("#formPurchase").length > 0) {
+        $("#formPurchase").validate({
+            submitHandler: function(form) {
+                handleFormSubmission();
+            }
+        });
+    }
 });
+
 
 //SIMPAN & UPDATE DATA DAN VALIDASI (SISI CLIENT)
 //jika id = formPurchase panjangnya lebih dari 0 atau bisa dibilang terdapat data dalam form tersebut maka
@@ -254,8 +282,9 @@ if ($("#formPurchase").length > 0) {
 
                         $('#btn-simpan').text('Menyimpan..');
                     } else if (response.status == 200) {
+                        // location.href = "/purchaseorder"
                         $('#modalJudul').html("");
-                        $('#formPurchase').find('input').val('');
+                        $('#formPurchase')[0].reset();
                         toastr.success(response.message);
                         $('#tambahModal').modal('hide');
 
@@ -271,7 +300,7 @@ if ($("#formPurchase").length > 0) {
 }
 
 // Function Edit Purchase
-$(document).on('click', '.edit-purchase', function(e) {
+$(document).on('click', '#edit-purchase', function(e) {
     e.preventDefault();
 
     var id = $(this).data('id');
@@ -292,35 +321,78 @@ $(document).on('click', '.edit-purchase', function(e) {
         type: "GET",
         url: "/purchaseorder/edit/" + id,
         success: function(response) {
-            // console.log(response);
-            // Jika sukses maka munculkan notifikasi
-            if (response.status == 404) {
-                $('#success_message').addClass('alert alert-success');
-                $('#success_message').text(response.message);
-                $('#editModal').modal('hide');
-            } else {
+            console.log(response);
+            if (!jQuery.isEmptyObject(response)) {
                 $('#id').val(id);
                 $('#nomor_po').val(response.nomor_po);
                 $('#nama_po').val(response.nama_po);
                 $('#tanggal').val(response.tanggal);
-                $('#harga').val(response.harga);
-                $('#total_harga').val(response.total_harga);
                 $('#ppn').val(response.ppn);
-                $('#grand_total').val(response.grand_total);
-                $('#quantity').val(response.quantity);
+                $('#grand_total1').val(response.grand_total);
+                $('#grand_total2').text(response.grand_total);
                 $('#status').val(response.status);
-                $('#vendor_id').val(response.vendor_id);
+                $('#vendor_id').val(response.vendor_id).trigger('change');
                 $('#perusahaan_id').val(response.perusahaan_id).trigger('change');
-                $('#item_id').val(response.item[0].id).trigger('change');
+                $('#pic_1').val(response.pic_1).trigger('change');
+                $('#pic_2').val(response.pic_2).trigger('change');
+
+                // Clear existing item containers
+                $('#itemContainer').empty();
+
+                if (response.item.length > 0) {
+                    // Loop through each item and append new item containers
+                    response.item.forEach(function(item, index) {
+                        var itemHtml = getItemHtml(item, index);
+                        $('#itemContainer').append(itemHtml);
+                    });
+                }
+            } else {
+                // Handle empty response
             }
         },
         error: function(response) {
             console.log(response);
+            // Handle error, maybe show an error message
         }
     });
-    $('.btn-close').find('input').val('');
-
+    
+    // Function to generate HTML for an item
+    function getItemHtml(item, index) {
+        return `
+            <div id="repeater${index + 1}" class="mb-3" data-repeater-list="group-a">
+                <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
+                    <div class="d-flex border rounded position-relative pe-0">
+                        <div id="rowAja${index + 1}" class="row w-100 p-3">
+                            <div class="col-md-4">
+                                <label class="form-label" for="multicol-first-name">Nama Item</label>
+                                <select name="item[]" id="getItem3_${index}" class="select2 form-select" required>
+                                    <option selected disabled>Pilih Item</option>
+                                    <option value="${item.id}" selected>${item.nama_item}</option>
+                                </select>
+                            </div>                                
+                            <div class="col-md-3 col-12 mb-md-0 mb-3">
+                                <label class="form-label" for="multicol-phone">Harga</label>
+                                <input type="text" id="getHarga2_${index}" class="form-control harga" value="${item.harga}" placeholder="Harga item" aria-label="Masukkan quantity" readonly="readonly" />
+                            </div>
+                            <div class="col-md-2 col-12 mb-md-0 mb-3">
+                                <label class="form-label" for="multicol-phone">Quantity</label>
+                                <input type="text" id="quantity_${index}" name="quantity[]" class="form-control" placeholder="1" value="${item.pivot.quantity}" aria-label="Masukkan quantity" />
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <label class="form-label" for="multicol-phone">Total</label>
+                                <input type="text" id="total_harga_${index}" name="total_harga[]" class="form-control" value="${item.pivot.total_harga}" placeholder="Total Harga" aria-label="Total Harga" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column align-items-center justify-content-between border-start p-2">
+                            <i class="ti ti-x cursor-pointer delete-item" data-item-id="${item.id}"></i>
+                        </div>                                
+                    </div>
+                </div>
+            </div>
+        `;
+    }
 });
+
 
 // Function Update Data Purchase
 $(document).on('submit', '#formEdit', function(e) {
@@ -417,7 +489,6 @@ $(document).on('change', '#getItem1', function(e) {
                 $('#success_message').text(response.message);
             } else {
                 $('#id').val(id);
-                // $(this).closest('#rowAja').find('#getHarga').val(response.harga);
                 $('#getHarga').val(response.harga); // Memperbarui nilai input harga
             }
         },

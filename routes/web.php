@@ -65,10 +65,12 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin,karyawan']], funct
 
     // Route Purchase Order
     Route::get('purchaseorder', 'PurchaseController@index');
+    Route::get('purchaseorder/create', 'PurchaseController@create');
     Route::post('purchaseorder/store', 'PurchaseController@store');
     Route::get('purchaseorder/edit/{id}', 'PurchaseController@edit');
     Route::post('purchaseorder/update/{id}', 'PurchaseController@update');
     Route::delete('purchaseorder/delete/{id}', 'PurchaseController@destroy');
+    Route::delete('purchaseorder/delete-item/{id}', 'PurchaseController@delete');
     Route::get('purchaseorder/getDetail/{id}', 'PurchaseController@getDetail');
     Route::get('purchaseorder/getDetailItem/{id}', 'PurchaseController@getDetailItem');
 

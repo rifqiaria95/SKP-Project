@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Vendor;
+use App\Models\Karyawan;
 use App\Models\Perusahaan;
-use Illuminate\Http\Request;
 use App\Models\PurchaseOrder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,6 +20,7 @@ class PurchaseController extends Controller
         $purchase   = PurchaseOrder::all();
         $user       = User::all();
         $item       = Item::all();
+        $karyawan   = Karyawan::all();
         $vendor     = Vendor::all();
         $perusahaan = Perusahaan::all();
         // dd($kelas);
@@ -30,14 +32,14 @@ class PurchaseController extends Controller
             ->addColumn('aksi', function ($data) {
                 $button = '<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-group me-2" role="group" aria-label="First group">
-                    <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $data->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-purchase"><i class="fa-solid fa-pen"></i></a>
+                    <a href="javascript:void(0)" id="edit-purchase" data-toggle="tooltip"  data-id="' . $data->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-purchase"><i class="fa-solid fa-pen"></i></a>
                     <button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
                     <a href="purchase/detail/' . $data->id . '" name="view" class="view btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
                     </div>
                 </div>';
                 return $button;
             })
-            ->rawColumns(['item', 'user', 'aksi'])
+            ->rawColumns(['item', 'user', 'aksi', 'karyawan'])
             ->addIndexColumn()
             ->toJson();
         }
@@ -48,7 +50,8 @@ class PurchaseController extends Controller
             'user',
             'item',
             'vendor',
-            'perusahaan'
+            'perusahaan',
+            'karyawan',
         ]));
     }
 
@@ -83,6 +86,8 @@ class PurchaseController extends Controller
             $purchase->status        = $request->status;
             $purchase->ppn           = $request->ppn;
             $purchase->grand_total   = $request->grand_total;
+            $purchase->pic_1         = $request->pic_1;
+            $purchase->pic_2         = $request->pic_2;
             $purchase->user_id       = auth()->user()->id;
             $purchase->vendor_id     = $request->vendor_id;
             $purchase->perusahaan_id = $request->perusahaan_id;
@@ -111,14 +116,15 @@ class PurchaseController extends Controller
 
     public function edit($id)
     {
-        $purchase = PurchaseOrder::find($id);
-        $item     = Item::find($id);
-        foreach ($purchase->item as $itm) {
-            $itm->pivot->item_purchase_order;
-        }
+        $purchase = PurchaseOrder::with('item')->find($id);
         
+        if (!$purchase) {
+            return response()->json(['error' => 'Purchase order not found'], 404);
+        }
+
         return response()->json($purchase);
     }
+
 
     public function update($id, Request $request)
     {
@@ -149,20 +155,24 @@ class PurchaseController extends Controller
             $purchase->nomor_po      = $request->nomor_po;
             $purchase->nama_po       = $request->nama_po;
             $purchase->tanggal       = $request->tanggal;
-            $purchase->harga         = $request->harga;
-            $purchase->total_harga   = $request->total_harga;
+            $purchase->status        = $request->status;
             $purchase->ppn           = $request->ppn;
             $purchase->grand_total   = $request->grand_total;
-            $purchase->quantity      = $request->quantity;
-            $purchase->status        = $request->status;
+            $purchase->pic_1         = $request->pic_1;
+            $purchase->pic_2         = $request->pic_2;
             $purchase->user_id       = auth()->user()->id;
             $purchase->vendor_id     = $request->vendor_id;
             $purchase->perusahaan_id = $request->perusahaan_id;
             $purchase->save();
-            
-            $purchase->item()->updateExistingPivot($id, [
-                'item_id' => $request->item_id
-            ]);
+
+            foreach ($request->item as $key => $itemId) {
+                $item = Item::find($itemId);
+
+                $purchase->item()->updateExistingPivot($item->id, [
+                    'quantity'    => $request->quantity[$key],
+                    'total_harga' => $request->total_harga[$key],
+                ]);
+            }
 
             return response()->json([
                 'status'    => 200,

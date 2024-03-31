@@ -22,7 +22,12 @@ class PurchaseOrder extends Model
 
     public function item()
     {
-        return $this->belongsToMany(Item::class)->withPivot(['total_harga', 'quantity']);
+        return $this->belongsToMany(Item::class)->withPivot(['quantity', 'total_harga'])->withTimestamps();
+    }
+
+    public function karyawan()
+    {
+        return $this->hasMany(Karyawan::class);
     }
 
     public function vendor()
