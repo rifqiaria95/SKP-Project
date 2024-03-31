@@ -265,15 +265,12 @@
                                     name="ppn"
                                     value="11"
                                     class="form-control ms-3 ppn"
-                                    id="salesperson"
                                     />
                                 </div>
                                 <input
                                     type="hidden"
                                     name="grand_total"
-                                    value="150000"
                                     class="form-control grand_total"
-                                    id="invoiceMsg"
                                 />
                                 </div>
                                 <div class="col-md-6 d-flex justify-content-end">
@@ -402,43 +399,11 @@
                             <hr class="my-4 mx-n4" />
                             <h6>Detail Item</h6>
                             <div id="itemContainer" class="mb-3" data-repeater-list="group-a">
-                                <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
-                                    <div class="d-flex border rounded position-relative pe-0">
-                                        <div id="rowAja" class="row w-100 p-3">
-                                            <div class="col-md-4">
-                                                <label class="form-label" for="multicol-first-name">Nama Item</label>
-                                                <select name="item[]" id="getItem3" class="select2 form-select" required>
-                                                    <option selected disabled>Pilih Item</option>
-                                                    @foreach ($item as $itm)
-                                                        <option value="{{ $itm->id }}">{{ $itm->nama_item }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>                                
-                                            <div class="col-md-3 col-12 mb-md-0 mb-3">
-                                                <label class="form-label" for="multicol-phone">Harga</label>
-                                                <input type="text" id="getHarga2" class="form-control harga" value="" placeholder="Harga item" aria-label="Masukkan quantity" readonly="readonly" />
-                                            </div>
-                                            <div class="col-md-2 col-12 mb-md-0 mb-3">
-                                                <label class="form-label" for="multicol-phone">Quantity</label>
-                                                <input type="text" id="quantity" name="quantity[]" class="form-control" placeholder="1" value="" aria-label="Masukkan quantity" />
-                                            </div>
-                                            <div class="col-md-3 col-12">
-                                                <label class="form-label" for="multicol-phone">Total</label>
-                                                <input type="text" id="total_harga" name="total_harga[]" class="form-control" value="" placeholder="Total Harga" aria-label="Total Harga" readonly="readonly" />
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-column align-items-center justify-content-between border-start p-2">
-                                            <i class="ti ti-x cursor-pointer delete-item" data-item-id=""></i>
-                                        </div>                                
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="repeaterEdit" class="mb-3" data-repeater-list="group-a">
-                                
+                               
                             </div>
                             <div class="row pb-4">
                                 <div class="col-12">
-                                    <button id="addItem2" type="button" class="btn btn-primary" data-repeater-create>Add Item</button>
+                                    <button id="addItem4" type="button" class="btn btn-primary" data-repeater-create>Add Item</button>
                                 </div>
                             </div>
                             <hr class="my-4 mx-n4" />
@@ -454,7 +419,7 @@
                                     />
                                 </div>
                                 <input
-                                    type="hidden"
+                                    type="text"
                                     name="grand_total"
                                     id="grand_total1"
                                     value=""
@@ -465,7 +430,7 @@
                                     <div class="invoice-calculations">
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="w-px-100">Subtotal:</span>
-                                        <span class="fw-semibold total_harga_all"></span>
+                                        <span class="fw-semibold total_harga_all4"></span>
                                     </div>
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="w-px-100">PPN:</span>
@@ -480,9 +445,9 @@
                                 </div>
                             </div>
                             <div class="pt-4">
-                            <button type="submit" class="btn btn-primary btn-block" id="btn-update" value="create">Simpan
-                            </button>
-                            <button type="reset" class="btn btn-label-secondary mx-3">Cancel</button>
+                                <button type="submit" class="btn btn-primary btn-block" id="btn-update" value="create">Simpan
+                                </button>
+                                <button type="reset" class="btn btn-label-secondary mx-3">Cancel</button>
                             </div>
                         </form>
                     </div>

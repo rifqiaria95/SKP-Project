@@ -76,64 +76,63 @@ $(document).ready(function() {
 });
 
 function calculateTotalAndGrandTotal() {
-    var total = 0;
-    var grandTotal = 0;
-    var totalHargaAll = 0; // Initialize totalHargaAll
-
-    var tax = 0.11;
+    var grandTotal    = 0;
+    var totalHargaAll = 0;
 
     // Calculation for the initial set of elements
-    var quantity = $('.quantity').val();
-    var harga = $('.harga').val();
+    var harga             = parseFloat($('.harga').val().replace(/[^\d.-]/g, '').replace(',', '.'));  // Mengambil nilai harga dan mengonversinya ke float
+    var quantity          = parseFloat($('.quantity').val());                                         // Mengambil nilai quantity dan mengonversinya ke float
+    var subTotal          = (harga * quantity).toFixed(3);
+    var totalTax          = (subTotal * 0.11).toFixed(3);
+    var grandTotalInitial = (parseFloat(subTotal) + parseFloat(totalTax)).toFixed(3);
 
-    if (!isNaN(parseFloat(harga)) && !isNaN(parseFloat(quantity))) {
-        var subTotal = parseFloat(quantity) * parseFloat(harga);
-        var totalTax = subTotal * tax;
-        total = subTotal;
-        grandTotal += total + totalTax; // Tambahkan nilai total_harga ke grandTotal
-    }
+    // Format angka ke format Indonesia
+    var formatter = new Intl.NumberFormat('id-ID', {
+        minimumFractionDigits: 3,
+        maximumFractionDigits: 3            // Menjaga tiga angka di belakang koma
+    });
 
-    $('.total_harga').val(total.toFixed(3));
-    $('.total_harga').text(total.toFixed(3)); // Update tampilan total_harga
+    $('.total_harga').val(formatter.format(subTotal).replace(',', '.')); // Mengatur nilai total harga dengan format Indonesia
+    $('.grand_total').val(formatter.format(grandTotalInitial).replace(',', '.')); // Mengatur nilai grand total dengan format Indonesia
+
+    // Update grand total including both grandTotal and grandTotal2
+    grandTotal    += parseFloat(grandTotalInitial);
+    totalHargaAll += parseFloat(subTotal);
 
     // Calculation for dynamically added elements
     $('.repeater2').each(function () {
-        var quantity = $(this).find('.quantity2').val();
-        var harga = $(this).find('.harga2').val();
-        var totalHarga = 0;
+        var harga             = parseFloat($(this).find('.harga').val().replace(/[^\d.-]/g, '').replace(',', '.'));  // Mengambil nilai harga dan mengonversinya ke float
+        var quantity          = parseFloat($(this).find('.quantity').val());                                         // Mengambil nilai quantity dan mengonversinya ke float
+        var subTotal          = (harga * quantity).toFixed(3);
+        var totalTax          = (subTotal * 0.11).toFixed(3);
+        var grandTotalDynamic = (parseFloat(subTotal) + parseFloat(totalTax)).toFixed(2);
 
-        if (!isNaN(parseFloat(harga)) && !isNaN(parseFloat(quantity))) {
-            totalHarga = parseFloat(quantity) * parseFloat(harga);
-            var subTotal = totalHarga;
-            var totalTax = subTotal * tax;
-            totalHarga = subTotal;
-            grandTotal += totalHarga + totalTax;
-            totalHargaAll += totalHarga; // Tambahkan nilai total_harga2 ke total_harga_all
-        }
+        // Format angka ke format Indonesia
+        var formattedSubTotal          = formatter.format(subTotal).replace(',', '.');
+        var formattedGrandTotalDynamic = formatter.format(grandTotalDynamic).replace(',', '.');
 
-        $(this).find('.total_harga2').val(totalHarga.toFixed(3));
-        $(this).find('.total_harga2').text(totalHarga.toFixed(3)); // Update tampilan total_harga2
+        $(this).find('.total_harga').val(formattedSubTotal); // Mengatur nilai total harga dengan format Indonesia
+        $(this).find('.grand_total').val(formattedGrandTotalDynamic); // Mengatur nilai grand total dengan format Indonesia
+
+        // Update grand total including both grandTotal and grandTotal2
+        grandTotal    += parseFloat(grandTotalDynamic);
+        totalHargaAll += parseFloat(subTotal);
     });
 
-    // Update grand total including both grandTotal and grandTotal2
-    $('.grand_total').val(grandTotal.toFixed(3));
-    $('.grand_total').text(grandTotal.toFixed(3));
-
-    // Update total harga all
-    $('.total_harga_all').val(totalHargaAll.toFixed(3));
-    $('.total_harga_all').text(totalHargaAll.toFixed(3));
+    // Mengatur nilai grand total secara keseluruhan dengan format Indonesia
+    $('.grand_total').val(formatter.format(grandTotal).replace(',', '.')).text(formatter.format(grandTotal).replace(',', '.'));
+    $('.total_harga_all').val(formatter.format(totalHargaAll).replace(',', '.')).text(formatter.format(totalHargaAll).replace(',', '.')); // Mengatur nilai total harga all dengan format Indonesia
 }
 
-// Call the function initially and bind it to the change event
+// Panggil fungsi secara inisial dan ikatnya ke event perubahan
 $(document).ready(function () {
     calculateTotalAndGrandTotal();
 
     $('.harga, .quantity').on('change', calculateTotalAndGrandTotal);
-    $('#repeater').on('change', '.harga2, .quantity2', calculateTotalAndGrandTotal);
-    $('#repeaterEdit').on('change', '.harga2, .quantity2', calculateTotalAndGrandTotal); // Add this line for #repeaterEdit
+    $('#repeater, #itemContainer').on('change', '.harga, .quantity', calculateTotalAndGrandTotal);
 });
 
-
+// DatePicker
 (function () {
     const invoiceDateList = document.querySelectorAll('.date-picker');
   
@@ -160,7 +159,7 @@ function addItemHandler(target) {
             <div id="rowHarga" class="row w-100 p-3">
                 <div class="col-md-4">
                     <label class="form-label" for="multicol-first-name">Nama Item</label>
-                    <select name="item[]" id="getItem2" class="select2 form-select" required>
+                    <select name="item[]" class="select2 form-select getItem2" required>
                         <option selected disabled>Pilih Item</option>
                         ` + options + `
                     </select>
@@ -170,7 +169,7 @@ function addItemHandler(target) {
                     <input
                     type="text"
                     id="getHarga2"
-                    class="form-control harga2"
+                    class="form-control harga getHarga2"
                     placeholder="Harga item"
                     aria-label=""
                     readonly="readonly"
@@ -181,7 +180,7 @@ function addItemHandler(target) {
                     <input
                     type="text"
                     name="quantity[]"
-                    class="form-control quantity2"
+                    class="form-control quantity"
                     placeholder="1"
                     aria-label="Masukkan quantity"
                     />
@@ -191,7 +190,7 @@ function addItemHandler(target) {
                     <input
                     type="text"
                     name="total_harga[]"
-                    class="form-control total_harga2"
+                    class="form-control total_harga"
                     placeholder="Total Harga"
                     aria-label="Total Harga"
                     readonly="readonly"
@@ -209,18 +208,89 @@ function addItemHandler(target) {
     newElement.slideDown();
 }
 
-$("#addItem, #addItem2").on("click", function () {
-    var target = $(this).attr("id") === "addItem" ? "#repeater" : "#repeaterEdit";
+// Hanya ikat event untuk #addItem
+$("#addItem").on("click", function () {
+    var target = "#repeater";
     addItemHandler(target);
 });
 
+function addItem2Handler(target) {
+    var options = '';
+    $.each(items, function(index, item) {
+        options += '<option value="' + item.id + '">' + item.nama_item + '</option>';
+    });
 
-// Delete item
-$(document).on("click", ".ti-x.cursor-pointer", function () {
-    $(this).closest('.d-flex.border.rounded.position-relative.pe-0').slideUp(400, function(){
+    // Create new element and hide it
+    var newElement = $(`
+        <div class="repeater4 d-flex border rounded position-relative pe-0 mt-3" style="display: none;">
+            <div id="rowHarga" class="row w-100 p-3">
+                <div class="col-md-4">
+                    <label class="form-label" for="multicol-first-name">Nama Item</label>
+                    <select name="item[]" class="select2 form-select getItem4" required>
+                        <option selected disabled>Pilih Item</option>
+                        ` + options + `
+                    </select>
+                </div>
+                <div class="col-md-3 col-12 mb-md-0 mb-3">
+                    <label class="form-label" for="multicol-phone">Harga</label>
+                    <input
+                    type="text"
+                    id="getHarga2"
+                    class="form-control harga"
+                    placeholder="Harga item"
+                    aria-label=""
+                    readonly="readonly"
+                    />
+                </div>
+                <div class="col-md-2 col-12 mb-md-0 mb-3">
+                    <label class="form-label" for="multicol-phone">Quantity</label>
+                    <input
+                    type="text"
+                    name="quantity[]"
+                    class="form-control quantity"
+                    placeholder="1"
+                    aria-label="Masukkan quantity"
+                    />
+                </div>
+                <div class="col-md-3 col-12">
+                    <label class="form-label" for="multicol-phone">Total</label>
+                    <input
+                    type="text"
+                    name="total_harga[]"
+                    class="form-control total_harga"
+                    placeholder="Total Harga"
+                    aria-label="Total Harga"
+                    readonly="readonly"
+                    />
+                </div>
+            </div>
+            <div class="d-flex flex-column align-items-center justify-content-between border-start p-2">
+                <i id="delete-item" class="ti ti-x cursor-pointer delete-item" data-repeater-delete></i>
+            </div>
+        </div>`
+    );
+
+    // Append the new element, slide it down, and then show it
+    $(target).append(newElement);
+    newElement.slideDown();
+}
+
+// Bind click event to addItem2
+$("#addItem4").on("click", function () {
+    var target = "#itemContainer";
+    addItemHandler(target);
+    calculateTotalAndGrandTotal(); // Menghitung total harga dan grand total setelah menambahkan item baru
+});
+
+
+// Function to handle click event on delete icon
+$(document).on("click", ".ti-x", function () {
+    // Cari elemen repeater2 terdekat dari elemen yang diklik, lalu animasikan slide up, dan kemudian hapusnya dari DOM
+    $(this).closest('.repeater2').slideUp(function () {
         $(this).remove();
     });
 });
+
 
 // Function untuk tombol tambah purchase dan tampilkan modal
 $(document).ready(function() {
@@ -359,7 +429,7 @@ $(document).on('click', '#edit-purchase', function(e) {
     // Function to generate HTML for an item
     function getItemHtml(item, index) {
         return `
-            <div id="repeater${index + 1}" class="mb-3" data-repeater-list="group-a">
+            <div id="itemContainer${index + 1}" class="mb-3" data-repeater-list="group-a">
                 <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
                     <div class="d-flex border rounded position-relative pe-0">
                         <div id="rowAja${index + 1}" class="row w-100 p-3">
@@ -372,19 +442,19 @@ $(document).on('click', '#edit-purchase', function(e) {
                             </div>                                
                             <div class="col-md-3 col-12 mb-md-0 mb-3">
                                 <label class="form-label" for="multicol-phone">Harga</label>
-                                <input type="text" id="getHarga2_${index}" class="form-control harga" value="${item.harga}" placeholder="Harga item" aria-label="Masukkan quantity" readonly="readonly" />
+                                <input type="text" id="getHarga2_${index}" class="form-control harga2" value="${item.harga}" placeholder="Harga item" aria-label="Masukkan quantity" readonly="readonly" />
                             </div>
                             <div class="col-md-2 col-12 mb-md-0 mb-3">
                                 <label class="form-label" for="multicol-phone">Quantity</label>
-                                <input type="text" id="quantity_${index}" name="quantity[]" class="form-control" placeholder="1" value="${item.pivot.quantity}" aria-label="Masukkan quantity" />
+                                <input type="text" id="quantity_${index}" name="quantity[]" class="form-control quantity2" placeholder="1" value="${item.pivot.quantity}" aria-label="Masukkan quantity" />
                             </div>
                             <div class="col-md-3 col-12">
                                 <label class="form-label" for="multicol-phone">Total</label>
-                                <input type="text" id="total_harga_${index}" name="total_harga[]" class="form-control" value="${item.pivot.total_harga}" placeholder="Total Harga" aria-label="Total Harga" readonly="readonly" />
+                                <input type="text" id="total_harga_${index}" name="total_harga[]" class="form-control total_harga2" value="${item.pivot.total_harga}" placeholder="Total Harga" aria-label="Total Harga" readonly="readonly" />
                             </div>
                         </div>
                         <div class="d-flex flex-column align-items-center justify-content-between border-start p-2">
-                            <i class="ti ti-x cursor-pointer delete-item" data-item-id="${item.id}"></i>
+                            <i class="ti ti-x cursor-pointer delete-item"></i>
                         </div>                                
                     </div>
                 </div>
@@ -394,39 +464,93 @@ $(document).on('click', '#edit-purchase', function(e) {
 });
 
 
-// Function Update Data Purchase
+$(document).on('input', '.quantity2, .harga2', function() {
+    calculateTotals();
+});
+
+$(document).on('click', '#addItem4', function() {
+    calculateTotals();
+});
+
+function calculateTotals() {
+    var grand_total      = 0;
+    var total_harga_all2 = 0;
+
+    // Format angka ke format Indonesia
+    var formatter = new Intl.NumberFormat('id-ID', {
+        minimumFractionDigits: 3,
+        maximumFractionDigits: 3
+    });
+
+    $('.repeater-wrapper').each(function() {
+        var quantity              = parseFloat($(this).find('.quantity2').val()) || 0;
+        var harga                 = parseFloat($(this).find('.harga2').val()) || 0;
+        var total_harga           = (quantity * harga).toFixed(3);
+        var formatted_total_harga = formatter.format(total_harga).replace(',', '.');
+        $(this).find('.total_harga2').val(formatted_total_harga);
+        total_harga_all2 += parseFloat(total_harga);
+        grand_total += parseFloat(total_harga);
+    });
+
+    var ppn                  = (grand_total * 0.11).toFixed(3);
+    var grand_total_with_ppn = (grand_total + parseFloat(ppn)).toFixed(3);
+
+    // Format angka ke format Indonesia
+    var formatted_ppn = formatter.format(ppn).replace(',', '.');
+    var formatted_grand_total_with_ppn = formatter.format(grand_total_with_ppn).replace(',', '.');
+
+    $('#grand_total1').val(formatted_grand_total_with_ppn);
+    $('#grand_total2').text(formatted_grand_total_with_ppn);
+    $('#total_harga_all2').text(formatter.format(total_harga_all2).replace(',', '.'));
+}
+
 $(document).on('submit', '#formEdit', function(e) {
     e.preventDefault();
+
+    // Mengumpulkan data dari formulir
+    var formData = new FormData($(this)[0]);
+
+    // Mengambil ID dari input hidden dengan ID "id"
     var id = $('#id').val();
 
-    // Mengubah data menjadi objek agar file image bisa diinput kedalam database
-    var EditFormData = new FormData($('#formEdit')[0]);
+    if (!id) {
+        console.error("ID not found or null");
+        return;
+    }
+
+    // Mengambil data dari #addItem2 (jika diperlukan)
+    var items = $('.repeater4');
+    items.each(function(index, element) {
+        var item        = $(element).find('.getItem4').val();
+        var quantity    = $(element).find('.quantity').val();
+        var total_harga = $(element).find('.total_harga').val();
+
+        formData.append('item[' + index + ']', item);
+        formData.append('quantity[' + index + ']', quantity);
+        formData.append('total_harga[' + index + ']', total_harga);
+    });
 
     $.ajax({
         type: "POST",
         url: "/purchaseorder/update/" + id,
-        data: EditFormData,
+        data: formData,
         contentType: false,
         processData: false,
         success: function(response) {
-            // console.log(response);
-            var oTable = $('#table-purchase').dataTable(); //inialisasi datatable
-            oTable.fnDraw(false); //reset datatable
+            var oTable = $('#table-purchase').dataTable();
+            oTable.fnDraw(false);
             if (response.status == 400) {
                 $('#modalJudulEdit').html("");
                 $('#modalJudulEdit').removeClass('d-none');
                 $.each(response.errors, function(key, err_value) {
-                    $('#modalJudulEdit').append('<li>' + err_value +
-                        '</li>');
+                    $('#modalJudulEdit').append('<li>' + err_value + '</li>');
                 });
-
                 $('#btn-update').text('Update');
             } else if (response.status == 404) {
                 toastr.error(response.message);
             } else if (response.status == 200) {
                 $('#modalJudulEdit').html("");
                 toastr.success(response.message);
-
                 $('#editModal').modal('hide');
             }
         },
@@ -434,8 +558,38 @@ $(document).on('submit', '#formEdit', function(e) {
             console.log('Error:', response);
         }
     });
-
 });
+
+// Function delete item saat update data
+$(document).on('click', '.delete-item', function() {
+
+    var idpurchase = $('#id').val();
+    var iditem     = $(this).closest('.repeater-wrapper').find('select[name="item[]"]').val();
+    var itemContainer = $(this).closest('.mb-3'); // Select the item container to be deleted
+
+    $.ajax({
+        type: "POST",
+        url: "/purchaseorder/" + idpurchase + "/" + iditem + "/deleteitem",
+        data: {
+            "idpurchase": idpurchase,
+            "iditem": iditem // Mengirim token CSRF dengan nama _token
+        },
+        success: function(response) {
+            // handle success response, maybe refresh the item list or do something else
+            console.log("Item deleted successfully");
+            // Slide up and then remove the item container from the DOM upon successful deletion
+            itemContainer.slideUp(400, function() {
+                $(this).remove();
+            });
+        },
+        error: function(response) {
+            // handle error response
+            console.error("Error deleting item");
+        }
+    });
+    
+});
+
 
 // Function Delete
 //jika klik class delete (yang ada pada tombol delete) maka tampilkan modal konfirmasi hapus maka
@@ -501,8 +655,8 @@ $(document).on('change', '#getItem1', function(e) {
 });
 
 
-// Mengikatkan peristiwa perubahan pada elemen select dengan id getItem
-$(document).on("change", "#getItem2", function() {
+// Function to handle change event on getItem2 select element
+$(document).on("change", ".getItem2", function () {
     // Mendapatkan nilai yang dipilih dari elemen select
     var itemId = $(this).val();
     
@@ -511,8 +665,22 @@ $(document).on("change", "#getItem2", function() {
     var selectedPrice = items.find(item => item.id == itemId).harga;
     
     // Setel nilai harga ke dalam input harga yang sesuai
-    $(this).closest('#rowHarga').find('#getHarga2').val(selectedPrice);
+    $(this).closest('.repeater2').find('.getHarga2').val(selectedPrice);
 });
+
+// Function to handle click event on getItem4
+$(document).on("change", ".getItem4", function () {
+    // Mendapatkan nilai yang dipilih dari elemen select
+    var itemId = $(this).val();
+    
+    // Anda kemudian dapat menggunakan itemId untuk mencari harga terkait dari sumber data Anda
+    // Misalnya, jika Anda memiliki daftar item di dalam items array dan setiap item memiliki harga tersimpan di dalamnya
+    var selectedPrice = items.find(item => item.id == itemId).harga;
+    
+    // Setel nilai harga ke dalam input harga yang sesuai
+    $(this).closest('.repeater4').find('.harga').val(selectedPrice);
+});
+
 
 // Function get job title
 $(document).on('change', '#nama_vendor', function(e) {

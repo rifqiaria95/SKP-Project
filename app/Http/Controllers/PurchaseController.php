@@ -125,7 +125,6 @@ class PurchaseController extends Controller
         return response()->json($purchase);
     }
 
-
     public function update($id, Request $request)
     {
         $messages  = [
@@ -150,8 +149,7 @@ class PurchaseController extends Controller
 
             \ActivityLog::addToLog('Mengedit data PO');
 
-            $item                    = Item::find($id);
-            $purchase                = PurchaseOrder::find($id);
+            $purchase = PurchaseOrder::find($id);
             $purchase->nomor_po      = $request->nomor_po;
             $purchase->nama_po       = $request->nama_po;
             $purchase->tanggal       = $request->tanggal;
@@ -165,13 +163,24 @@ class PurchaseController extends Controller
             $purchase->perusahaan_id = $request->perusahaan_id;
             $purchase->save();
 
-            foreach ($request->item as $key => $itemId) {
-                $item = Item::find($itemId);
+            // Proses item yang dikirim dari frontend
+            if ($request->has('item')) {
+                foreach ($request->item as $key => $itemId) {
+                    $item = Item::find($itemId);
 
-                $purchase->item()->updateExistingPivot($item->id, [
-                    'quantity'    => $request->quantity[$key],
-                    'total_harga' => $request->total_harga[$key],
-                ]);
+                    // Jika item sudah ada, update pivot, jika tidak, attach item baru
+                    if ($purchase->item->contains($item->id)) {
+                        $purchase->item()->updateExistingPivot($item->id, [
+                            'quantity'    => $request->quantity[$key],
+                            'total_harga' => $request->total_harga[$key],
+                        ]);
+                    } else {
+                        $purchase->item()->attach($item->id, [
+                            'quantity'    => $request->quantity[$key],
+                            'total_harga' => $request->total_harga[$key],
+                        ]);
+                    }
+                }
             }
 
             return response()->json([
@@ -180,7 +189,6 @@ class PurchaseController extends Controller
             ]);
         }
     }
-
     
     public function destroy($id)
     {
@@ -203,6 +211,14 @@ class PurchaseController extends Controller
                 'errors'    => 'Error! Data purchase tidak ditemukan'
             ]);
         }
+    }
+
+    public function deleteitem($idpurchase, $iditem)
+    {
+        $purchase = PurchaseOrder::find($idpurchase);
+        $purchase->item()->detach($iditem);
+
+        return response()->json($purchase);
     }
 
     public function getDetail($id)

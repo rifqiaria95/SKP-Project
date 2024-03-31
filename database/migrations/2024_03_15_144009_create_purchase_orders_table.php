@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('tanggal')->length(100);
             $table->string('status');
             $table->string('ppn');
-            $table->decimal('grand_total', 20, 3);
+            $table->string('grand_total');
             $table->string('pic_1')->length(100);
             $table->string('pic_2')->length(100)->nullable();
             $table->unsignedBigInteger('user_id');
