@@ -86,6 +86,7 @@ class PurchaseController extends Controller
             $purchase->status        = $request->status;
             $purchase->ppn           = $request->ppn;
             $purchase->grand_total   = $request->grand_total;
+            $purchase->sub_total     = $request->sub_total;
             $purchase->pic_1         = $request->pic_1;
             $purchase->pic_2         = $request->pic_2;
             $purchase->user_id       = auth()->user()->id;
@@ -156,6 +157,7 @@ class PurchaseController extends Controller
             $purchase->status        = $request->status;
             $purchase->ppn           = $request->ppn;
             $purchase->grand_total   = $request->grand_total;
+            $purchase->sub_total     = $request->sub_total;
             $purchase->pic_1         = $request->pic_1;
             $purchase->pic_2         = $request->pic_2;
             $purchase->user_id       = auth()->user()->id;

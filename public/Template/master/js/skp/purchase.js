@@ -75,60 +75,12 @@ $(document).ready(function() {
     });
 });
 
-function calculateTotalAndGrandTotal() {
-    var grandTotal    = 0;
-    var totalHargaAll = 0;
-
-    // Calculation for the initial set of elements
-    var harga             = parseFloat($('.harga').val().replace(/[^\d.-]/g, '').replace(',', '.'));  // Mengambil nilai harga dan mengonversinya ke float
-    var quantity          = parseFloat($('.quantity').val());                                         // Mengambil nilai quantity dan mengonversinya ke float
-    var subTotal          = (harga * quantity).toFixed(3);
-    var totalTax          = (subTotal * 0.11).toFixed(3);
-    var grandTotalInitial = (parseFloat(subTotal) + parseFloat(totalTax)).toFixed(3);
-
-    // Format angka ke format Indonesia
-    var formatter = new Intl.NumberFormat('id-ID', {
-        minimumFractionDigits: 3,
-        maximumFractionDigits: 3            // Menjaga tiga angka di belakang koma
-    });
-
-    $('.total_harga').val(formatter.format(subTotal).replace(',', '.')); // Mengatur nilai total harga dengan format Indonesia
-    $('.grand_total').val(formatter.format(grandTotalInitial).replace(',', '.')); // Mengatur nilai grand total dengan format Indonesia
-
-    // Update grand total including both grandTotal and grandTotal2
-    grandTotal    += parseFloat(grandTotalInitial);
-    totalHargaAll += parseFloat(subTotal);
-
-    // Calculation for dynamically added elements
-    $('.repeater2').each(function () {
-        var harga             = parseFloat($(this).find('.harga').val().replace(/[^\d.-]/g, '').replace(',', '.'));  // Mengambil nilai harga dan mengonversinya ke float
-        var quantity          = parseFloat($(this).find('.quantity').val());                                         // Mengambil nilai quantity dan mengonversinya ke float
-        var subTotal          = (harga * quantity).toFixed(3);
-        var totalTax          = (subTotal * 0.11).toFixed(3);
-        var grandTotalDynamic = (parseFloat(subTotal) + parseFloat(totalTax)).toFixed(2);
-
-        // Format angka ke format Indonesia
-        var formattedSubTotal          = formatter.format(subTotal).replace(',', '.');
-        var formattedGrandTotalDynamic = formatter.format(grandTotalDynamic).replace(',', '.');
-
-        $(this).find('.total_harga').val(formattedSubTotal); // Mengatur nilai total harga dengan format Indonesia
-        $(this).find('.grand_total').val(formattedGrandTotalDynamic); // Mengatur nilai grand total dengan format Indonesia
-
-        // Update grand total including both grandTotal and grandTotal2
-        grandTotal    += parseFloat(grandTotalDynamic);
-        totalHargaAll += parseFloat(subTotal);
-    });
-
-    // Mengatur nilai grand total secara keseluruhan dengan format Indonesia
-    $('.grand_total').val(formatter.format(grandTotal).replace(',', '.')).text(formatter.format(grandTotal).replace(',', '.'));
-    $('.total_harga_all').val(formatter.format(totalHargaAll).replace(',', '.')).text(formatter.format(totalHargaAll).replace(',', '.')); // Mengatur nilai total harga all dengan format Indonesia
-}
 
 // Panggil fungsi secara inisial dan ikatnya ke event perubahan
 $(document).ready(function () {
     calculateTotalAndGrandTotal();
 
-    $('.harga, .quantity').on('change', calculateTotalAndGrandTotal);
+    $('.harga, harga2, .quantity, .quantity2').on('change', calculateTotalAndGrandTotal);
     $('#repeater, #itemContainer').on('change', '.harga, .quantity', calculateTotalAndGrandTotal);
 });
 
@@ -178,7 +130,7 @@ function addItemHandler(target) {
                 <div class="col-md-2 col-12 mb-md-0 mb-3">
                     <label class="form-label" for="multicol-phone">Quantity</label>
                     <input
-                    type="text"
+                    type="number"
                     name="quantity[]"
                     class="form-control quantity"
                     placeholder="1"
@@ -214,7 +166,7 @@ $("#addItem").on("click", function () {
     addItemHandler(target);
 });
 
-function addItem2Handler(target) {
+function addItem4Handler(target) {
     var options = '';
     $.each(items, function(index, item) {
         options += '<option value="' + item.id + '">' + item.nama_item + '</option>';
@@ -245,7 +197,7 @@ function addItem2Handler(target) {
                 <div class="col-md-2 col-12 mb-md-0 mb-3">
                     <label class="form-label" for="multicol-phone">Quantity</label>
                     <input
-                    type="text"
+                    type="number"
                     name="quantity[]"
                     class="form-control quantity"
                     placeholder="1"
@@ -278,18 +230,24 @@ function addItem2Handler(target) {
 // Bind click event to addItem2
 $("#addItem4").on("click", function () {
     var target = "#itemContainer";
-    addItemHandler(target);
-    calculateTotalAndGrandTotal(); // Menghitung total harga dan grand total setelah menambahkan item baru
+    addItem4Handler(target);
+    // calculateTotalAndGrandTotal(); // Menghitung total harga dan grand total setelah menambahkan item baru
 });
 
 
 // Function to handle click event on delete icon
 $(document).on("click", ".ti-x", function () {
+    // Simpan referensi ke elemen repeater2 yang dihapus untuk penggunaan berikutnya
+    var deletedElement = $(this).closest('.repeater2');
+    
     // Cari elemen repeater2 terdekat dari elemen yang diklik, lalu animasikan slide up, dan kemudian hapusnya dari DOM
-    $(this).closest('.repeater2').slideUp(function () {
+    deletedElement.slideUp(400, function () {
         $(this).remove();
+        // Setelah item dihapus, panggil fungsi untuk menghitung ulang total harga dan grand total
+        calculateTotalAndGrandTotal();
     });
 });
+
 
 
 // Function untuk tombol tambah purchase dan tampilkan modal
@@ -369,6 +327,27 @@ if ($("#formPurchase").length > 0) {
     })
 }
 
+// Function to add new item
+function addItem() {
+    var newItemIndex = $('.repeater-wrapper').length;
+    var itemHtml = getItemHtml({}); // Jika item baru, berikan objek kosong untuk membuat placeholder data
+    $('#itemContainer').append(itemHtml);
+    
+    // Reinitialize select2 for newly added item
+    $('#getItem3_' + newItemIndex).select2({
+        dropdownParent: $('#editModal')
+    });
+
+    // Reinitialize event listeners for new item's quantity field
+    $('#quantity_' + newItemIndex).on('change', calculateTotalAndGrandTotal);
+
+    // Reinitialize event listener for delete item button
+    $('.delete-item').off().on('click', function() {
+        $(this).closest('.repeater-wrapper').remove();
+        calculateTotalAndGrandTotal();
+    });
+}
+
 // Function Edit Purchase
 $(document).on('click', '#edit-purchase', function(e) {
     e.preventDefault();
@@ -386,6 +365,7 @@ $(document).on('click', '#edit-purchase', function(e) {
     $('#item_id').select2({
         dropdownParent: $('#editModal')
     });
+    
 
     $.ajax({
         type: "GET",
@@ -398,13 +378,15 @@ $(document).on('click', '#edit-purchase', function(e) {
                 $('#nama_po').val(response.nama_po);
                 $('#tanggal').val(response.tanggal);
                 $('#ppn').val(response.ppn);
-                $('#grand_total1').val(response.grand_total);
-                $('#grand_total2').text(response.grand_total);
                 $('#status').val(response.status);
                 $('#vendor_id').val(response.vendor_id).trigger('change');
                 $('#perusahaan_id').val(response.perusahaan_id).trigger('change');
                 $('#pic_1').val(response.pic_1).trigger('change');
                 $('#pic_2').val(response.pic_2).trigger('change');
+                $('.grand_total2').val(response.grand_total).trigger('change');
+                $('.grand_total2').text(response.grand_total).trigger('change');
+                $('.sub_total4').val(response.sub_total).trigger('change');
+                $('.sub_total4').text(response.sub_total).trigger('change');
 
                 // Clear existing item containers
                 $('#itemContainer').empty();
@@ -414,6 +396,17 @@ $(document).on('click', '#edit-purchase', function(e) {
                     response.item.forEach(function(item, index) {
                         var itemHtml = getItemHtml(item, index);
                         $('#itemContainer').append(itemHtml);
+            
+                        // Reinitialize select2 for each item
+                        $('#getItem3_' + index).select2({
+                            dropdownParent: $('#editModal')
+                        });
+            
+                        // Reinitialize event listeners for each item's quantity field
+                        $('#quantity_' + index).on('change', function() {
+                            // Call calculateTotalAndGrandTotal to recalculate total prices
+                            calculateTotalAndGrandTotal();
+                        });
                     });
                 }
             } else {
@@ -425,14 +418,14 @@ $(document).on('click', '#edit-purchase', function(e) {
             // Handle error, maybe show an error message
         }
     });
-    
+
     // Function to generate HTML for an item
     function getItemHtml(item, index) {
         return `
             <div id="itemContainer${index + 1}" class="mb-3" data-repeater-list="group-a">
-                <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
+                <div class="repeater3 repeater-wrapper pt-0 pt-md-4" data-repeater-item>
                     <div class="d-flex border rounded position-relative pe-0">
-                        <div id="rowAja${index + 1}" class="row w-100 p-3">
+                        <div id="row${index + 1}" class="row w-100 p-3">
                             <div class="col-md-4">
                                 <label class="form-label" for="multicol-first-name">Nama Item</label>
                                 <select name="item[]" id="getItem3_${index}" class="select2 form-select" required>
@@ -446,7 +439,7 @@ $(document).on('click', '#edit-purchase', function(e) {
                             </div>
                             <div class="col-md-2 col-12 mb-md-0 mb-3">
                                 <label class="form-label" for="multicol-phone">Quantity</label>
-                                <input type="text" id="quantity_${index}" name="quantity[]" class="form-control quantity2" placeholder="1" value="${item.pivot.quantity}" aria-label="Masukkan quantity" />
+                                <input type="number" id="quantity_${index}" name="quantity[]" class="form-control quantity2" placeholder="1" value="${item.pivot.quantity}" aria-label="Masukkan quantity" />
                             </div>
                             <div class="col-md-3 col-12">
                                 <label class="form-label" for="multicol-phone">Total</label>
@@ -461,49 +454,105 @@ $(document).on('click', '#edit-purchase', function(e) {
             </div>
         `;
     }
+    
 });
 
 
-$(document).on('input', '.quantity2, .harga2', function() {
-    calculateTotals();
-});
+function calculateTotalAndGrandTotal() {
+    var grandTotal     = 0;
+    var totalHargaAll  = 0;
+    var totalHargaAll2 = 0;
+    var totalHargaAll4 = 0;  // Initialize totalHargaAll4
+    var ppn            = 0;  // Initialize grandTotal2
+    var grandTotal2    = 0;  // Initialize grandTotalAll
 
-$(document).on('click', '#addItem4', function() {
-    calculateTotals();
-});
-
-function calculateTotals() {
-    var grand_total      = 0;
-    var total_harga_all2 = 0;
+    // Calculation for the initial set of elements
+    var harga             = parseFloat($('.harga').val().replace(/[^\d.-]/g, '').replace(',', '.'));  // Mengambil nilai harga dan mengonversinya ke float
+    var quantity          = parseFloat($('.quantity').val());                                         // Mengambil nilai quantity dan mengonversinya ke float
+    var subTotal          = (harga * quantity);
+    var totalTax          = (subTotal * 0.11);
+    var grandTotalInitial = (parseFloat(subTotal) + parseFloat(totalTax));
 
     // Format angka ke format Indonesia
     var formatter = new Intl.NumberFormat('id-ID', {
-        minimumFractionDigits: 3,
-        maximumFractionDigits: 3
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 3            // Menjaga tiga angka di belakang koma
     });
 
-    $('.repeater-wrapper').each(function() {
-        var quantity              = parseFloat($(this).find('.quantity2').val()) || 0;
-        var harga                 = parseFloat($(this).find('.harga2').val()) || 0;
-        var total_harga           = (quantity * harga).toFixed(3);
-        var formatted_total_harga = formatter.format(total_harga).replace(',', '.');
-        $(this).find('.total_harga2').val(formatted_total_harga);
-        total_harga_all2 += parseFloat(total_harga);
-        grand_total += parseFloat(total_harga);
+    $('.total_harga').val(formatter.format(subTotal).replace(',', '.')); // Mengatur nilai total harga dengan format Indonesia
+    $('.grand_total').val(formatter.format(grandTotalInitial).replace(',', '.')); // Mengatur nilai grand total dengan format Indonesia
+
+    // Update grand total including both grandTotal and grandTotal2
+    grandTotal    += parseFloat(grandTotalInitial);
+    totalHargaAll += parseFloat(subTotal);
+
+    // Calculation for dynamically added elements
+    $('.repeater2').each(function () {
+        var harga             = parseFloat($(this).find('.harga').val().replace(/[^\d.-]/g, '').replace(',', '.'));  // Mengambil nilai harga dan mengonversinya ke float
+        var quantity          = parseFloat($(this).find('.quantity').val());                                         // Mengambil nilai quantity dan mengonversinya ke float
+        var subTotal          = (harga * quantity);
+        var totalTax          = (subTotal * 0.11);
+        var grandTotalDynamic = (parseFloat(subTotal) + parseFloat(totalTax));
+
+        // Format angka ke format Indonesia
+        var formattedSubTotal          = formatter.format(subTotal).replace(',', '.');
+        var formattedGrandTotalDynamic = formatter.format(grandTotalDynamic).replace(',', '.');
+
+        $(this).find('.total_harga').val(formattedSubTotal); // Mengatur nilai total harga dengan format Indonesia
+        $(this).find('.grand_total').val(formattedGrandTotalDynamic); // Mengatur nilai grand total dengan format Indonesia
+
+        // Update grand total including both grandTotal and grandTotal2
+        grandTotal    += parseFloat(grandTotalDynamic);
+        totalHargaAll += parseFloat(subTotal);
     });
 
-    var ppn                  = (grand_total * 0.11).toFixed(3);
-    var grand_total_with_ppn = (grand_total + parseFloat(ppn)).toFixed(3);
+    // Mengatur nilai grand total secara keseluruhan dengan format Indonesia
+    $('.grand_total').val(formatter.format(grandTotal).replace(',', '.')).text(formatter.format(grandTotal).replace(',', '.'));
+    $('.sub_total').val(formatter.format(totalHargaAll).replace(',', '.')).text(formatter.format(totalHargaAll).replace(',', '.'));
 
-    // Format angka ke format Indonesia
-    var formatted_ppn = formatter.format(ppn).replace(',', '.');
-    var formatted_grand_total_with_ppn = formatter.format(grand_total_with_ppn).replace(',', '.');
+    
+    // Calculation for the initial set of elements
+    $('.repeater3, .repeater4').each(function () {
+        var harga               = parseFloat($(this).find('.harga, .harga2').val().replace(/[^\d.-]/g, '').replace(',', '.')) || 0;
+        var quantity            = parseFloat($(this).find('.quantity, .quantity2').val()) || 0;
+        var subTotal            = quantity * harga;
+        var formattedTotalHarga = formatter.format(subTotal).replace(',', '.');
 
-    $('#grand_total1').val(formatted_grand_total_with_ppn);
-    $('#grand_total2').text(formatted_grand_total_with_ppn);
-    $('#total_harga_all2').text(formatter.format(total_harga_all2).replace(',', '.'));
+        $(this).find('.total_harga, .total_harga2').val(formattedTotalHarga);
+
+        if ($(this).hasClass('repeater2')) {
+            totalHargaAll2 += parseFloat(subTotal);
+        } else {
+            totalHargaAll4 += parseFloat(subTotal);
+        }
+        
+        grandTotal += parseFloat(subTotal);
+    });
+
+    // Calculate totalHargaAll4 by summing totalHargaAll and totalHargaAll2
+    totalHargaAll4 += totalHargaAll2;
+
+    // Calculate grandTotal2
+    ppn = totalHargaAll4 * 0.11;
+
+    grandTotal2 = totalHargaAll4 + ppn;
+
+    // Update totalHargaAll4 field
+    $('.sub_total4').val(formatter.format(totalHargaAll4).replace(',', '.')).text(formatter.format(totalHargaAll4).replace(',', '.'));
+
+    // Update grandTotal2 field
+    $('.grand_total2').val(formatter.format(grandTotal2).replace(',', '.')).text(formatter.format(grandTotal2).replace(',', '.'));
+
+    // Update totalHargaAll and grandTotal for the entire form
+    $('.sub_total').text(formatter.format(totalHargaAll).replace(',', '.'));
+    $('.sub_total2').text(formatter.format(totalHargaAll2).replace(',', '.'));
+    $('.grand_total').val(formatter.format(grandTotal).replace(',', '.')).text(formatter.format(grandTotal).replace(',', '.'));
+
+
 }
 
+
+// Function update data purchase order
 $(document).on('submit', '#formEdit', function(e) {
     e.preventDefault();
 
@@ -580,6 +629,7 @@ $(document).on('click', '.delete-item', function() {
             // Slide up and then remove the item container from the DOM upon successful deletion
             itemContainer.slideUp(400, function() {
                 $(this).remove();
+                calculateTotalAndGrandTotal();
             });
         },
         error: function(response) {

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('status');
             $table->string('ppn');
             $table->string('grand_total');
+            $table->string('sub_total');
             $table->string('pic_1')->length(100);
             $table->string('pic_2')->length(100)->nullable();
             $table->unsignedBigInteger('user_id');

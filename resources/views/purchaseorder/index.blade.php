@@ -199,7 +199,7 @@
                             <div id="repeater2" class="mb-3" data-repeater-list="group-a">
                                 <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
                                     <div class="d-flex border rounded position-relative pe-0">
-                                        <div id="rowAja" class="row w-100 p-3">
+                                        <div id="row" class="row w-100 p-3">
                                             <div class="col-md-4">
                                                 <label class="form-label" for="multicol-first-name">Nama Item</label>
                                                 <select name="item[]" id="getItem1" class="select2 form-select" required>
@@ -223,7 +223,7 @@
                                             <div class="col-md-2 col-12 mb-md-0 mb-3">
                                                 <label class="form-label" for="multicol-phone">Quantity</label>
                                                 <input
-                                                type="text"
+                                                type="number"
                                                 name="quantity[]"
                                                 class="form-control quantity"
                                                 placeholder="1"
@@ -238,6 +238,16 @@
                                                 class="form-control total_harga"
                                                 placeholder="Total Harga"
                                                 aria-label="Total Harga"
+                                                readonly="readonly"
+                                                />
+                                            </div>
+                                            <div class="col-md-3 col-12">
+                                                <input
+                                                type="hidden"
+                                                name="sub_total"
+                                                class="form-control sub_total"
+                                                placeholder="Sub Total"
+                                                aria-label="Sub Total"
                                                 readonly="readonly"
                                                 />
                                             </div>
@@ -277,7 +287,7 @@
                                     <div class="invoice-calculations">
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="w-px-100">Subtotal:</span>
-                                        <span class="fw-semibold total_harga_all"></span>
+                                        <span class="fw-semibold sub_total"></span>
                                     </div>
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="w-px-100">PPN:</span>
@@ -419,18 +429,23 @@
                                     />
                                 </div>
                                 <input
-                                    type="text"
-                                    name="grand_total"
-                                    id="grand_total1"
+                                    type="hidden"
+                                    name="sub_total"
                                     value=""
-                                    class="form-control grand_total"
+                                    class="form-control sub_total4"
+                                />
+                                <input
+                                    type="hidden"
+                                    name="grand_total"
+                                    value=""
+                                    class="form-control grand_total2"
                                 />
                                 </div>
                                 <div class="col-md-6 d-flex justify-content-end">
                                     <div class="invoice-calculations">
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="w-px-100">Subtotal:</span>
-                                        <span class="fw-semibold total_harga_all4"></span>
+                                        <span class="fw-semibold sub_total4"></span>
                                     </div>
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="w-px-100">PPN:</span>
@@ -439,7 +454,7 @@
                                     <hr />
                                     <div class="d-flex justify-content-between">
                                         <span class="w-px-100">Grand Total:</span>
-                                        <span id="grand_total2" class="fw-semibold grand_total"></span>
+                                        <span class="fw-semibold grand_total2"></span>
                                     </div>
                                     </div>
                                 </div>
