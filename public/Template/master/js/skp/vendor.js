@@ -53,6 +53,23 @@ $(document).ready(function() {
     });
 });
 
+document.getElementById("formVendor").addEventListener("submit", function(event) {
+    // Prevent the form from submitting
+    event.preventDefault();
+
+    // Get the value of the note textarea
+    var noteValue = document.querySelector('.editor').value;
+
+    // Remove <ol> and <li> tags
+    noteValue = noteValue.replace(/<ol>|<\/ol>|<li>|<\/li>/g, '');
+
+    // Set the updated value back to the textarea
+    document.querySelector('.editor').value = noteValue;
+
+    // Now submit the form
+    this.submit();
+});
+
 
 // Function untuk tombol tambah vendor dan tampilkan modal
 $(document).ready(function() {

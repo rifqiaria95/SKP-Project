@@ -51,40 +51,50 @@ class VendorController extends Controller
             'alamat'      => 'required',
             'no_tlp'      => 'required|numeric',
             'pic'         => 'required|string|max:30',
-            'note'        => 'required'
-        ],$messages);
+        ], $messages);
 
         if ($validator->fails()) {
             return response()->json([
-                'status'    => 400,
-                'errors'    => $validator->messages()
+                'status' => 400,
+                'errors' => $validator->messages()
             ]);
         } else {
 
-            $nama_vendor       = $request->nama_vendor;
-            $alamat            = $request->alamat;
-            $no_tlp            = $request->no_tlp;
-            $pic               = $request->pic;
-            $jabatan_pic       = $request->jabatan_pic;
-            $note              = $request->note;
+            // Process note data
+            $note = $request->input('note');
 
-            // Buat objek Vendor dan simpan data jika memenuhi syarat
+            // Remove <ol> and <li> tags
+            $note = strip_tags($note, '<li>');
+
+            // Split the note into lines
+            $lines = explode("</li>", $note);
+
+            // Format the list items with numbers
+            $formattedNote = '';
+            foreach ($lines as $index => $line) {
+                // Remove leading <li> tag
+                $line = ltrim($line, '<li>');
+                // Add number and line break
+                $formattedNote .= ($index + 1) . '. ' . $line . "\n";
+            }
+
+            // Create or update vendor with the modified note
             $vendor = new Vendor;
-            $vendor->nama_vendor = $nama_vendor;
-            $vendor->alamat      = $alamat;
-            $vendor->no_tlp      = $no_tlp;
-            $vendor->pic         = $pic;
-            $vendor->jabatan_pic = $jabatan_pic;
-            $vendor->note        = $note;
+            $vendor->nama_vendor = $request->nama_vendor;
+            $vendor->alamat      = $request->alamat;
+            $vendor->no_tlp      = $request->no_tlp;
+            $vendor->pic         = $request->pic;
+            $vendor->jabatan_pic = $request->jabatan_pic;
+            $vendor->note        = $formattedNote;
             $vendor->save();
 
-            // Tambahkan aktivitas log
+            // Log activity
             \ActivityLog::addToLog('Menambah data vendor');
 
-            // Kirim respons berhasil
+            // Response
             return response()->json([
                 'status' => 200,
-                'message' => 'Data vendor berhasil ditambahkan. '
+                'message' => 'Data vendor berhasil ditambahkan.'
             ]);
         }
     }

@@ -234,7 +234,6 @@ $("#addItem4").on("click", function () {
     // calculateTotalAndGrandTotal(); // Menghitung total harga dan grand total setelah menambahkan item baru
 });
 
-
 // Function to handle click event on delete icon
 $(document).on("click", ".ti-x", function () {
     // Simpan referensi ke elemen repeater2 yang dihapus untuk penggunaan berikutnya
@@ -247,8 +246,6 @@ $(document).on("click", ".ti-x", function () {
         calculateTotalAndGrandTotal();
     });
 });
-
-
 
 // Function untuk tombol tambah purchase dan tampilkan modal
 $(document).ready(function() {
@@ -279,7 +276,6 @@ $(document).ready(function() {
         });
     }
 });
-
 
 //SIMPAN & UPDATE DATA DAN VALIDASI (SISI CLIENT)
 //jika id = formPurchase panjangnya lebih dari 0 atau bisa dibilang terdapat data dalam form tersebut maka
@@ -457,7 +453,6 @@ $(document).on('click', '#edit-purchase', function(e) {
     
 });
 
-
 function calculateTotalAndGrandTotal() {
     var grandTotal     = 0;
     var totalHargaAll  = 0;
@@ -467,8 +462,8 @@ function calculateTotalAndGrandTotal() {
     var grandTotal2    = 0;  // Initialize grandTotalAll
 
     // Calculation for the initial set of elements
-    var harga             = parseFloat($('.harga').val().replace(/[^\d.-]/g, '').replace(',', '.'));  // Mengambil nilai harga dan mengonversinya ke float
-    var quantity          = parseFloat($('.quantity').val());                                         // Mengambil nilai quantity dan mengonversinya ke float
+    var harga             = parseFloat($('.harga').val().replace(/[^\d.-]/g, '').replace(',', '.')) || 0;  // Mengambil nilai harga dan mengonversinya ke float
+    var quantity          = parseFloat($('.quantity').val()) || 0;                                         // Mengambil nilai quantity dan mengonversinya ke float
     var subTotal          = (harga * quantity);
     var totalTax          = (subTotal * 0.11);
     var grandTotalInitial = (parseFloat(subTotal) + parseFloat(totalTax));
@@ -488,29 +483,27 @@ function calculateTotalAndGrandTotal() {
 
     // Calculation for dynamically added elements
     $('.repeater2').each(function () {
-        var harga             = parseFloat($(this).find('.harga').val().replace(/[^\d.-]/g, '').replace(',', '.'));  // Mengambil nilai harga dan mengonversinya ke float
-        var quantity          = parseFloat($(this).find('.quantity').val());                                         // Mengambil nilai quantity dan mengonversinya ke float
-        var subTotal          = (harga * quantity);
-        var totalTax          = (subTotal * 0.11);
-        var grandTotalDynamic = (parseFloat(subTotal) + parseFloat(totalTax));
+        var harga             = parseFloat($(this).find('.harga').val().replace(/[^\d.-]/g, '').replace(',', '.')) || 0;
+        var quantity          = parseFloat($(this).find('.quantity').val()) || 0;
+        var subTotal          = harga * quantity;
+        var totalTax          = subTotal * 0.11;
+        var grandTotalDynamic = subTotal + totalTax;
 
         // Format angka ke format Indonesia
         var formattedSubTotal          = formatter.format(subTotal).replace(',', '.');
         var formattedGrandTotalDynamic = formatter.format(grandTotalDynamic).replace(',', '.');
 
-        $(this).find('.total_harga').val(formattedSubTotal); // Mengatur nilai total harga dengan format Indonesia
-        $(this).find('.grand_total').val(formattedGrandTotalDynamic); // Mengatur nilai grand total dengan format Indonesia
+        // Mengatur nilai total harga dengan format Indonesia, atau 0 jika harga atau quantity kosong
+        $(this).find('.total_harga').val(isNaN(subTotal) ? 0 : formattedSubTotal); 
+
+        // Mengatur nilai grand total dengan format Indonesia
+        $(this).find('.grand_total').val(formattedGrandTotalDynamic);
 
         // Update grand total including both grandTotal and grandTotal2
-        grandTotal    += parseFloat(grandTotalDynamic);
-        totalHargaAll += parseFloat(subTotal);
+        grandTotal    += grandTotalDynamic;
+        totalHargaAll += subTotal;
     });
 
-    // Mengatur nilai grand total secara keseluruhan dengan format Indonesia
-    $('.grand_total').val(formatter.format(grandTotal).replace(',', '.')).text(formatter.format(grandTotal).replace(',', '.'));
-    $('.sub_total').val(formatter.format(totalHargaAll).replace(',', '.')).text(formatter.format(totalHargaAll).replace(',', '.'));
-
-    
     // Calculation for the initial set of elements
     $('.repeater3, .repeater4').each(function () {
         var harga               = parseFloat($(this).find('.harga, .harga2').val().replace(/[^\d.-]/g, '').replace(',', '.')) || 0;
@@ -518,16 +511,18 @@ function calculateTotalAndGrandTotal() {
         var subTotal            = quantity * harga;
         var formattedTotalHarga = formatter.format(subTotal).replace(',', '.');
 
-        $(this).find('.total_harga, .total_harga2').val(formattedTotalHarga);
+        // Mengatur nilai total harga dengan format Indonesia, atau 0 jika harga atau quantity kosong
+        $(this).find('.total_harga, .total_harga2').val(isNaN(subTotal) ? 0 : formattedTotalHarga);
 
         if ($(this).hasClass('repeater2')) {
-            totalHargaAll2 += parseFloat(subTotal);
+            totalHargaAll2 += subTotal;
         } else {
-            totalHargaAll4 += parseFloat(subTotal);
+            totalHargaAll4 += subTotal;
         }
         
-        grandTotal += parseFloat(subTotal);
+        grandTotal += subTotal;
     });
+
 
     // Calculate totalHargaAll4 by summing totalHargaAll and totalHargaAll2
     totalHargaAll4 += totalHargaAll2;
@@ -547,7 +542,6 @@ function calculateTotalAndGrandTotal() {
     $('.sub_total').text(formatter.format(totalHargaAll).replace(',', '.'));
     $('.sub_total2').text(formatter.format(totalHargaAll2).replace(',', '.'));
     $('.grand_total').val(formatter.format(grandTotal).replace(',', '.')).text(formatter.format(grandTotal).replace(',', '.'));
-
 
 }
 
@@ -639,7 +633,6 @@ $(document).on('click', '.delete-item', function() {
     });
     
 });
-
 
 // Function Delete
 //jika klik class delete (yang ada pada tombol delete) maka tampilkan modal konfirmasi hapus maka

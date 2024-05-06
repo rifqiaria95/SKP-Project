@@ -34,7 +34,7 @@ class PurchaseController extends Controller
                 <div class="btn-group me-2" role="group" aria-label="First group">
                     <a href="javascript:void(0)" id="edit-purchase" data-toggle="tooltip"  data-id="' . $data->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-purchase"><i class="fa-solid fa-pen"></i></a>
                     <button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
-                    <a href="purchase/detail/' . $data->id . '" name="view" class="view btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
+                    <a href="purchaseorder/detail/' . $data->id . '" name="detail" class="detail btn btn-secondary btn-sm"><i class="far fa-eye"></i></a>
                     </div>
                 </div>';
                 return $button;
@@ -221,6 +221,16 @@ class PurchaseController extends Controller
         $purchase->item()->detach($iditem);
 
         return response()->json($purchase);
+    }
+
+    public function detailPurchase($id)
+    {
+        $purchase   = PurchaseOrder::find($id);
+        $item       = Item::all();
+        $vendor     = Vendor::all();
+        // $vendorNote = Vendor::first()->note;
+
+        return view('purchaseorder.detail', compact(['purchase', 'item', 'vendor']));
     }
 
     public function getDetail($id)

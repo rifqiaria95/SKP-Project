@@ -14,17 +14,17 @@
                 </div>
                 <div class="card-datatable table-responsive">
                     <table id="table-vendor" class="invoice-list-table table border-top">
-                    <thead>
-                        <tr>
-                            <th>Nama Vendor</th>
-                            <th>Alamat</th>
-                            <th>No. Telepon</th>
-                            <th>PIC</th>
-                            <th>Jabatan PIC</th>
-                            <th>Note</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
+                        <thead>
+                            <tr>
+                                <th>Nama Vendor</th>
+                                <th>Alamat</th>
+                                <th>No. Telepon</th>
+                                <th>PIC</th>
+                                <th>Jabatan PIC</th>
+                                <th>Note</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
                     </table>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label">Note</label>
-                                        <textarea type="text" name="note" class="note form-control" required></textarea>
+                                        <textarea type="text" name="note" class="note form-control editor"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -114,7 +114,7 @@
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label">Note</label>
-                                        <textarea type="text" id="note" name="note" class="note form-control" value="" required></textarea>
+                                        <textarea type="text" id="note" name="note" class="note form-control editor" value=""></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -156,7 +156,20 @@
 @section ('script')
 <script src="{{ asset('Template/master/vendor/libs/select2/select2.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js" integrity="sha256-sPB0F50YUDK0otDnsfNHawYmA5M0pjjUf4TvRJkGFrI=" crossorigin="anonymous"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
+
 <!-- Page JS -->
 <script src="{{ asset('Template/master/js/tables-datatables-basic.js') }}"></script>
 <script src="{{ asset('Template/master/js/skp/vendor.js') }}"></script>
+
+<script>
+    ClassicEditor
+            .create( document.querySelector( '.editor' ) )
+            .then( editor => {
+                    console.log( editor );
+            } )
+            .catch( error => {
+                    console.error( error );
+            } );
+</script>
 @endsection

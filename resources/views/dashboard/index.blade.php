@@ -14,8 +14,7 @@
             <div class="col-xl-4 col-md-6 col-12 mb-4">
               <div
                 class="swiper-container swiper-container-horizontal swiper swiper-card-advance-bg"
-                id="swiper-with-pagination-cards"
-              >
+                id="swiper-with-pagination-cards">
                 <div class="swiper-wrapper">
                   <div class="swiper-slide">
                     <div class="row">
@@ -29,7 +28,13 @@
                             <div class="col-6">
                               <ul class="list-unstyled mb-0">
                                 <li class="d-flex mb-4 align-items-center">
-                                  <h1 class="text-white mb-0 fw-semibold me-2 website-analytics-text-bg">{{ totalAbsensi() }}</h1>
+                                  <h1 class="text-white mb-0 fw-semibold me-2 website-analytics-text-bg">
+                                    @if (!totalAbsensi())
+                                      {{ 0 }}
+                                    @else
+                                      {{ totalAbsensi() }}
+                                    @endif
+                                  </h1>
                                 </li>
                               </ul>
                             </div>
@@ -49,7 +54,13 @@
                           <div class="col-6">
                             <ul class="list-unstyled mb-0">
                               <li class="d-flex mb-4 align-items-center">
-                                <h1 class="text-white mb-0 fw-semibold me-2 website-analytics-text-bg">{{ totalKaryawan() }}</h1>
+                                <h1 class="text-white mb-0 fw-semibold me-2 website-analytics-text-bg">
+                                  @if (!totalKaryawan())
+                                      {{ 0 }}
+                                    @else
+                                      {{ totalKaryawan() }}
+                                    @endif
+                                </h1>
                               </li>
                             </ul>
                           </div>
@@ -211,7 +222,11 @@
                 <div class="card-header d-flex justify-content-between pb-0">
                   <div class="card-title mb-0">
                     <h5 class="mb-0">Meal Attendance</h5>
-                    <small class="text-muted">Diperbarui {{ $absensi[0]->created_at->diffForhumans() }}</small>
+                    @if(isset($absensi[0]))
+                        <small class="text-muted">Diperbarui {{ $absensi[0]->created_at ? $absensi[0]->created_at->diffForhumans() : 'Belum ada data absensi' }}</small>
+                    @else
+                        <small class="text-muted">Belum ada data absensi</small>
+                    @endif
                   </div>
                 </div>
                 <div class="card-body">

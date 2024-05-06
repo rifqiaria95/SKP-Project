@@ -19,7 +19,7 @@ class VendorSeeder extends Seeder
                 'alamat'      => 'Jakarta',
                 'no_tlp'      => '0812656486',
                 'pic'         => 'Kevin Louis Gunawan',
-                'jabatan_pic' => 'Kevin Louis Gunawan',
+                'jabatan_pic' => 'Account Manager',
                 'note'        => 'Tes',
             ],
         ]);
