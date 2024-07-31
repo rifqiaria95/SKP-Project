@@ -6,9 +6,10 @@ use App\Models\Item;
 use App\Models\User;
 use App\Models\Vendor;
 use App\Models\Karyawan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Perusahaan;
-use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
+use App\Models\PurchaseOrder;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
@@ -26,6 +27,12 @@ class PurchaseController extends Controller
         // dd($kelas);
         if ($request->ajax()) {
             return datatables()->of($purchase)
+            ->addColumn('status', function(PurchaseOrder $purchase) {
+                $pending = '<span class="badge bg-label-warning">Pending</span>';
+                $selesai = '<span class="badge bg-label-success">Selesai</span>';
+
+                return $purchase->status === 'Pending' ? $pending : $selesai;
+            })
             ->addColumn('user', function(PurchaseOrder $purchase) {
                 return $purchase->user->name;
             })
@@ -39,7 +46,7 @@ class PurchaseController extends Controller
                 </div>';
                 return $button;
             })
-            ->rawColumns(['item', 'user', 'aksi', 'karyawan'])
+            ->rawColumns(['item', 'user', 'aksi', 'karyawan', 'status'])
             ->addIndexColumn()
             ->toJson();
         }
@@ -245,6 +252,17 @@ class PurchaseController extends Controller
         $item = Item::find($id);
         return response()->json($item);
     
+    }
+
+    public function exportPDF()
+    {
+        $purchase = PurchaseOrder::all();
+
+        $pdf = PDF::loadView('purchaseorder.export', compact('purchase'));
+        // $pdf->loadHTML('purchase.detail');
+
+        return $pdf->stream('purchase');
+        // return view('purchaseorder.export');
     }
 
 }

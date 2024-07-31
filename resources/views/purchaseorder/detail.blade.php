@@ -11,10 +11,10 @@
             <div class="card-body">
               <div class="d-flex justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column m-sm-3 m-0">
                 <div class="mb-xl-0 mb-4">
-                  <p class="mb-2">No : 019/SKP-PO/III/2024</p>
+                  <p class="mb-2">No : {{ $purchase->nomor_po }}/SKP-PO/{{ convertToRoman($purchase->tanggal->format('n')) }}/{{ now()->year }}</p>
                 </div>
                 <div>
-                  <p class="mb-2">Jakarta, {{ $purchase->created_at->format('d-m-Y') }}</p>
+                  <p class="mb-2">Jakarta, {{ $purchase->tanggal->format('d M Y') }}</p>
                 </div>
               </div>
             </div>
@@ -63,7 +63,7 @@
                       </td>
                       <td class="ps-6 py-6">
                         <p class="fw-semibold mb-2 pt-3">Rp {{ $purchase->sub_total }},-</p>
-                        <p class="fw-semibold mb-2"> {{ $purchase->ppn }} %</p>
+                        <p class="fw-semibold mb-2">Rp {{ $purchase->ppn }}</p>
                         <p class="fw-semibold mb-0 pb-3">Rp {{ $purchase->grand_total }},-</p>
                       </td>
                     </tr>
@@ -72,27 +72,27 @@
               </table>
             </div>
             <div class="card-body mx-3">
-              <div class="row">
-                  <div class="col-12">
-                      <span class="fw-semibold">Note:</span>
-                      <div id="vendor-info" class="mt-3">
-                        <ol>
-                          <li>Lokasi Serah Terima Produk: Lumire Hotel 2nd Fl, Jalan Senen Raya No.135, Senen – Jakarta Pusat.</li>
-                          <li>Dokumen penagihan ASLI harap dikirimkan ke alamat: <br>
-                            <b>PT Santini Kelola Persada</b> <br>
-                            <b>Lumire Hotel lantai 2</b><br>
-                            <b>Jalan Senen Raya nomor 135 – Jakarta 10410</b><br>
-                            <b>u.p Finance Department.</b>
-                          </li>
-                          <li>Pembayaran tagihan akan ditujukan ke rekening dibawah ini: <br>
-                            Nama Rekening   :  {{ $purchase->vendor->nama_vendor }} <br>
-                            Nomor Rekening  :  693-021-828 <br>
-                            Bank            :  BCA <br>
-                          </li>
-                      </ol>
-                      </div>
-                  </div>
-              </div>
+            <div class="row">
+                <div class="col-12">
+                    <span class="fw-semibold">Note:</span>
+                    <div id="vendor-info" class="mt-3">
+                      <ol>
+                        <li>Lokasi Serah Terima Produk: Lumire Hotel 2nd Fl, Jalan Senen Raya No.135, Senen – Jakarta Pusat.</li>
+                        <li>Dokumen penagihan ASLI harap dikirimkan ke alamat: <br>
+                          <b>PT Santini Kelola Persada</b> <br>
+                          <b>Lumire Hotel lantai 2</b><br>
+                          <b>Jalan Senen Raya nomor 135 – Jakarta 10410</b><br>
+                          <b>u.p Finance Department.</b>
+                        </li>
+                        <li>Pembayaran tagihan akan ditujukan ke rekening dibawah ini: <br>
+                          Nama Rekening   :  {{ $purchase->vendor->nama_vendor }} <br>
+                          Nomor Rekening  :  693-021-828 <br>
+                          Bank            :  BCA <br>
+                        </li>
+                    </ol>
+                    </div>
+                </div>
+            </div>
             </div>
           </div>
         </div>
@@ -114,7 +114,7 @@
               <a
                 class="btn btn-label-secondary d-grid w-100 mb-2"
                 target="_blank"
-                href="#"
+                href="/purchaseorder/export"
               >
                 Print
               </a>

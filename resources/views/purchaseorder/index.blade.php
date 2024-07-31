@@ -98,6 +98,7 @@
                         <th>Nomor PO</th>
                         <th>Nama PO</th>
                         <th>Tanggal</th>
+                        <th>Status</th>
                         <th>Created By</th>
                         <th>Aksi</th>
                     </tr>
@@ -120,7 +121,7 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label" for="multicol-username">Nomor PO</label>
-                                    <input type="text" name="nomor_po" class="form-control" placeholder="#001" />
+                                    <input type="number" name="nomor_po" class="form-control" placeholder="#001" />
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="multicol-email">Nama PO</label>

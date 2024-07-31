@@ -13,6 +13,10 @@ class PurchaseOrder extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'tanggal' => 'date'
+    ];
+
 
     public function user()
     {

@@ -60,6 +60,10 @@ $(document).ready(function() {
                 name: 'tanggal'
             },
             {
+                data: 'status',
+                name: 'status'
+            },
+            {
                 data: 'user',
                 name: 'user'
             },

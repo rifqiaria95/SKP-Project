@@ -36,7 +36,8 @@
         },
         "files": [
             "app/Helpers/Global.php",
-            "app/Helpers/ActivityLog.php"
+            "app/Helpers/ActivityLog.php",
+            "app/Helpers/FormatNumber.php"
         ]
     },
     "autoload-dev": {

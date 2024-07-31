@@ -1,0 +1,23 @@
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 11px;
+    margin: auto;
+}
+h5, h6 {
+    font-size: 11px;
+}
+table tr td,
+table tr th{
+    font-size: 9pt;
+}
+ol {
+    padding-left: 1em; /* Adjust the padding as needed */
+    margin-left: 0; /* Ensure no additional margin is added */
+}
+.header-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Ensures vertical alignment */
+    margin: 0;
+}

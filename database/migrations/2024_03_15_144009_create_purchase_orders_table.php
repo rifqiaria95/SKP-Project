@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nomor_po')->length(100);
             $table->string('nama_po')->length(100);
-            $table->string('tanggal')->length(100);
+            $table->date('tanggal');
             $table->string('status');
             $table->string('ppn');
             $table->string('grand_total');
