@@ -20,10 +20,12 @@ class UserController extends Controller
         if ($request->ajax()) {
             return datatables()->of($user)
             ->addColumn('status_user', function(User $user) {
-                if($user->status_user == 0){
-                    return '<span class="badge bg-label-danger">Inactive</span>';
+                $inactive = '<span class="badge bg-label-danger">Inactive</span>';
+                $active   = '<span class="badge bg-label-success">Active</span>';
+                if($user->status_user == 0) {
+                    return $inactive;
                 }  else if ($user->status_user == 1) {
-                    return '<span class="badge bg-label-success">Active</span>';
+                    return $active;
                 }
             })
             ->addColumn('aksi', function ($data) {

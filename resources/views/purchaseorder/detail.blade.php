@@ -14,7 +14,7 @@
                   <p class="mb-2">No : 019/SKP-PO/III/2024</p>
                 </div>
                 <div>
-                  <p class="mb-2">Jakarta, 04 April 2024</p>
+                  <p class="mb-2">Jakarta, {{ $purchase->created_at->format('d-m-Y') }}</p>
                 </div>
               </div>
             </div>
@@ -48,6 +48,25 @@
                       <td class="text-nowrap">Rp {{ $p->harga }},-</td>
                       <td class="text-nowrap">Rp {{ $p->pivot->total_harga }},-</td>
                     </tr>
+                    <tr>
+                      <td colspan="3" class="align-top px-4 py-4">
+                        <p class="mb-2 mt-3">
+                          <span class="ms-3 fw-semibold">Salesperson:</span>
+                          <span>Alfie Solomons</span>
+                        </p>
+                        <span class="ms-3">Thanks for your business</span>
+                      </td>
+                      <td class="text-end pe-3 py-4">
+                        <p class="mb-2 pt-3">Subtotal:</p>
+                        <p class="mb-2">PPN:</p>
+                        <p class="mb-0 pb-3">Grand Total:</p>
+                      </td>
+                      <td class="ps-6 py-6">
+                        <p class="fw-semibold mb-2 pt-3">Rp {{ $purchase->sub_total }},-</p>
+                        <p class="fw-semibold mb-2"> {{ $purchase->ppn }} %</p>
+                        <p class="fw-semibold mb-0 pb-3">Rp {{ $purchase->grand_total }},-</p>
+                      </td>
+                    </tr>
                   @endforeach
                 </tbody>
               </table>
@@ -57,11 +76,20 @@
                   <div class="col-12">
                       <span class="fw-semibold">Note:</span>
                       <div id="vendor-info" class="mt-3">
-                        <ul>
-                          @foreach(explode("\n", $purchase->vendor->note) as $item)
-                              <li class="list-unstyled">{{ $item }}</li>
-                          @endforeach
-                      </ul>
+                        <ol>
+                          <li>Lokasi Serah Terima Produk: Lumire Hotel 2nd Fl, Jalan Senen Raya No.135, Senen – Jakarta Pusat.</li>
+                          <li>Dokumen penagihan ASLI harap dikirimkan ke alamat: <br>
+                            <b>PT Santini Kelola Persada</b> <br>
+                            <b>Lumire Hotel lantai 2</b><br>
+                            <b>Jalan Senen Raya nomor 135 – Jakarta 10410</b><br>
+                            <b>u.p Finance Department.</b>
+                          </li>
+                          <li>Pembayaran tagihan akan ditujukan ke rekening dibawah ini: <br>
+                            Nama Rekening   :  {{ $purchase->vendor->nama_vendor }} <br>
+                            Nomor Rekening  :  693-021-828 <br>
+                            Bank            :  BCA <br>
+                          </li>
+                      </ol>
                       </div>
                   </div>
               </div>
@@ -86,22 +114,10 @@
               <a
                 class="btn btn-label-secondary d-grid w-100 mb-2"
                 target="_blank"
-                href="./app-invoice-print.html"
+                href="#"
               >
                 Print
               </a>
-              <a href="./app-invoice-edit.html" class="btn btn-label-secondary d-grid w-100 mb-2">
-                Edit Invoice
-              </a>
-              <button
-                class="btn btn-primary d-grid w-100"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#addPaymentOffcanvas"
-              >
-                <span class="d-flex align-items-center justify-content-center text-nowrap"
-                  ><i class="ti ti-currency-dollar ti-xs me-1"></i>Add Payment</span
-                >
-              </button>
             </div>
           </div>
         </div>

@@ -103,3 +103,5 @@ Route::get('survey/create', 'SurveyController@create');
 Route::post('survey/store', 'SurveyController@store');
 
 
+Route::get('karyawan/create', 'KaryawanController@create');
+

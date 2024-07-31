@@ -177,4 +177,11 @@ class KaryawanController extends Controller
 
         return view('karyawan.profile', compact(['karyawan', 'user']));
     }
+
+    public function create()
+    {
+        $karyawan = Karyawan::all();
+        
+        return view('karyawan.create', compact(['karyawan']));
+    }
 }

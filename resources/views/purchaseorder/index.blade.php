@@ -273,7 +273,7 @@
                                     <input
                                     type="hidden"
                                     name="ppn"
-                                    value="11"
+                                    {{-- value="11" --}}
                                     class="form-control ms-3 ppn"
                                     />
                                 </div>
@@ -291,7 +291,7 @@
                                     </div>
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="w-px-100">PPN:</span>
-                                        <span class="fw-semibold">11%</span>
+                                        <span class="fw-semibold ppn"></span>
                                     </div>
                                     <hr />
                                     <div class="d-flex justify-content-between">
@@ -425,7 +425,7 @@
                                     id="ppn"
                                     name="ppn"
                                     value=""
-                                    class="form-control ms-3"
+                                    class="form-control ms-3 ppn"
                                     />
                                 </div>
                                 <input
@@ -449,7 +449,7 @@
                                     </div>
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="w-px-100">PPN:</span>
-                                        <span class="fw-semibold">11%</span>
+                                        <span class="fw-semibold ppn"></span>
                                     </div>
                                     <hr />
                                     <div class="d-flex justify-content-between">

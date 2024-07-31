@@ -373,12 +373,13 @@ $(document).on('click', '#edit-purchase', function(e) {
                 $('#nomor_po').val(response.nomor_po);
                 $('#nama_po').val(response.nama_po);
                 $('#tanggal').val(response.tanggal);
-                $('#ppn').val(response.ppn);
+                $('#ppn').val(response.ppn).trigger('change');
                 $('#status').val(response.status);
                 $('#vendor_id').val(response.vendor_id).trigger('change');
                 $('#perusahaan_id').val(response.perusahaan_id).trigger('change');
                 $('#pic_1').val(response.pic_1).trigger('change');
                 $('#pic_2').val(response.pic_2).trigger('change');
+                $('.ppn').val(response.ppn).text(response.ppn).trigger('change');
                 $('.grand_total2').val(response.grand_total).trigger('change');
                 $('.grand_total2').text(response.grand_total).trigger('change');
                 $('.sub_total4').val(response.sub_total).trigger('change');
@@ -530,7 +531,11 @@ function calculateTotalAndGrandTotal() {
     // Calculate grandTotal2
     ppn = totalHargaAll4 * 0.11;
 
+    ppnAll = totalHargaAll * 0.11;
+
     grandTotal2 = totalHargaAll4 + ppn;
+
+    $('.ppn').val(formatter.format(ppnAll).replace(',', '.')).text(formatter.format(ppnAll).replace(',', '.'));
 
     // Update totalHargaAll4 field
     $('.sub_total4').val(formatter.format(totalHargaAll4).replace(',', '.')).text(formatter.format(totalHargaAll4).replace(',', '.'));
@@ -539,7 +544,7 @@ function calculateTotalAndGrandTotal() {
     $('.grand_total2').val(formatter.format(grandTotal2).replace(',', '.')).text(formatter.format(grandTotal2).replace(',', '.'));
 
     // Update totalHargaAll and grandTotal for the entire form
-    $('.sub_total').text(formatter.format(totalHargaAll).replace(',', '.'));
+    $('.sub_total').val(formatter.format(totalHargaAll).replace(',', '.')).text(formatter.format(totalHargaAll).replace(',', '.'));
     $('.sub_total2').text(formatter.format(totalHargaAll2).replace(',', '.'));
     $('.grand_total').val(formatter.format(grandTotal).replace(',', '.')).text(formatter.format(grandTotal).replace(',', '.'));
 
