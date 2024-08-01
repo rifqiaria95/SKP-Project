@@ -74,7 +74,7 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin,karyawan']], funct
     Route::post('purchaseorder/{id}/{iditem}/deleteitem', 'PurchaseController@deleteItem');
     Route::get('purchaseorder/getDetail/{id}', 'PurchaseController@getDetail');
     Route::get('purchaseorder/getDetailItem/{id}', 'PurchaseController@getDetailItem');
-    Route::get('purchaseorder/export', 'PurchaseController@exportPDF');
+    Route::get('purchaseorder/export/{id}', 'PurchaseController@exportPDF');
 
     // Route Vendor
     Route::get('vendor', 'VendorController@index');

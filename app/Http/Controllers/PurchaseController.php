@@ -254,14 +254,14 @@ class PurchaseController extends Controller
     
     }
 
-    public function exportPDF()
+    public function exportPDF($id)
     {
-        $purchase = PurchaseOrder::all();
+        $purchase = PurchaseOrder::with('item', 'vendor')->find($id);
 
         $pdf = PDF::loadView('purchaseorder.export', compact('purchase'));
         // $pdf->loadHTML('purchase.detail');
 
-        return $pdf->stream('purchase');
+        return $pdf->stream($purchase->nama_po . ' - ' . $purchase->vendor->nama_vendor . '.pdf');
         // return view('purchaseorder.export');
     }
 

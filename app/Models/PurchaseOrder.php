@@ -38,7 +38,7 @@ class PurchaseOrder extends Model
         return $this->belongsTo(Vendor::class);
     }
 
-    public function perusahaan(): BelongsTo
+    public function perusahaan()
     {
         return $this->belongsTo(Perusahaan::class);
     }

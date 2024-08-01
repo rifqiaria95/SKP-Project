@@ -72,27 +72,27 @@
               </table>
             </div>
             <div class="card-body mx-3">
-            <div class="row">
-                <div class="col-12">
-                    <span class="fw-semibold">Note:</span>
-                    <div id="vendor-info" class="mt-3">
-                      <ol>
-                        <li>Lokasi Serah Terima Produk: Lumire Hotel 2nd Fl, Jalan Senen Raya No.135, Senen – Jakarta Pusat.</li>
-                        <li>Dokumen penagihan ASLI harap dikirimkan ke alamat: <br>
-                          <b>PT Santini Kelola Persada</b> <br>
-                          <b>Lumire Hotel lantai 2</b><br>
-                          <b>Jalan Senen Raya nomor 135 – Jakarta 10410</b><br>
-                          <b>u.p Finance Department.</b>
-                        </li>
-                        <li>Pembayaran tagihan akan ditujukan ke rekening dibawah ini: <br>
-                          Nama Rekening   :  {{ $purchase->vendor->nama_vendor }} <br>
-                          Nomor Rekening  :  693-021-828 <br>
-                          Bank            :  BCA <br>
-                        </li>
-                    </ol>
-                    </div>
-                </div>
-            </div>
+              <div class="row">
+                  <div class="col-12">
+                      <span class="fw-semibold">Note:</span>
+                      <div id="vendor-info" class="mt-3">
+                        <ol>
+                          <li>Lokasi Serah Terima Produk: Lumire Hotel 2nd Fl, Jalan Senen Raya No.135, Senen – Jakarta Pusat.</li>
+                          <li>Dokumen penagihan ASLI harap dikirimkan ke alamat: <br>
+                            <b>PT Santini Kelola Persada</b> <br>
+                            <b>Lumire Hotel lantai 2</b><br>
+                            <b>Jalan Senen Raya nomor 135 – Jakarta 10410</b><br>
+                            <b>u.p Finance Department.</b>
+                          </li>
+                          <li>Pembayaran tagihan akan ditujukan ke rekening dibawah ini: <br>
+                            Nama Rekening   :  {{ $purchase->vendor->nama_vendor }} <br>
+                            Nomor Rekening  :  693-021-828 <br>
+                            Bank            :  BCA <br>
+                          </li>
+                      </ol>
+                      </div>
+                  </div>
+              </div>
             </div>
           </div>
         </div>
@@ -114,7 +114,7 @@
               <a
                 class="btn btn-label-secondary d-grid w-100 mb-2"
                 target="_blank"
-                href="/purchaseorder/export"
+                href="/purchaseorder/export/{{ $purchase->id }}"
               >
                 Print
               </a>
