@@ -76,6 +76,10 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin,karyawan']], funct
     Route::get('purchaseorder/getDetailItem/{id}', 'PurchaseController@getDetailItem');
     Route::get('purchaseorder/export/{id}', 'PurchaseController@exportPDF');
 
+    // Route Item
+    Route::get('item', 'ItemController@index');
+    Route::get('item/store', 'ItemController@store');
+
     // Route Vendor
     Route::get('vendor', 'VendorController@index');
     Route::post('vendor/store', 'VendorController@store');
@@ -89,6 +93,9 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin,karyawan']], funct
     Route::get('perusahaan/edit/{id}', 'PerusahaanController@edit');
     Route::post('perusahaan/update/{id}', 'PerusahaanController@update');
     Route::delete('perusahaan/delete/{id}', 'PerusahaanController@destroy');
+
+    // Route Inventory
+    Route::get('inventory', 'InventoryController@index');
 
 });
 

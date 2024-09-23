@@ -13,7 +13,7 @@ class VendorController extends Controller
 {
     public function index(Request $request)
     {
-        // Menampilkan Data karyawan
+        // Menampilkan Data Vendor
         $vendor      = Vendor::all();
         // dd($kelas);
         if ($request->ajax()) {

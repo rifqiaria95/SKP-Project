@@ -35,15 +35,23 @@
         }
         .header-info .nomor_po {
             position: absolute;
-            bottom: 57em;
+            bottom  : 57em;
         }
         .header-info .tanggal {
-            position: absolute;
-            bottom  : 57em;
-            left    : 26em;
+            text-align: right;
+            margin-top: 19px;
         }
         .kepada {
             margin-top: 3em;
+        }
+        table.table-bordered{
+            border:0.5px solid black;
+        }
+        table.table-bordered > thead > tr > th{
+            border:0.5px solid black;
+        }
+        table.table-bordered > tbody > tr > td{
+            border:0.5px solid black;
         }
         .table td, .table th {
             vertical-align: middle;
@@ -61,31 +69,33 @@
         .text-perusahaan .perusahaan {
             position: absolute;
             margin  : auto;
-            bottom  : 20em;
+            bottom  : 17em;
             left    : 5em;
         }
         .text-perusahaan .budi {
             text-align: center;
             position  : absolute;
             margin    : auto;
-            bottom    : 11em;
+            bottom    : 9em;
             left      : 2em;
         }
         .text-perusahaan .janet {
             text-align: center;
             position  : absolute;
             margin    : auto;
-            bottom    : 11em;
+            bottom    : 9em;
             left      : 13em;
         }
         .text-perusahaan .pic-vendor {
-            margin-top: 8em;
+            text-align : center;
+            margin-left: 34em;
+            margin-top : 92px;
         }
         .text-perusahaan .vendor {
             position: absolute;
             margin  : auto;
-            bottom  : 20em;
-            left    : 25em;
+            bottom  : 17em;
+            left    : 24em;
         }
     </style>
     <center>
@@ -98,10 +108,10 @@
                     <p class="text-left">No : {{ $purchase->nomor_po }}/SKP-PO/{{ convertToRoman($purchase->tanggal->format('n')) }}/{{ now()->year }}</p>
                 </div>
                 <div class="tanggal">
-                    <p class="text-end">Jakarta, {{ $purchase->tanggal->format('d M Y') }}</p>
+                    <p class="text-end">Jakarta, {{ $purchase->tanggal->isoFormat('D MMMM Y') }}</p>
                 </div>
             </div>
-            <div class="row pt-3 kepada">
+            <div class="row kepada">
                 <div class="col-xl-6 col-md-12 col-sm-5 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4">
                     <p class="mb-1">Kepada:</p>
                     <h6 class="mb-1"><b>{{ $purchase->vendor->nama_vendor }}</b></h6>
@@ -187,7 +197,7 @@
                     <p class="text-right"><b>{{ $purchase->vendor->nama_vendor }}</b></p>
                 </div>
                 <div class="pic-vendor">
-                    <p class="mr-4 pt-5 text-right"><b>{{ $purchase->vendor->pic }}</b></p>
+                    <p class="mr-4 pt-5"><b>{{ $purchase->vendor->pic }}</b><br>{{ $purchase->vendor->jabatan_pic }}</p>
                 </div>
             </div>
         </div>

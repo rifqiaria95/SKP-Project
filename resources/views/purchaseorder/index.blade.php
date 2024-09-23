@@ -14,9 +14,9 @@
                     <div class="content-left">
                         <span>Total PO</span>
                         <div class="d-flex align-items-center my-1">
-                        <h4 class="mb-0 me-2"></h4>
+                        <h4 class="mb-0 me-2">{{ totalPurchase() }}</h4>
                         </div>
-                        <span>Diperbarui </span>
+                        <span>Diperbarui {{ $purchase[0]->created_at->diffForhumans() }}</span>
                     </div>
                     <span class="badge bg-label-primary rounded p-2">
                         <i class="ti ti-user ti-sm"></i>
@@ -51,7 +51,7 @@
                     <div class="content-left">
                         <span>PO Selesai</span>
                         <div class="d-flex align-items-center my-1">
-                        <h4 class="mb-0 me-2"></h4>
+                        <h4 class="mb-0 me-2">{{ poSelesai() }}</h4>
                         </div>
                         <span>Diperbarui </span>
                     </div>
@@ -69,7 +69,7 @@
                     <div class="content-left">
                         <span>PO Pending</span>
                         <div class="d-flex align-items-center my-1">
-                        <h4 class="mb-0 me-2"></h4>
+                        <h4 class="mb-0 me-2">{{ poPending() }}</h4>
                         </div>
                         <span>Diperbarui </span>
                     </div>
@@ -117,51 +117,43 @@
                         <form id="formPurchase" class="card-body source-item" enctype="multipart/form-data">
                             @csrf
                             <h6>Detail PO</h6>
+                            <ul id="save_errorlist"></ul>
                             <input type="hidden" name="user_id" id="user_id">
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label" for="multicol-username">Nomor PO</label>
-                                    <input type="number" name="nomor_po" class="form-control" placeholder="#001" />
+                                    <input type="number" name="nomor_po" class="form-control" placeholder="#001" required/>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="multicol-email">Nama PO</label>
-                                    <div class="input-group input-group-merge">
-                                    <input
-                                        type="text"
-                                        name="nama_po"
-                                        class="form-control"
-                                        placeholder="Masukkan nama PO"
-                                        aria-label="Masukkan nama PO"
-                                        aria-describedby="nama_po"
-                                    />
+                                    <input type="text" name="nama_po" class="form-control" placeholder="Masukkan nama PO" aria-label="Masukkan nama PO" aria-describedby="nama_po" required/>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-password-toggle">
+                                        <label class="form-label" for="multicol-password">Tanggal</label>
+                                        <input name="tanggal" id="datePicker" type="text" class="form-control date-picker" placeholder="DD-MM-YYYY" required/>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-password-toggle">
-                                    <label class="form-label" for="multicol-password">Tanggal</label>
-                                    <div class="input-group input-group-merge">
-                                        <input name="tanggal" type="text" class="form-control w-px-150 date-picker" placeholder="YYYY-MM-DD" />
-                                    </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-password-toggle">
-                                    <label class="form-label" for="multicol-confirm-password">Status</label>
-                                    <select class="select form-select" name="status">
-                                        <option selected disabled>Pilih Status</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Selesai">Selesai</option>
-                                    </select>
+                                        <label class="form-label" for="multicol-confirm-password">Status</label>
+                                        <select class="select form-select" name="status" required>
+                                            <option selected disabled>Pilih Status</option>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Selesai">Selesai</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <label class="form-label" for="multicol-first-name">Perusahaan</label>
-                                    <select class="select2 form-select" id="selectPerusahaan" name="perusahaan_id" required>
-                                        <option selected disabled>Pilih Perusahaan</option>
-                                        @foreach ($perusahaan as $ps)
-                                            <option value="{{ $ps->id }}">{{ $ps->nama_perusahaan }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-password-toggle">
+                                        <label class="form-label" for="multicol-confirm-password">Perusahaan</label>
+                                        <select class="select2 form-select" id="selectPerusahaan" name="perusahaan_id" required>
+                                            <option selected disabled>Pilih Perusahaan</option>
+                                            @foreach ($perusahaan as $ps)
+                                                <option value="{{ $ps->id }}">{{ $ps->nama_perusahaan }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-6 col-12">
                                     <label class="form-label" for="multicol-first-name">PIC 1</label>
@@ -351,7 +343,7 @@
                                     <div class="form-password-toggle">
                                     <label class="form-label" for="multicol-password">Tanggal</label>
                                     <div class="input-group input-group-merge">
-                                        <input id="tanggal" name="tanggal" type="text" class="form-control w-px-150 date-picker" placeholder="YYYY-MM-DD" value="" />
+                                        <input id="tanggal" name="tanggal" type="text" class="form-control w-px-150 date-picker" placeholder="DD-MM-YYYY" value="" />
                                     </div>
                                     </div>
                                 </div>
@@ -502,6 +494,7 @@
     <script src="{{ asset('Template/master/js/skp/purchase.js') }}"></script>
 
     <script>
-        var items = {!! json_encode($item) !!};
+        var items    = {!! json_encode($item) !!};
+        var userRole = {!! json_encode($userRole) !!};
     </script>
 @endsection

@@ -7,14 +7,14 @@
 (function () {
   // Flat Picker
   // --------------------------------------------------------------------
-  const flatpickrDate = document.querySelector('#flatpickr-date'),
-    flatpickrTime = document.querySelector('#flatpickr-time'),
-    flatpickrDateTime = document.querySelector('#flatpickr-datetime'),
-    flatpickrMulti = document.querySelector('#flatpickr-multi'),
-    flatpickrRange = document.querySelector('#flatpickr-range'),
-    flatpickrInline = document.querySelector('#flatpickr-inline'),
-    flatpickrFriendly = document.querySelector('#flatpickr-human-friendly'),
-    flatpickrDisabledRange = document.querySelector('#flatpickr-disabled-range');
+  const flatpickrDate          = document.querySelector('#flatpickr-date'),
+        flatpickrTime          = document.querySelector('#flatpickr-time'),
+        flatpickrDateTime      = document.querySelector('#flatpickr-datetime'),
+        flatpickrMulti         = document.querySelector('#flatpickr-multi'),
+        flatpickrRange         = document.querySelector('#flatpickr-range'),
+        flatpickrInline        = document.querySelector('#flatpickr-inline'),
+        flatpickrFriendly      = document.querySelector('#flatpickr-human-friendly'),
+        flatpickrDisabledRange = document.querySelector('#flatpickr-disabled-range');
 
   // Date
   if (flatpickrDate) {
@@ -35,7 +35,7 @@
   if (flatpickrDateTime) {
     flatpickrDateTime.flatpickr({
       enableTime: true,
-      dateFormat: 'Y-m-d H:i'
+      dateFormat: 'd-m-Y'
     });
   }
 
@@ -70,7 +70,7 @@
     flatpickrFriendly.flatpickr({
       altInput: true,
       altFormat: 'F j, Y',
-      dateFormat: 'Y-m-d'
+      dateFormat: 'd-m-Y'
     });
   }
 
@@ -80,7 +80,7 @@
     const toDate = new Date(Date.now() + 3600 * 1000 * 48);
 
     flatpickrDisabledRange.flatpickr({
-      dateFormat: 'Y-m-d',
+      dateFormat: 'd-m-Y',
       disable: [
         {
           from: fromDate.toISOString().split('T')[0],
@@ -95,20 +95,20 @@
 $(function () {
   // Bootstrap Datepicker
   // --------------------------------------------------------------------
-  var bsDatepickerBasic = $('#bs-datepicker-basic'),
-    bsDatepickerFormat = $('#bs-datepicker-format'),
-    bsDatepickerRange = $('#bs-datepicker-daterange'),
-    bsDatepickerDisabledDays = $('#bs-datepicker-disabled-days'),
-    bsDatepickerMultidate = $('#bs-datepicker-multidate'),
-    bsDatepickerOptions = $('#bs-datepicker-options'),
-    bsDatepickerAutoclose = $('#bs-datepicker-autoclose'),
-    bsDatepickerInlinedate = $('#bs-datepicker-inline');
+  var bsDatepickerBasic        = $('#bs-datepicker-basic'),
+      bsDatepickerFormat       = $('#bs-datepicker-format'),
+      bsDatepickerRange        = $('#bs-datepicker-daterange'),
+      bsDatepickerDisabledDays = $('#bs-datepicker-disabled-days'),
+      bsDatepickerMultidate    = $('#bs-datepicker-multidate'),
+      bsDatepickerOptions      = $('#bs-datepicker-options'),
+      bsDatepickerAutoclose    = $('#bs-datepicker-autoclose'),
+      bsDatepickerInlinedate   = $('#bs-datepicker-inline');
 
   // Basic
   if (bsDatepickerBasic.length) {
     bsDatepickerBasic.datepicker({
       todayHighlight: true,
-      orientation: isRtl ? 'auto right' : 'auto left'
+      orientation   : isRtl ? 'auto right': 'auto left'
     });
   }
 
@@ -116,8 +116,8 @@ $(function () {
   if (bsDatepickerFormat.length) {
     bsDatepickerFormat.datepicker({
       todayHighlight: true,
-      format: 'dd/mm/yyyy',
-      orientation: isRtl ? 'auto right' : 'auto left'
+      format     : 'dd/mm/yyyy',
+      orientation: isRtl ? 'auto right': 'auto left'
     });
   }
 
@@ -175,13 +175,13 @@ $(function () {
 
   // Bootstrap Daterange Picker
   // --------------------------------------------------------------------
-  var bsRangePickerBasic = $('#bs-rangepicker-basic'),
-    bsRangePickerSingle = $('#bs-rangepicker-single'),
-    bsRangePickerTime = $('#bs-rangepicker-time'),
-    bsRangePickerRange = $('#bs-rangepicker-range'),
-    bsRangePickerWeekNum = $('#bs-rangepicker-week-num'),
-    bsRangePickerDropdown = $('#bs-rangepicker-dropdown'),
-    bsRangePickerCancelBtn = document.getElementsByClassName('cancelBtn');
+  var bsRangePickerBasic     = $('#bs-rangepicker-basic'),
+      bsRangePickerSingle    = $('#bs-rangepicker-single'),
+      bsRangePickerTime      = $('#bs-rangepicker-time'),
+      bsRangePickerRange     = $('#bs-rangepicker-range'),
+      bsRangePickerWeekNum   = $('#bs-rangepicker-week-num'),
+      bsRangePickerDropdown  = $('#bs-rangepicker-dropdown'),
+      bsRangePickerCancelBtn = document.getElementsByClassName('cancelBtn');
 
   // Basic
   if (bsRangePickerBasic.length) {
@@ -204,7 +204,7 @@ $(function () {
       timePicker: true,
       timePickerIncrement: 30,
       locale: {
-        format: 'MM/DD/YYYY h:mm A'
+        format: 'DD/MM/YYYY h:mm A'
       },
       opens: isRtl ? 'left' : 'right'
     });
@@ -213,12 +213,12 @@ $(function () {
   if (bsRangePickerRange.length) {
     bsRangePickerRange.daterangepicker({
       ranges: {
-        Today: [moment(), moment()],
-        Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+        Today         : [moment(), moment()],
+        Yesterday     : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-        'This Month': [moment().startOf('month'), moment().endOf('month')],
-        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        'This Month'  : [moment().startOf('month'), moment().endOf('month')],
+        'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
       },
       opens: isRtl ? 'left' : 'right'
     });
@@ -247,12 +247,12 @@ $(function () {
 
   // jQuery Timepicker
   // --------------------------------------------------------------------
-  var basicTimepicker = $('#timepicker-basic'),
-    minMaxTimepicker = $('#timepicker-min-max'),
-    disabledTimepicker = $('#timepicker-disabled-times'),
-    formatTimepicker = $('#timepicker-format'),
-    stepTimepicker = $('#timepicker-step'),
-    altHourTimepicker = $('#timepicker-24hours');
+  var basicTimepicker    = $('#timepicker-basic'),
+      minMaxTimepicker   = $('#timepicker-min-max'),
+      disabledTimepicker = $('#timepicker-disabled-times'),
+      formatTimepicker   = $('#timepicker-format'),
+      stepTimepicker     = $('#timepicker-step'),
+      altHourTimepicker  = $('#timepicker-24hours');
 
   // Basic
   if (basicTimepicker.length) {
@@ -311,9 +311,9 @@ $(function () {
 // color picker (pickr)
 // --------------------------------------------------------------------
 (function () {
-  const classicPicker = document.querySelector('#color-picker-classic'),
-    monolithPicker = document.querySelector('#color-picker-monolith'),
-    nanoPicker = document.querySelector('#color-picker-nano');
+  const classicPicker  = document.querySelector('#color-picker-classic'),
+        monolithPicker = document.querySelector('#color-picker-monolith'),
+        nanoPicker     = document.querySelector('#color-picker-nano');
 
   // classic
   if (classicPicker) {

@@ -63,7 +63,7 @@
               </li>
               <li class="menu-item {{ Request::is('item')?'active':'' }}">
                 <a href="/item" class="menu-link">
-                  <div data-i18n="List Barang">List Barang</div>
+                  <div data-i18n="List Item">List Item</div>
                 </a>
               </li>
             </ul>
@@ -77,6 +77,24 @@
               <i class="menu-icon tf-icons ti ti-building"></i>
               <div data-i18n="Perusahaan">Perusahaan</div>
             </a>
+          </li>
+          <li class="menu-item {{ Request::is('inventory')?'active':'' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons ti ti-file-dollar"></i>
+              <div data-i18n="Purchase Order">Inventory</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item {{ Request::is('inventory')?'active':'' }}">
+                <a href="/inventory" class="menu-link">
+                  <div data-i18n="Hardware">Hardware</div>
+                </a>
+              </li>
+              <li class="menu-item {{ Request::is('vendor')?'active':'' }}">
+                <a href="/vendor" class="menu-link">
+                  <div data-i18n="Licenses">Licenses</div>
+                </a>
+              </li>
+            </ul>
           </li>
         @endif
         @if(auth()->user()->role == 'owner')

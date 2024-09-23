@@ -6,11 +6,12 @@ use App\Models\Item;
 use App\Models\User;
 use App\Models\Vendor;
 use App\Models\Karyawan;
-use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Perusahaan;
 use Illuminate\Http\Request;
 use App\Models\PurchaseOrder;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PurchaseController extends Controller
@@ -24,9 +25,14 @@ class PurchaseController extends Controller
         $karyawan   = Karyawan::all();
         $vendor     = Vendor::all();
         $perusahaan = Perusahaan::all();
-        // dd($kelas);
+        $userRole   = Auth::user()->role;
+        
+        // dd($purchase);
         if ($request->ajax()) {
             return datatables()->of($purchase)
+            ->addColumn('tanggal', function(PurchaseOrder $purchase) {
+                return $purchase->tanggal->isoFormat('D MMMM Y');
+            })
             ->addColumn('status', function(PurchaseOrder $purchase) {
                 $pending = '<span class="badge bg-label-warning">Pending</span>';
                 $selesai = '<span class="badge bg-label-success">Selesai</span>';
@@ -46,7 +52,7 @@ class PurchaseController extends Controller
                 </div>';
                 return $button;
             })
-            ->rawColumns(['item', 'user', 'aksi', 'karyawan', 'status'])
+            ->rawColumns(['item', 'user', 'aksi', 'karyawan', 'status', 'tanggal'])
             ->addIndexColumn()
             ->toJson();
         }
@@ -59,6 +65,7 @@ class PurchaseController extends Controller
             'vendor',
             'perusahaan',
             'karyawan',
+            'userRole',
         ]));
     }
 
@@ -67,16 +74,18 @@ class PurchaseController extends Controller
         Log::info($request->all());
 
         $messages  = [
-            'required' => 'Kolom :attribute harus diisi.',
-            'string'   => 'Kolom :attribute harus berupa teks.',
-            'numeric'  => 'Kolom :attribute harus berupa angka.',
-            'alpha'    => 'Kolom :attribute harus berupa teks.',
-            'max'      => 'Kolom :attribute maksimal :max kata.',
+            'required'       => 'Kolom :attribute harus diisi.',
+            'string'         => 'Kolom :attribute harus berupa teks.',
+            'numeric'        => 'Kolom :attribute harus berupa angka.',
+            'alpha'          => 'Kolom :attribute harus berupa teks.',
+            'max'            => 'Kolom :attribute maksimal :max kata.',
+            'after_or_equal' => 'Tidak boleh isi tanggal yang sudah lewat.',
         ];
         
         $validator = Validator::make($request->all(), [
             'nomor_po' => 'required|max:100',
-            'nama_po'  => 'required'
+            'nama_po'  => 'required',
+            'tanggal'  => 'required|after_or_equal:today',
         ], $messages);
 
         if ($validator->fails()) {
@@ -235,9 +244,10 @@ class PurchaseController extends Controller
         $purchase   = PurchaseOrder::find($id);
         $item       = Item::all();
         $vendor     = Vendor::all();
+        $userRole   = Auth::user()->role;
         // $vendorNote = Vendor::first()->note;
 
-        return view('purchaseorder.detail', compact(['purchase', 'item', 'vendor']));
+        return view('purchaseorder.detail', compact(['purchase', 'item', 'vendor', 'userRole']));
     }
 
     public function getDetail($id)
@@ -259,10 +269,10 @@ class PurchaseController extends Controller
         $purchase = PurchaseOrder::with('item', 'vendor')->find($id);
 
         $pdf = PDF::loadView('purchaseorder.export', compact('purchase'));
-        // $pdf->loadHTML('purchase.detail');
+
+        // return view ('purchaseorder.export', compact('purchase'));
 
         return $pdf->stream($purchase->nama_po . ' - ' . $purchase->vendor->nama_vendor . '.pdf');
-        // return view('purchaseorder.export');
     }
 
 }

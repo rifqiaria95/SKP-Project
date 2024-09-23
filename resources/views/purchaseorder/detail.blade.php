@@ -262,4 +262,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js" integrity="sha256-sPB0F50YUDK0otDnsfNHawYmA5M0pjjUf4TvRJkGFrI=" crossorigin="anonymous"></script>
 
   <script src="{{ asset('Template/master/js/skp/purchase.js') }}"></script>
+
+  <script>
+    var userRole = {!! json_encode($userRole) !!};
+  </script>
 @endsection

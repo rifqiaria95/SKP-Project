@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
               message: 'Please select your DOB'
             },
             date: {
-              format: 'YYYY/MM/DD',
+              format: 'DD/MM/YYY',
               message: 'The value is not a valid date'
             }
           }
@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     flatpickr(formValidationExamples.querySelector('[name="formValidationDob"]'), {
       enableTime: false,
       // See https://flatpickr.js.org/formatting/
-      dateFormat: 'Y/m/d',
+      dateFormat: 'd/m/Y',
       // After selecting a date, we need to revalidate the field
       onChange: function () {
         fv.revalidateField('formValidationDob');

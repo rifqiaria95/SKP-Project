@@ -6,6 +6,22 @@ $(document).ready(function() {
     });
 });
 
+$(document).ready(function() {
+
+    // Mengatur konfigurasi Flatpickr berdasarkan userRole
+    var flatpickrOptions = {
+        dateFormat: "DD-MM-YYYY"
+    };
+
+    if (userRole !== 'owner') {
+        flatpickrOptions.minDate = "today"; // Non-owners tidak bisa pilih tanggal sebelumnya
+    }
+
+    $("#datePicker").flatpickr(flatpickrOptions);
+    $("#tanggal").flatpickr(flatpickrOptions);
+});
+
+
 //MULAI DATATABLE
 //script untuk memanggil data json dari server dan menampilkannya berupa datatable
 $(document).ready(function() {
@@ -96,7 +112,8 @@ $(document).ready(function () {
     if (invoiceDateList) {
       invoiceDateList.forEach(function (invoiceDateEl) {
         invoiceDateEl.flatpickr({
-          monthSelectorType: 'static'
+          monthSelectorType: 'static',
+          dateFormat: 'd-m-Y',
         });
       });
     }

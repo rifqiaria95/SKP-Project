@@ -3,6 +3,7 @@
 use App\Models\User;
 use App\Models\Absensi;
 use App\Models\Karyawan;
+use App\Models\PurchaseOrder;
 
 
 function totalKaryawan()
@@ -14,6 +15,21 @@ function totalAbsensi()
 {
     return Absensi::count();
 
+}
+
+function totalPurchase()
+{
+    return PurchaseOrder::count();
+}
+
+function poPending()
+{
+    return PurchaseOrder::where('status', '=', 'Pending')->count();
+}
+
+function poSelesai()
+{
+    return PurchaseOrder::where('status', '=', 'Selesai')->count();
 }
 
 function totalUser()
