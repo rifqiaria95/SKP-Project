@@ -80,8 +80,8 @@
           </li>
           <li class="menu-item {{ Request::is('inventory')?'active':'' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons ti ti-file-dollar"></i>
-              <div data-i18n="Purchase Order">Inventory</div>
+              <i class="menu-icon tf-icons ti ti-building-warehouse"></i>
+              <div data-i18n="Inventory">Inventory</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item {{ Request::is('inventory')?'active':'' }}">
