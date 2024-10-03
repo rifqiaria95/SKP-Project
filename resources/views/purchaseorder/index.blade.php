@@ -16,7 +16,13 @@
                         <div class="d-flex align-items-center my-1">
                         <h4 class="mb-0 me-2">{{ totalPurchase() }}</h4>
                         </div>
-                        <span>Diperbarui {{ $purchase[0]->created_at->diffForhumans() }}</span>
+                        <span>Diperbarui
+                            @if(!$purchase)
+                                {{ $purchase[0]->created_at->diffForhumans() }}
+                            @else
+                                {{ "" }}
+                            @endif
+                        </span>
                     </div>
                     <span class="badge bg-label-primary rounded p-2">
                         <i class="ti ti-user ti-sm"></i>

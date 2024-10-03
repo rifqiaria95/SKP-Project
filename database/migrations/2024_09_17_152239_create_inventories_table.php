@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('nama_asset')->length(100);
             $table->string('image')->nullable();
             $table->string('tag');
-            $table->string('note')->nullable();
+            $table->string('serial')->nullable();
             $table->string('category')->length(100);
             $table->decimal('purchase_cost', 20, 0);
+            $table->string('location')->length(100);
             $table->unsignedBigInteger('karyawan_id');
             $table->timestamps();
         });
