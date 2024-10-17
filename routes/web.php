@@ -78,7 +78,7 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin,karyawan']], funct
 
     // Route Item
     Route::get('item', 'ItemController@index');
-    Route::get('item/store', 'ItemController@store');
+    Route::post('item/store', 'ItemController@store');
 
     // Route Vendor
     Route::get('vendor', 'VendorController@index');
@@ -100,6 +100,7 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin,karyawan']], funct
 
     // Route Inventory
     Route::get('task', 'TaskController@index');
+    Route::post('task/store', 'TaskController@store');
 
 });
 

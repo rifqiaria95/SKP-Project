@@ -10,7 +10,7 @@ $(document).ready(function() {
 
     // Mengatur konfigurasi Flatpickr berdasarkan userRole
     var flatpickrOptions = {
-        dateFormat: "DD-MM-YYYY"
+        dateFormat: "D M Y"
     };
 
     if (userRole !== 'owner') {

@@ -54,13 +54,18 @@ function totalTask()
     return Task::count();
 }
 
+function finishedTask()
+{
+    return Task::where('task_status', '=', 'Finished')->count();
+}
+
 function totalProgressTask()
 {
-    return Task::where('task_status', '===', 'Sedang Dikerjakan')->count();
+    return Task::where('task_status', '=', 'On Progress')->count();
 }
 
 function totalUnfinishedTask()
 {
-    return Task::where('task_status', '===', 'Belum Dimulai')->count();
+    return Task::where('task_status', '=', 'Unfinished')->count();
 }
 

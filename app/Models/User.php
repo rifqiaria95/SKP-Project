@@ -60,6 +60,11 @@ class User extends Authenticatable
         return $this->hasMany(PurchaseOrder::class);
     }
 
+    public function task()
+    {
+        return $this->hasMany(Task::class);
+    }
+
     /**
      * The attributes that should be cast.
      *
@@ -67,6 +72,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'password'          => 'hashed',
     ];
 }

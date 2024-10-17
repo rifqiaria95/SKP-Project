@@ -10,10 +10,10 @@
                   <script>
                     document.write(new Date().getFullYear());
                   </script>
-                  , made with ❤️ by <a href="https://luwansahotels.com/landing/" target="_blank" class="fw-semibold">Luwansa Hotels Group</a>
+                  , made with ❤️ by <a href="#" target="_blank" class="fw-semibold">Perum DAMRI</a>
                 </div>
                 <div>
-                  <p>All Rights Reserved | PT Santini Kelola Persada</p>
+                  <p>All Rights Reserved | Perum DAMRI</p>
                 </div>
               </div>
             </div>

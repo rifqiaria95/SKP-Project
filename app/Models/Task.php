@@ -12,4 +12,13 @@ class Task extends Model
     protected $table = "Task";
 
     protected $guarded = [];
+
+    protected $casts = [
+        'deadline' => 'date'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

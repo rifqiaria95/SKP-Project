@@ -6,6 +6,22 @@ $(document).ready(function() {
     });
 });
 
+$(document).ready(function() {
+
+    // Mengatur konfigurasi Flatpickr berdasarkan userRole
+    var flatpickrOptions = {
+        dateFormat: "D M Y"
+    };
+
+    if (userRole !== "owner") {
+        flatpickrOptions.minDate = "today"; // Non-owners tidak bisa pilih tanggal sebelumnya
+    }
+
+    $("#datePicker").flatpickr(flatpickrOptions);
+    $("#deadline").flatpickr(flatpickrOptions);
+});
+
+
 //MULAI DATATABLE
 //script untuk memanggil data json dari server dan menampilkannya berupa datatable
 $(document).ready(function() {
@@ -198,8 +214,8 @@ $(document).ready(function() {
                 name: 'priority'
             },
             {
-                data: 'status',
-                name: 'status'
+                data: 'task_status',
+                name: 'task_status'
             },
             {
                 data: 'user',
@@ -217,3 +233,74 @@ $(document).ready(function() {
 
     $('#table-task').DataTable(tableOptions);
 });
+
+// DatePicker
+(function () {
+    const invoiceDateList = document.querySelectorAll('.date-picker');
+  
+    // Datepicker
+    if (invoiceDateList) {
+      invoiceDateList.forEach(function (invoiceDateEl) {
+        invoiceDateEl.flatpickr({
+          monthSelectorType: 'static',
+          dateFormat: 'd-m-Y',
+        });
+      });
+    }
+})();
+
+// Function untuk tombol tambah task dan tampilkan modal
+$(document).ready(function() {
+    // $.noConflict();
+    $('.btn_tambah').click(function() {
+        // console.log($('#btn_tambah'));
+        $('#btn-simpan').val("tambah-task");
+        $('#tambahModal').modal('show');
+        $('#formItem').trigger("reset");
+        $('#modal-judul').html("Tambah task");
+    });
+});
+
+//SIMPAN & UPDATE DATA DAN VALIDASI (SISI CLIENT)
+//jika id = formItem panjangnya lebih dari 0 atau bisa dibilang terdapat data dalam form tersebut maka
+//jalankan jquery validator terhadap setiap inputan dll dan eksekusi script ajax untuk simpan data
+if ($("#formItem").length > 0) {
+    $("#formItem").validate({
+        submitHandler: function(form) {
+            var actionType = $('#btn-simpan').val();
+            // Mengubah data menjadi objek agar file image bisa diinput kedalam database
+            var formData = new FormData($('#formItem')[0]);
+            $.ajax({
+                data: formData, //function yang dipakai agar value pada form-control seperti input, textarea, select dll dapat digunakan pada URL query string ketika melakukan ajax request
+                url: "/task/store", //url simpan data
+                type: "POST", //data tipe kita kirim berupa JSON
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    var oTable = $('#table-task').dataTable(); //inialisasi datatable
+                    oTable.fnDraw(false); //reset datatable
+                    if (response.status == 400) {
+                        $('#save_errorList').html("");
+                        $('#save_errorList').removeClass('d-none');
+                        $.each(response.errors, function(key, err_value) {
+                            $('#save_errorList').append('<li>' + err_value +
+                                '</li>');
+                        });
+
+                        $('#btn-simpan').text('Menyimpan..');
+                    } else if (response.status == 200) {
+                        $('#modalJudul').html("");
+                        $('#formItem').find('input').val('');
+                        toastr.success(response.message);
+                        $('#tambahModal').modal('hide');
+
+                    }
+                },
+                error: function(response) {
+                    console.log('Error:', response);
+                    $('#btn-simpan').html('Simpan');
+                }
+            });
+        }
+    })
+}
