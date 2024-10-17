@@ -6,7 +6,7 @@
     <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
       <div class="app-brand demo">
         <a href="index.html" class="app-brand-link">
-          <span class="app-brand-text demo menu-text fw-bold"><img src="{{ asset('Template/master/img/logo3.png') }}" alt="" srcset="" style="width: 60%"></span>
+          <span class="app-brand-text demo menu-text fw-bold"><img src="{{ asset('Template/master/img/logodamri.png') }}" alt="" srcset="" style="width: 3%"></span>
           
         </a>
 
@@ -28,7 +28,7 @@
         </li>
         <!-- SKP -->
         <li class="menu-header small text-uppercase">
-          <span class="menu-header-text">Santini Kelola Persada</span>
+          <span class="menu-header-text">Perum DAMRI</span>
         </li>
         @if(auth()->user()->role == 'owner' || auth()->user()->role == 'admin')
           <li class="menu-item {{ Request::is('karyawan')?'active':'' }}">
@@ -41,6 +41,12 @@
             <a href="/absensi" class="menu-link">
               <i class="menu-icon tf-icons ti ti-layout-navbar"></i>
               <div data-i18n="Meal Attendance">Meal Attendance</div>
+            </a>
+          </li>
+          <li class="menu-item {{ Request::is('task')?'active':'' }}">
+            <a href="/task" class="menu-link">
+              <i class="menu-icon tf-icons ti ti-notes"></i>
+              <div data-i18n="Task List">Task List</div>
             </a>
           </li>
         @endif

@@ -12,14 +12,14 @@
                 <div class="card-body">
                     <div class="d-flex align-items-start justify-content-between">
                     <div class="content-left">
-                        <span>Total Assets</span>
+                        <span>Total Tasks</span>
                         <div class="d-flex align-items-center my-1">
-                        {{-- <h4 class="mb-0 me-2">{{ totalUser() }}</h4> --}}
+                        <h4 class="mb-0 me-2">{{ totalTask() }}</h4>
                         </div>
-                        {{-- <span>Diperbarui {{ $inventory[0]->created_at->diffForhumans() }}</span> --}}
+                        {{-- <span>Diperbarui {{ $task[0]->created_at->diffForhumans() }}</span> --}}
                     </div>
                     <span class="badge bg-label-primary rounded p-2">
-                        <i class="ti ti-inventory ti-sm"></i>
+                        <i class="ti ti-task ti-sm"></i>
                     </span>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-start justify-content-between">
                     <div class="content-left">
-                        <span>Paid Items</span>
+                        <span>Finished Tasks</span>
                         <div class="d-flex align-items-center my-1">
                         <h4 class="mb-0 me-2">4,567</h4>
                         <span class="text-success">(+18%)</span>
@@ -38,7 +38,7 @@
                         <span>Last week analytics </span>
                     </div>
                     <span class="badge bg-label-danger rounded p-2">
-                        <i class="ti ti-inventory-plus ti-sm"></i>
+                        <i class="ti ti-task-plus ti-sm"></i>
                     </span>
                     </div>
                 </div>
@@ -49,14 +49,14 @@
                 <div class="card-body">
                     <div class="d-flex align-items-start justify-content-between">
                     <div class="content-left">
-                        <span>Active Items</span>
+                        <span>On Progress Tasks</span>
                         <div class="d-flex align-items-center my-1">
-                        <h4 class="mb-0 me-2">{{ totalActiveUser() }}</h4>
+                        <h4 class="mb-0 me-2">{{ totalProgressTask() }}</h4>
                         </div>
-                        {{-- <span>Diperbarui {{ $inventory[0]->updated_at->diffForhumans() }}</span> --}}
+                        {{-- <span>Diperbarui {{ $task[0]->updated_at->diffForhumans() }}</span> --}}
                     </div>
                     <span class="badge bg-label-success rounded p-2">
-                        <i class="ti ti-inventory-check ti-sm"></i>
+                        <i class="ti ti-task-check ti-sm"></i>
                     </span>
                     </div>
                 </div>
@@ -67,14 +67,14 @@
                 <div class="card-body">
                     <div class="d-flex align-items-start justify-content-between">
                     <div class="content-left">
-                        <span>Inactive Items</span>
+                        <span>Unfinished Tasks</span>
                         <div class="d-flex align-items-center my-1">
-                        {{-- <h4 class="mb-0 me-2">{{ totalInactiveUser() }}</h4> --}}
+                            <h4 class="mb-0 me-2">{{ totalUnfinishedTask() }}</h4>
                         </div>
-                        {{-- <span>Diperbarui {{ $inventory[0]->updated_at->diffForhumans() }}</span> --}}
+                        {{-- <span>Diperbarui {{ $task[0]->updated_at->diffForhumans() }}</span> --}}
                     </div>
                     <span class="badge bg-label-warning rounded p-2">
-                        <i class="ti ti-inventory-exclamation ti-sm"></i>
+                        <i class="ti ti-task-exclamation ti-sm"></i>
                     </span>
                     </div>
                 </div>
@@ -92,24 +92,21 @@
                 </div>
             </div>
             <div class="card-datatable table-responsive">
-                <table id="table-inventory" class="datatables-users table border-top">
+                <table id="table-task" class="datatables-users table border-top">
                 <thead>
                     <tr>
-                        <th>Nama Asset</th>
-                        <th>Image</th>
-                        <th>Tag</th>
-                        <th>Serial</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Deadline</th>
+                        <th>Priority</th>
                         <th>Status</th>
-                        <th>Category</th>
-                        <th>Purchase Cost</th>
-                        <th>Location</th>
-                        <th>Owned By</th>
-                        <th>Aksi</th>
+                        <th>Created By</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 </table>
             </div>
-            <!-- Modal Tambah Inventory -->
+            <!-- Modal Tambah Task -->
             {{-- <div class="modal fade text-start" id="tambahModal" tabindex="-1" aria-labelledby="myModalLabel18" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -124,8 +121,8 @@
                                 <ul class="alert alert-warning d-none" id="save_errorList"></ul>
                                 <div class="row g-3">
                                     <div class="col-md-6">
-                                        <label class="form-label">Nama Inventory</label>
-                                        <input type="text" name="nama_item" class="nama_item form-control" placeholder="Masukkan Nama Inventory" required>
+                                        <label class="form-label">Nama Task</label>
+                                        <input type="text" name="nama_item" class="nama_item form-control" placeholder="Masukkan Nama Task" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Harga</label>
@@ -133,7 +130,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Spesifikasi</label>
-                                        <textarea class="form-control" name="spesifikasi_item" placeholder="Masukkan Spesifkasi Inventory" required></textarea>
+                                        <textarea class="form-control" name="spesifikasi_item" placeholder="Masukkan Spesifkasi Task" required></textarea>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Note</label>
@@ -149,9 +146,9 @@
                     </div>
                 </div>
             </div> --}}
-            {{-- End Modal Tambah Inventory --}}
+            {{-- End Modal Tambah Task --}}
 
-            <!-- Modal Edit inventory -->
+            <!-- Modal Edit task -->
             {{-- <div class="modal fade text-start" id="editModal" tabindex="-1" aria-labelledby="myModalLabel18" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -208,7 +205,7 @@
                     </div>
                 </div>
             </div> --}}
-            {{-- End Modal Tambah Inventory --}}
+            {{-- End Modal Tambah Task --}}
 
             <!-- Modal Konfirmasi Delete -->
             {{-- <div class="modal fade" tabindex="-1" role="dialog" id="modalHapus" data-backdrop="false">
@@ -239,5 +236,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js" integrity="sha256-sPB0F50YUDK0otDnsfNHawYmA5M0pjjUf4TvRJkGFrI=" crossorigin="anonymous"></script>
     <!-- Page JS -->
     <script src="{{ asset('Template/master/js/tables-datatables-basic.js') }}"></script>
-    <script src="{{ asset('Template/master/js/skp/inventory.js') }}"></script>
+    <script src="{{ asset('Template/master/js/skp/task.js') }}"></script>
 @endsection

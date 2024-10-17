@@ -97,6 +97,10 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin,karyawan']], funct
     // Route Inventory
     Route::get('inventory', 'InventoryController@index');
 
+
+    // Route Inventory
+    Route::get('task', 'TaskController@index');
+
 });
 
 // ----------------------------- Route yang bisa diakses oleh semua user tanpa login -------------------------------- //

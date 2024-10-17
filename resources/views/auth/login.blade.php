@@ -31,9 +31,9 @@
       <div class="d-flex col-12 col-lg-5 align-items-center p-sm-5 p-4">
         <div class="w-px-400 mx-auto">
           <!-- Logo -->
-          <img src="{{ asset('Template/master/img/logo3.png') }}" alt="" srcset="" style="width: 60%">
+          <img src="{{ asset('Template/master/img/logodamri.png') }}" alt="" srcset="" style="width: 60%">
           <!-- /Logo -->
-          <h4 class="mt-4 fw-bold">Login to PT Santini Kelola Persada</h4>
+          <h4 class="mt-4 fw-bold">Task Management System Perum DAMRI</h4>
           <p class="mb-4">Please sign-in to your account and start the adventure</p>
           @if (session('error'))
             <div class="alert alert-danger">

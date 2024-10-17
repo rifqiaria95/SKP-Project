@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Task;
 use App\Models\User;
 use App\Models\Absensi;
 use App\Models\Karyawan;
@@ -46,5 +47,20 @@ function totalActiveUser()
 function totalInactiveUser()
 {
     return User::where('status_user', '<', 1)->count();
+}
+
+function totalTask()
+{
+    return Task::count();
+}
+
+function totalProgressTask()
+{
+    return Task::where('task_status', '===', 'Sedang Dikerjakan')->count();
+}
+
+function totalUnfinishedTask()
+{
+    return Task::where('task_status', '===', 'Belum Dimulai')->count();
 }
 

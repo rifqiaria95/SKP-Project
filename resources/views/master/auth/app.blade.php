@@ -16,7 +16,7 @@
     />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Login | PT Santini Kelola Persada</title>
+    <title>Login | Perum DAMRI</title>
 
     <meta name="description" content="" />
 

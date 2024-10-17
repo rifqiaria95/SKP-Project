@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('tag');
             $table->string('serial')->nullable();
+            $table->integer('status');
             $table->string('category')->length(100);
             $table->decimal('purchase_cost', 20, 0);
             $table->string('location')->length(100);

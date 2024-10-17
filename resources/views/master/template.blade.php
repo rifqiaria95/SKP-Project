@@ -16,7 +16,7 @@
     />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <title>Luwansa Hotels Group</title>
+    <title>Task Management System | Perum DAMRI</title>
     <script src="https://unpkg.com/feather-icons"></script>
     <meta name="description" content="" />
 
