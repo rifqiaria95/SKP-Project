@@ -31,18 +31,18 @@
           <span class="menu-header-text">Perum DAMRI</span>
         </li>
         @if(auth()->user()->role == 'owner' || auth()->user()->role == 'admin')
-          <li class="menu-item {{ Request::is('karyawan')?'active':'' }}">
+          {{-- <li class="menu-item {{ Request::is('karyawan')?'active':'' }}">
             <a href="/karyawan" class="menu-link">
               <i class="menu-icon tf-icons ti ti-users"></i>
               <div data-i18n="Karyawan">Karyawan</div>
             </a>
-          </li>
-          <li class="menu-item {{ Request::is('absensi')?'active':'' }}">
+          </li> --}}
+          {{-- <li class="menu-item {{ Request::is('absensi')?'active':'' }}">
             <a href="/absensi" class="menu-link">
               <i class="menu-icon tf-icons ti ti-layout-navbar"></i>
               <div data-i18n="Meal Attendance">Meal Attendance</div>
             </a>
-          </li>
+          </li> --}}
           <li class="menu-item {{ Request::is('task')?'active':'' }}">
             <a href="/task" class="menu-link">
               <i class="menu-icon tf-icons ti ti-notes"></i>
@@ -51,7 +51,7 @@
           </li>
         @endif
         @if(auth()->user()->role == 'karyawan' || auth()->user()->role == 'admin' || auth()->user()->role == 'owner')
-          <li class="menu-item {{ Request::is('purchaseorder')?'active':'' }}">
+          {{-- <li class="menu-item {{ Request::is('purchaseorder')?'active':'' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons ti ti-file-dollar"></i>
               <div data-i18n="Purchase Order">Purchase Order</div>
@@ -73,9 +73,9 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> --}}
           <!-- Apps & Pages -->
-          <li class="menu-header small text-uppercase">
+          {{-- <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Misc</span>
           </li>
           <li class="menu-item {{ Request::is('perusahaan')?'active':'' }}">
@@ -101,7 +101,7 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> --}}
         @endif
         @if(auth()->user()->role == 'owner')
           <li class="menu-item {{ Request::is('user')?'active':'' }}">
@@ -117,7 +117,7 @@
             </a>
           </li>
           <!-- Settings -->
-          <li class="menu-header small text-uppercase">
+          {{-- <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Settings</span>
           </li>
           <li class="menu-item">
@@ -125,7 +125,7 @@
               <i class="menu-icon tf-icons ti ti-settings"></i>
               <div data-i18n="Roles & Permissions">Roles & Permissions</div>
             </a>
-          </li>
+          </li> --}}
         @endif
       </ul>
     </aside>

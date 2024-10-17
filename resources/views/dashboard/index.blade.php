@@ -19,7 +19,7 @@
                   <div class="swiper-slide">
                     <div class="row">
                       <div class="col-12">
-                        <h5 class="text-white mb-0 mt-2">Meal Attendance</h5>
+                        <h5 class="text-white mb-0 mt-2">Tasks</h5>
                       </div>
                       <div class="row">
                         <div class="col-lg-7 col-md-9 col-12 order-2 order-md-1">
@@ -29,10 +29,10 @@
                               <ul class="list-unstyled mb-0">
                                 <li class="d-flex mb-4 align-items-center">
                                   <h1 class="text-white mb-0 fw-semibold me-2 website-analytics-text-bg">
-                                    @if (!totalAbsensi())
+                                    @if (!totalTask())
                                       {{ 0 }}
                                     @else
-                                      {{ totalAbsensi() }}
+                                      {{ totalTask() }}
                                     @endif
                                   </h1>
                                 </li>
@@ -84,7 +84,7 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="d-flex gap-2 align-items-center mb-2">
-                        <p class="mb-0">A thriving hospitality brand with portfolio of city hotels and resort across Indonesia, located right at the heart of destinations where everybody is greeted with warm smiles.</p>
+                        <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam et nisl eu risus interdum porta. Nullam congue tellus at turpis fermentum dignissim. Integer fringilla, turpis sit amet laoreet maximus, mi urna porta erat, sed aliquam lectus felis in justo. Donec eros nulla, scelerisque eu sodales ac, molestie a nulla. Phasellus quis sem a neque maximus congue at eget risus. Etiam hendrerit orci non elit dictum, sit amet tincidunt ante accumsan. Proin id sapien at dui lacinia varius. Vestibulum pretium mauris id dolor ullamcorper luctus ut ut ligula. Donec dignissim metus nec mauris tincidunt, non gravida tellus maximus. Pellentesque convallis magna arcu, vehicula consequat orci luctus nec. Fusce a elit metus.</p>
                       </div>
                     </div>
                     <div class="row">
@@ -221,11 +221,11 @@
               <div class="card">
                 <div class="card-header d-flex justify-content-between pb-0">
                   <div class="card-title mb-0">
-                    <h5 class="mb-0">Meal Attendance</h5>
-                    @if(isset($absensi[0]))
-                        <small class="text-muted">Diperbarui {{ $absensi[0]->created_at ? $absensi[0]->created_at->diffForhumans() : 'Belum ada data absensi' }}</small>
+                    <h5 class="mb-0">Task List</h5>
+                    @if(isset($task[0]))
+                        <small class="text-muted">Diperbarui {{ $task[0]->created_at ? $task[0]->created_at->diffForhumans() : '-' }}</small>
                     @else
-                        <small class="text-muted">Belum ada data absensi</small>
+                        <small class="text-muted">Belum ada data task</small>
                     @endif
                   </div>
                 </div>
@@ -234,21 +234,23 @@
                       <table class="table">
                           <thead>
                               <tr>
-                                  <th>Nama</th>
-                                  <th>Status</th>
-                                  <th>Jabatan</th>
-                                  <th>Tanggal Absensi</th>
-                                  <th>Tanggal dibuat</th>
-                              </tr>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Deadline</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Created By</th>
+                            </tr>
                           </thead>
                           <tbody>
-                              @foreach ($absensi as $ab)
+                              @foreach ($task as $ts)
                               <tr>
-                                  <td>{{ $ab->karyawan->nama_lengkap() }}</td>
-                                  <td>{{ $ab->status }}</td>
-                                  <td>{{ $ab->job_title }}</td>
-                                  <td>{{ $ab->tanggal_absensi }}</td>
-                                  <td>{{ $ab->created_at }}</td>
+                                  <td>{{ $ts->title }}</td>
+                                  <td>{{ $ts->description }}</td>
+                                  <td>{{ $ts->deadline }}</td>
+                                  <td>{{ $ts->priority }}</td>
+                                  <td>{{ $ts->task_status }}</td>
+                                  <td>{{ $ts->user->name }}</td>
                               </tr>
                               @endforeach
                           </tbody>

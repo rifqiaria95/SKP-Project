@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use App\Models\Absensi;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
@@ -11,9 +12,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $absensi  = Absensi::latest()->take(5)->get();
+        $task  = Task::latest()->take(5)->get();
         $karyawan = Karyawan::all();
 
-        return view('dashboard.index', compact('absensi', 'karyawan'));
+        return view('dashboard.index', compact('task', 'karyawan'));
     }
 }

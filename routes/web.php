@@ -101,6 +101,9 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin,karyawan']], funct
     // Route Inventory
     Route::get('task', 'TaskController@index');
     Route::post('task/store', 'TaskController@store');
+    Route::get('task/edit/{id}', 'TaskController@edit');
+    Route::post('task/update/{id}', 'TaskController@update');
+    Route::delete('task/delete/{id}', 'TaskController@destroy');
 
 });
 

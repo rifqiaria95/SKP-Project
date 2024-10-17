@@ -104,6 +104,9 @@
     <script src="{{ asset('Template/master/vendor/libs/cleavejs/cleave-phone.js') }}"></script>
     <script src="{{ asset('Template/master/vendor/libs/jquery-repeater/jquery-repeater.js') }}"></script>
 
+    <!-- Tambahkan ini di bagian <head> atau sebelum tag penutup </body> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
     <!-- Main JS -->
     <script src="{{ asset('Template/master/js/main.js') }}"></script>
 

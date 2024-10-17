@@ -10,7 +10,7 @@ $(document).ready(function() {
 
     // Mengatur konfigurasi Flatpickr berdasarkan userRole
     var flatpickrOptions = {
-        dateFormat: "D M Y"
+        dateFormat: "d M Y"
     };
 
     if (userRole !== "owner") {
@@ -19,6 +19,25 @@ $(document).ready(function() {
 
     $("#datePicker").flatpickr(flatpickrOptions);
     $("#deadline").flatpickr(flatpickrOptions);
+});
+
+$(document).ready(function() {
+    // Mengambil semua elemen dengan kelas .deadline-text
+    $('.deadline-text').each(function() {
+        // Ambil status overdue dari atribut data
+        var isOverdue = $(this).data('overdue');
+        var taskTitle = $(this).closest('.task-row').find('.title').text(); // Misalnya, ambil judul task
+        
+        if (isOverdue) {
+            // Tampilkan peringatan jika tugas sudah lewat deadline
+            $(this).text('Warning: your task "' + taskTitle + '" has reached its deadline');
+            $(this).css('color', 'red'); // Tambahkan styling agar peringatan lebih terlihat
+        } else {
+            // Jika belum melewati deadline, tampilkan tanggal deadline biasa
+            var deadline = $(this).data('deadline'); 
+            $(this).text('Deadline: ' + deadline);
+        }
+    });
 });
 
 
@@ -52,7 +71,7 @@ $(document).ready(function() {
                         text: '<i class="ti ti-printer me-2" ></i>Print',
                         className: 'dropdown-item',
                         exportOptions: {
-                        columns: [1, 2, 3, 4, 5],
+                        columns: [0, 1, 2, 3, 4, 5],
                         // prevent avatar to be print
                         format: {
                             body: function (inner, coldex, rowdex) {
@@ -89,7 +108,7 @@ $(document).ready(function() {
                         text: '<i class="ti ti-file-text me-2" ></i>Csv',
                         className: 'dropdown-item',
                         exportOptions: {
-                        columns: [1, 2, 3, 4, 5],
+                        columns: [0, 1, 2, 3, 4, 5],
                         // prevent avatar to be display
                         format: {
                             body: function (inner, coldex, rowdex) {
@@ -113,7 +132,7 @@ $(document).ready(function() {
                         text: '<i class="ti ti-file-spreadsheet me-2"></i>Excel',
                         className: 'dropdown-item',
                         exportOptions: {
-                        columns: [1, 2, 3, 4, 5],
+                        columns: [0, 1, 2, 3, 4, 5],
                         // prevent avatar to be display
                         format: {
                             body: function (inner, coldex, rowdex) {
@@ -137,7 +156,7 @@ $(document).ready(function() {
                         text: '<i class="ti ti-file-code-2 me-2"></i>Pdf',
                         className: 'dropdown-item',
                         exportOptions: {
-                        columns: [1, 2, 3, 4, 5],
+                        columns: [0, 1, 2, 3, 4, 5],
                         // prevent avatar to be display
                         format: {
                             body: function (inner, coldex, rowdex) {
@@ -161,7 +180,7 @@ $(document).ready(function() {
                         text: '<i class="ti ti-copy me-2" ></i>Copy',
                         className: 'dropdown-item',
                         exportOptions: {
-                        columns: [1, 2, 3, 4, 5],
+                        columns: [0, 1, 2, 3, 4, 5],
                         // prevent avatar to be display
                         format: {
                             body: function (inner, coldex, rowdex) {
@@ -257,7 +276,19 @@ $(document).ready(function() {
         $('#btn-simpan').val("tambah-task");
         $('#tambahModal').modal('show');
         $('#formItem').trigger("reset");
-        $('#modal-judul').html("Tambah task");
+        $('#modal-judul').html("Add New Task");
+        $('#selectPrioTB').select2({
+            dropdownParent: $('#tambahModal')
+        });
+        $('#priority').select2({
+            dropdownParent: $('#editModal')
+        });
+        $('#selectStatusTB').select2({
+            dropdownParent: $('#tambahModal')
+        });
+        $('#task_status').select2({
+            dropdownParent: $('#editModal')
+        });
     });
 });
 
@@ -304,3 +335,124 @@ if ($("#formItem").length > 0) {
         }
     })
 }
+
+// Function Edit task
+$(document).on('click', '.edit-task', function(e) {
+    e.preventDefault();
+
+    var id = $(this).data('id');
+
+    $('#editModal').modal('show');
+    $('#titleEdit').html("Edit Task");
+    $('#success_message').empty().removeClass('alert alert-success alert-danger');
+
+    $.ajax({
+        type: "GET",
+        url: "/task/edit/" + id,
+        success: function(response) {
+            if (response.status == 404) {
+                $('#success_message').addClass('alert alert-danger');
+                $('#success_message').text(response.message);
+                $('#editModal').modal('hide');
+            } else {
+                $('#id').val(id);
+                $('#title').val(response.title);
+                $('#description').val(response.description);
+                
+                // Tampilkan deadline dalam format "D M Y"
+                let formattedDate = moment(response.deadline).format('D MMM YYYY'); // Misalnya, "15 Oct 2024"
+                $('#datePicker').val(formattedDate);
+                
+                $('#priority').val(response.priority);
+                $('#task_status').val(response.task_status);
+                $('#note').val(response.note);
+            }
+        },
+        error: function(response) {
+            console.log(response);
+            $('#success_message').addClass('alert alert-danger');
+            $('#success_message').text("Error! Something went wrong while fetching the task data.");
+        }
+    });
+
+    $('.btn-close').click(function() {
+        $('#editForm')[0].reset();
+    });
+});
+
+
+// Function Update Data task
+$(document).on('submit', '#formEdit', function(e) {
+    e.preventDefault();
+    var id = $('#id').val();
+
+    // Mengubah data menjadi objek agar file image bisa diinput kedalam database
+    var EditFormData = new FormData($('#formEdit')[0]);
+
+    $.ajax({
+        type: "POST",
+        url: "/task/update/" + id,
+        data: EditFormData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            console.log(response);
+            var oTable = $('#table-task').dataTable(); //inialisasi datatable
+            oTable.fnDraw(false); //reset datatable
+            if (response.status == 400) {
+                $('#modalJudulEdit').html("");
+                $('#modalJudulEdit').removeClass('d-none');
+                $.each(response.errors, function(key, err_value) {
+                    $('#modalJudulEdit').append('<li>' + err_value +
+                    '</li>');
+                });
+
+                $('#btn-update').text('Update');
+            } else if (response.status == 404) {
+                toastr.success(response.message);
+            } else if (response.status == 200) {
+                $('#modalJudulEdit').html("");
+                toastr.success(response.message);
+
+                $('#editModal').modal('hide');
+            }
+        },
+        error: function(response) {
+            console.log('Error:', response);
+        }
+    });
+
+});
+
+// Function Delete
+//jika klik class delete (yang ada pada tombol delete) maka tampilkan modal konfirmasi hapus maka
+$('body').on('click', '.delete', function() {
+    id = $(this).attr('id');
+    $('#modalHapus').modal('show');
+});
+//jika tombol hapus pada modal konfirmasi di klik maka
+$('#btn-hapus').click(function(e) {
+    e.preventDefault();
+    $.ajax({
+        url: "/task/delete/" + id, //eksekusi ajax ke url ini
+        type: 'delete',
+        beforeSend: function() {
+            $('#btn-hapus').text('Hapus Data...'); //set text untuk tombol hapus
+        },
+        success: function(response) { //jika sukses
+            setTimeout(function() {
+                $('#modalHapus').modal('hide');
+                var oTable = $('#table-task').dataTable();
+                oTable.fnDraw(false); //reset datatable
+                if (response.status == 404) {
+                    toastr.success(response.message);
+                } else if (response.status == 200) {
+                    toastr.success(response.message);
+                }
+            });
+        },
+        error: function(response) {
+            console.log('Error:', response);
+        }
+    })
+});
