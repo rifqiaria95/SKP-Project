@@ -16,7 +16,7 @@
     />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Login | Perum DAMRI</title>
+    <title>Task Management Perum DAMRI</title>
 
     <meta name="description" content="" />
 

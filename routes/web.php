@@ -21,6 +21,12 @@ Route::get('/', 'SiteController@home');
 Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'authenticate']);
 
+// Route untuk menampilkan form registrasi
+Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+
+// Route untuk memproses form registrasi
+Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'postregister']);
+
 Route::group(['middleware' => ['auth', 'checkRole:owner']], function () {
 
     // Route User
